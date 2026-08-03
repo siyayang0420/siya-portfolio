@@ -1,0 +1,273 @@
+@import "tailwindcss";
+/* Must stay up here — @import has to precede every other rule. The layer()
+   matters: unlayered CSS beats *any* layered rule, so without it
+   `.scroll-cue { display: inline-flex }` would override Tailwind's
+   `md:hidden` and the cue could never be hidden by a utility. */
+@import "./scroll-cue.css" layer(components);
+
+@theme {
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  /* Not actually monospaced any more — the `font-mono` utility is kept so the
+     small uppercase labels keep their role, but they render in Jakarta too. */
+  --font-mono: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+
+  --color-ink: #0c0c0c;
+  --color-paper: #ffffff;
+  --color-haze: #e1e1e1;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* ── Case-study page tokens ─────────────────────────────────
+     Translated from the skill's Tailwind v3 config. `ink` and `paper` differ
+     from the landing values above on purpose — the case study is a light
+     document, the landing is a dark one — so the work route overrides both
+     locally rather than either winning globally. */
+  --color-muted: #888888;
+  --color-line: #e4e4e4;
+  --color-ruler: #d0d0d0;
+  --color-rulerLabel: #c4c4c4;
+  --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:root {
+  color-scheme: light;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: var(--color-ink);
+  color: var(--color-paper);
+  font-family: var(--font-sans);
+  /* Load-bearing for the case study's full-bleed card row, which is 100vw and
+     would otherwise add a horizontal page scrollbar. */
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* The whole page scrolls inside one rounded container, like the original. */
+.hide-scrollbar {
+  scrollbar-width: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Engraved heading treatment.
+   Two stacked backgrounds clipped to the glyphs: a vertical grey ramp that
+   makes the letters read as pressed into the page, and above it a translucent
+   indigo highlight that sweeps across on a long loop. Headings stagger the
+   sweep with their own animation-delay. The white text-shadow is what sells
+   the bevel — it still paints even though the fill is transparent. */
+.engraved {
+  background-image: linear-gradient(
+      90deg,
+      transparent,
+      transparent 40%,
+      #4f83f790 50%,
+      transparent 60%,
+      transparent
+    ),
+    linear-gradient(180deg, #9695a0, #dddddd 130%);
+  background-size: 200% 100%, 100% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  text-shadow:
+    0 1px 2px rgba(255, 255, 255, 0.1),
+    0 0 2.3px rgba(255, 255, 255, 0.25);
+  /* One baton passed between the three headings rather than three independent
+     sweeps. Over a 12s cycle each heading sweeps for 3s (25% of it) and parks
+     off-screen for the other 9s. Starts are 0s / 5s / 8s, so the sweep length
+     is capped by the tightest of those gaps — 3s — or two headings would be
+     lit at once.
+
+     `backwards` is load-bearing: during its delay a heading would otherwise
+     fall back to the un-animated default of `0% 0%`, which parks the highlight
+     right at the glyph edge — so the later two flashed a sliver before their
+     turn. It holds the 0% keyframe (off-screen) instead. */
+  animation: engrave-sweep var(--engrave-cycle, 16.8s) linear infinite backwards;
+  animation-delay: var(--engrave-delay, 0s);
+}
+
+/* 47.619% is the sweep's share of the cycle: an 8s pass inside 16.8s. The
+   passes deliberately overlap in TIME — starts are 5.6s apart — but their
+   visible bands do not, because the band spends the first and last 15% of each
+   pass off the glyphs.
+
+   This number is pass ÷ cycle = 1 ÷ 2.1, so it does NOT change when you speed
+   the blob up or slow it down — only --engrave-cycle and ENGRAVE_DELAYS do. */
+@keyframes engrave-sweep {
+  0% {
+    background-position: 150% 50%, 0 0;
+  }
+  47.619% {
+    background-position: -50% 50%, 0 0;
+  }
+  /* Held off the right edge for the rest of the cycle. The jump back to 150%
+     at the loop point is invisible: both ends sit outside the glyphs. */
+  100% {
+    background-position: -50% 50%, 0 0;
+  }
+}
+
+/* Ruler of ticks that separates the two hero columns. */
+.tick-rule {
+  background-image: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.42) 0 1px,
+    transparent 1px 100%
+  );
+  background-size: 100% 14px;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  70% {
+    transform: scale(1.08);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes sweep {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(220%);
+  }
+}
+
+@keyframes blink {
+  0%,
+  45% {
+    opacity: 1;
+  }
+  50%,
+  95% {
+    opacity: 0.15;
+  }
+}
+
+/* The progress head: a slow breathing glow. Deliberately understated — it sits
+   on a hairline and should read as alive, not as a notification. */
+@keyframes head-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 5px 1px rgba(255, 255, 255, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 11px 3px rgba(255, 255, 255, 0.9);
+  }
+}
+
+.head-core {
+  animation: head-glow 2.8s ease-in-out infinite;
+}
+
+/* Label swap inside the contact button — short and small, so it reads as the
+   word changing rather than as an element arriving. */
+@keyframes swap-in {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.anim-swap {
+  animation: swap-in 0.26s var(--ease-out-expo) both;
+}
+
+/* ── Ethos panel: scroll-driven word fill ─────────────────────
+   The container carries `--p` (0 → 1, written once per frame from scroll).
+   Each word carries its own `--s` start offset and derives its local fill
+   from those two numbers entirely in CSS — no per-word DOM writes.
+
+   The fill is one gradient with a feathered midpoint rather than two colour
+   layers: the filled and unfilled tones both come from the same gradient, so
+   every glyph is always painted and only the boundary moves. The ±9% feather
+   is what makes the edge read as soft rather than as a wipe. */
+.ethos-copy {
+  --ethos-fill: #4f83f7;
+  /* Opacity of copy that hasn't been reached yet. */
+  --ethos-rest: 0.16;
+}
+
+.ethos-word {
+  /* Each word is a SINGLE uniform opacity — no gradient inside it. A per-word
+     gradient made every word sit at its own partial fill, which reads as
+     speckle rather than one edge travelling through the sentence. The softness
+     comes instead from a handful of neighbouring words overlapping in the
+     transition, set by the 0.08 window below.
+
+     Defaults to 1 so the copy renders fully filled if JS never runs — the
+     opposite default would leave it near-invisible. */
+  --f: clamp(0, calc((var(--p, 1) - var(--s, 0)) / 0.08), 1);
+  color: var(--ethos-fill);
+  opacity: calc(var(--ethos-rest) + var(--f) * (1 - var(--ethos-rest)));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ethos-word {
+    --f: 1;
+  }
+}
+
+@keyframes drift {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+/* Kept short: chapters remount on every change, so a long entrance would leave
+   the stage looking empty while someone scrolls quickly. */
+.anim-rise {
+  animation: rise 0.45s var(--ease-out-expo) both;
+}
+.anim-pop {
+  animation: pop 0.4s var(--ease-out-expo) both;
+}
+.anim-drift {
+  animation: drift 6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
