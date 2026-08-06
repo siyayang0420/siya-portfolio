@@ -4,6 +4,8 @@ import { projects, getProject, BRAVO_SLUG } from '@/content/projects';
 import { cn } from '@/lib/cn';
 import { BravoActs } from '@/components/work/sections/BravoActs';
 import { ScrollLink } from '@/components/ui/ScrollLink';
+import { TopBar } from '@/components/work/TopBar';
+import Footer from '@/components/Footer';
 
 export function generateStaticParams() {
   return projects.map((p) => ({ slug: p.slug }));
@@ -36,14 +38,19 @@ export default async function ProjectPage({
 
   return (
     // The landing sets a dark body; this route is a light document, so it
-    // carries its own ground rather than flipping the global.
-    <main className="min-h-screen bg-[#f8f8f8] font-light text-[#0a0a0a]">
-      {/* Hero — inset so the side rulers stay visible at the page edges. */}
-      <div className="mt-[61px] px-2.5 md:px-11">
+    // carries its own ground rather than flipping the global. The ground is
+    // the footer grey, same as the home page, so the rounded bottom corners of
+    // the sheet below have something to reveal.
+    <main className="min-h-screen bg-[#e1e1e1] font-light text-[#0a0a0a]">
+      {/* The document sheet. Rounds off at the bottom exactly like Features
+          does on the home page — same 2.5rem, same z-10 over the grey. */}
+      <div className="relative z-10 rounded-b-[2.5rem] bg-[#f8f8f8]">
+        {/* Hero — full bleed, no side inset. */}
         <div
           className="relative w-full overflow-hidden"
           style={{ height: '58vh', background: project.heroBg }}
         >
+          <TopBar />
           <div
             className={cn(
               'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2',
@@ -58,9 +65,8 @@ export default async function ProjectPage({
             {project.imgTitle}
           </div>
         </div>
-      </div>
 
-      <div className="max-w-[800px] mx-auto pt-12 pb-24 px-4 md:px-0">
+        <div className="max-w-[800px] mx-auto pt-12 pb-24 px-4 md:px-0">
         <div className="text-[14px] tracking-[0.18em] uppercase text-muted mb-[18px]">
           <span>{project.breadcrumb}</span>
         </div>
@@ -146,7 +152,10 @@ export default async function ProjectPage({
           </div>
         </div>
         {project.slug === BRAVO_SLUG && <BravoActs />}
+        </div>
       </div>
+
+      <Footer />
     </main>
   );
 }
