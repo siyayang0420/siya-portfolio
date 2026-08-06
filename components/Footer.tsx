@@ -1,4 +1,4 @@
-import { ArrowRight } from "lucide-react";
+import FooterContact from "@/components/FooterContact";
 
 type FooterLink = { label: string; href: string };
 
@@ -111,13 +111,7 @@ export default function Footer() {
             <p className="text-sm text-black/45">
               siya.yang.design@gmail.com
             </p>
-            <a
-              href="#contact"
-              className="mt-3 inline-flex w-fit items-center gap-2 rounded-full bg-white px-5 py-3 font-display text-sm font-medium text-black shadow-[0_1px_2px_rgba(0,0,0,0.06),0_8px_24px_-10px_rgba(0,0,0,0.25)] ring-1 ring-black/[0.06] transition hover:bg-black hover:text-white hover:ring-black"
-            >
-              Get Started
-              <ArrowRight className="size-4" />
-            </a>
+            <FooterContact />
           </Cell>
 
           {/* Deliberately empty — this blank cell is what gives the band its
