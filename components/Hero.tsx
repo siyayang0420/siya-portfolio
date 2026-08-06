@@ -152,6 +152,12 @@ export default function Hero() {
 
   return (
     <>
+      {/* Anchor target for the case-study "Work" pill. A bare div rather than
+          an id on either section below: those are `hidden lg:block` /
+          `lg:hidden`, and an anchor pointing at a display:none element does
+          nothing — so one of the two breakpoints would always be dead. */}
+      <div id="work" aria-hidden />
+
       {/* ── Desktop: one pinned frame, seven scroll chapters ─────────── */}
       <section
         ref={sectionRef}
