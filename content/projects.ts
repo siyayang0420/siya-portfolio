@@ -36,7 +36,7 @@ export const projects: Project[] = [
     slug: BRAVO_SLUG,
     title: 'Bravo App',
     imgTitle: 'BRAVO',
-    heading: 'Eliminating Payment Complexity for 45,000 Diners Without Reducing Business Flexibility',
+    heading: 'Redesigning a reward system that feels simple to users while staying powerful behind the scenes.',
     breadcrumb: 'Bravo Rewards App',
     year: '2025',
     role: 'Lead Product Designer',
@@ -45,7 +45,9 @@ export const projects: Project[] = [
       "Bravo Rewards App is a QR-based payments and dining rewards app operating across a network of restaurant partners in Metro Vancouver. Bravo's reward system had 4 separate mechanisms, each with its own logic. I help to reshape the experience consolidating them into one model : $1 cashback equals $1 toward the next meal, and made the system work for users, marketing, finance, and the business at the same time.",
     tags: ['Fintech', 'Payments', 'Systems Design'],
     cardBg: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)',
-    heroBg: 'linear-gradient(135deg, #1a1a2e, #0f3460)',
+    heroBg: '#D9D9D9',
+    // The cover is light now, so the wordmark has to be dark to read at all.
+    imgTitleDark: true,
   },
   {
     slug: 'bravo-onboarding',
