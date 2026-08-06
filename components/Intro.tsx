@@ -30,16 +30,23 @@ export default function Intro() {
       <button
         type="button"
         onClick={copy}
-        // 139×44 at rest, straight from the Figma frame. Both widths are
-        // explicit so the swap to the longer label animates instead of jumping.
-        // px-[22px] not the spec's 24px: Plus Jakarta renders "Contact me" ~2px
-        // wider here than in Figma, and the 139px outer is what has to match.
-        className={cn(PILL, "transition-[width,transform] duration-300")}
+        // Colours join width/transform in one list rather than a second
+        // `transition` class: both would set transition-property at the same
+        // specificity, so whichever Tailwind emitted last would win outright.
+        className={cn(
+          PILL,
+          "transition-[width,transform,background-color,color] duration-300",
+        )}
+        // Both widths are pinned so the swap to the longer label animates
+        // instead of jumping. Measured, not guessed: these are the button's
+        // natural widths for each label at PILL's 14px / 12-16 padding, so
+        // they have to be re-measured if either the type or the label changes.
+        //
         // Inline rather than two Tailwind width classes — same utility, same
         // specificity, so whichever landed later in the sheet always won and
         // the width never actually changed.
         style={{
-          width: copied ? 168 : 139,
+          width: copied ? 128 : 114,
           transform: copied ? "scale(1.03)" : "scale(1)",
         }}
       >

@@ -10,9 +10,10 @@ import { PILL } from '@/components/ui/pill';
  * site nav, and a fixed bar would need a top offset on <main>'s first child,
  * which collapses out and exposes the dark body behind it.
  *
- * The pills are the shared PILL treatment, used as-is.
+ * The pills are the shared PILL treatment plus the transition that carries its
+ * hover/press fill.
  */
-const NAV_PILL = PILL;
+const NAV_PILL = cn(PILL, 'transition-colors duration-200');
 
 export function TopBar() {
   return (
