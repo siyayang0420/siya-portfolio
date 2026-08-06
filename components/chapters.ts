@@ -23,8 +23,8 @@ export const chapters: Chapter[] = [
     name: "Simplifying a consumer fintech reward engine",
     meta: "Bravo Rewards App",
     blurb:
-      "Eliminating Payment Complexity for 45,000 Diners Without Reducing Business Flexibility.",
-    visual: "briefing",
+      "Redesigning a reward system that feels simple to users while staying powerful behind the scenes.",
+    visual: "reward-engine",
     slug: "simplifying-a-consumer-fintech-reward-engine",
   },
   {
