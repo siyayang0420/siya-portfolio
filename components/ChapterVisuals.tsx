@@ -1,5 +1,7 @@
 "use client";
 
+import RewardEngineVisual from "./RewardEngineVisual";
+
 import {
   ArrowUpRight,
   Calendar,
@@ -377,6 +379,7 @@ function RecapVisual() {
 /* ──────────────────────────────────────────────────────────────────────── */
 
 const visuals: Record<string, () => React.ReactElement> = {
+  "reward-engine": RewardEngineVisual,
   briefing: BriefingVisual,
   "catch-up": CatchUpVisual,
   "action-plan": ActionPlanVisual,
