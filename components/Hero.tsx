@@ -241,8 +241,11 @@ export default function Hero() {
               </div>
             </div>
 
-            {/* Right stage */}
-            <div className="relative pr-10 xl:pr-14">
+            {/* Right stage. `min-h-0` because a grid item defaults to
+                `min-height: auto`, which floors the row at its content height —
+                so a tall chapter visual pushed this cell past the pinned
+                frame's height and got clipped instead of scaling down. */}
+            <div className="relative min-h-0 pr-10 xl:pr-14">
               <TickRule />
 
               <div className="flex h-full flex-col pt-14">
@@ -339,10 +342,13 @@ export default function Hero() {
               <Pitch />
             </div>
 
-            {/* Phone only. Inline styles override the skill's hero-card offset
-                and retint it for the dark gradient it sits on here. */}
+            {/* Phone and tablet — hidden at lg, where the pinned desktop hero
+                takes over and scrolling is self-evident. Matches this stacked
+                section's own lg:hidden so the two can't disagree. Inline styles
+                override the skill's hero-card offset and retint it for the dark
+                gradient it sits on here. */}
             <ScrollCue
-              className="md:hidden"
+              className="lg:hidden"
               style={
                 {
                   bottom: 24,
