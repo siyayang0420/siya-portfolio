@@ -1,6 +1,6 @@
 "use client";
 
-import RewardEngineVisual from "./RewardEngineVisual";
+import CashbackFlowVisual from "./CashbackFlowVisual";
 
 import {
   ArrowUpRight,
@@ -379,7 +379,7 @@ function RecapVisual() {
 /* ──────────────────────────────────────────────────────────────────────── */
 
 const visuals: Record<string, () => React.ReactElement> = {
-  "reward-engine": RewardEngineVisual,
+  "reward-engine": CashbackFlowVisual,
   briefing: BriefingVisual,
   "catch-up": CatchUpVisual,
   "action-plan": ActionPlanVisual,
