@@ -32,7 +32,9 @@ const EASE_OUT = [0.23, 1, 0.32, 1] as const;
 const EASE_IN_OUT = [0.77, 0, 0.175, 1] as const;
 
 const STEPS = [
-  { id: "idle", ms: 420 },
+  // Short: this is the loop's reset frame (everything snaps back with
+  // duration 0 while hidden), and after a page load it is dead time.
+  { id: "idle", ms: 150 },
   { id: "billIn", ms: 760 },
   { id: "billHold", ms: 1200 },
   // The four arrive in the first ~830ms of this; the rest is the hold that
@@ -213,6 +215,16 @@ export default function CashbackFlowVisual() {
   const [onScreen, setOnScreen] = useState(true);
   const [paused, setPaused] = useState(false);
 
+  /**
+   * Framer only server-renders an explicit `initial`; everything here is driven
+   * from `animate`, which is applied on mount. So the server would otherwise
+   * ship each element with no opacity and no transform — every scene visible at
+   * once, piled up, until hydration. Holding the artwork back until mount makes
+   * the served frame an empty panel, which is exactly what step 0 looks like.
+   */
+  const [ready, setReady] = useState(false);
+  useEffect(() => setReady(true), []);
+
   useEffect(() => {
     const el = wrapRef.current;
     if (!el) return;
@@ -316,6 +328,9 @@ export default function CashbackFlowVisual() {
           WebkitBackdropFilter: "blur(8.05px)",
         }}
       >
+        {/* Client-only — see `ready`. The frosted panel above stays server
+            rendered so the box and its layout are stable with no shift. */}
+        {ready && (
         <div
           className="absolute left-1/2 top-1/2 text-[#202020]"
           style={{ width: W, height: H, transform: `translate(-50%, -50%) scale(${scale})` }}
@@ -493,8 +508,8 @@ export default function CashbackFlowVisual() {
               />
             </motion.div>
           </div>
-
         </div>
+        )}
       </div>
 
       {!reduced && (
