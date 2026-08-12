@@ -73,7 +73,7 @@ export default async function ProjectPage({
         <h1 className="font-semibold text-[clamp(28px,3vw,32px)]  mb-6">
           {project.heading}
         </h1>
-        <div className="flex flex-wrap gap-2 mb-8">
+        {/* <div className="flex flex-wrap gap-2 mb-8">
           {project.tags.map((tag) => (
             <span
               key={tag}
@@ -82,7 +82,7 @@ export default async function ProjectPage({
               {tag}
             </span>
           ))}
-        </div>
+        </div> */}
         {project.overview && (
           <div>
             <div className="text-[12px] tracking-[0.14em] uppercase text-muted mb-3">

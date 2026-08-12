@@ -6,8 +6,8 @@ const columns: { title: string; links: FooterLink[] }[] = [
   {
     title: "Pages",
     links: [
-      { label: "Works", href: "#" },
-      { label: "About me", href: "#" },
+      { label: "Works", href: "/#work" },
+      { label: "About me", href: "/about" },
     ],
   },
   {

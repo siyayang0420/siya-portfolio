@@ -2,16 +2,19 @@
 
 import { useEffect, useRef, useState } from "react";
 import { animate, motion, useMotionValue, useReducedMotion } from "framer-motion";
-import Bill, { BILL_H, BILL_W } from "./work/cashback/Bill";
 import OfferCard, { BADGE_CX, CARD_W, type Variant } from "./work/cashback/OfferCard";
 
 /**
  * The Bravo cashback story, as a looping demo.
  *
- *   a bill rises · four questions arrive and are struck out · the bill resolves
- *   to one rule · the rate counts up · the magnified badge shrinks into a real
+ *   the rate counts up on a magnified badge · that badge shrinks into a real
  *   offer card · the card rewrites itself a field at a time · then flashes
- *   through five other offers the same system can express
+ *   through the other offers the same system can express
+ *
+ * It opens on the payoff. An earlier cut spent a third of the loop on a bill
+ * rising, four questions being struck out and a "one cash back rule" line
+ * before the card arrived — a long wind-up before the thing the section is
+ * about.
  *
  * Authored in the Figma frame's own 601×695 space and scaled as one unit, so
  * no internal number has to be responsive.
@@ -35,16 +38,7 @@ const STEPS = [
   // Short: this is the loop's reset frame (everything snaps back with
   // duration 0 while hidden), and after a page load it is dead time.
   { id: "idle", ms: 150 },
-  { id: "billIn", ms: 760 },
-  { id: "billHold", ms: 1200 },
-  // The four arrive in the first ~830ms of this; the rest is the hold that
-  // lets them be read before anything is struck out.
-  { id: "chipsIn", ms: 1500 },
-  { id: "crossOut", ms: 1600 },
-  { id: "chipsOut", ms: 720 },
-  // The one-rule frame. 720 + 1660 ≈ 2380, i.e. 40% longer than the 1700 it
-  // used to get across the chips-out, cursor and click beats.
-  { id: "ruleHold", ms: 1660 },
+  // The opening frame: the magnified badge, counting up.
   { id: "count", ms: 1500 },
   { id: "shrink", ms: 900 },
   { id: "flipTitle", ms: 800 },
@@ -60,58 +54,62 @@ const STEPS = [
 
 const S = {
   IDLE: 0,
-  BILL_IN: 1,
-  BILL_HOLD: 2,
-  CHIPS_IN: 3,
-  CROSS_OUT: 4,
-  CHIPS_OUT: 5,
-  RULE_HOLD: 6,
-  COUNT: 7,
-  SHRINK: 8,
-  FLIP_TITLE: 9,
-  SWAP_SUB: 10,
-  DATE_IN: 11,
-  SETTLE: 12,
-  HAPPY_HOUR: 13,
-  THREE_PURCHASES: 14,
-  SPEND_130: 15,
-  CLEAR: 16,
+  COUNT: 1,
+  SHRINK: 2,
+  FLIP_TITLE: 3,
+  SWAP_SUB: 4,
+  DATE_IN: 5,
+  SETTLE: 6,
+  HAPPY_HOUR: 7,
+  THREE_PURCHASES: 8,
+  SPEND_130: 9,
+  CLEAR: 10,
 } as const;
 
-/* ── The bill ───────────────────────────────────────────────────────────── */
+/** The panel's centre, in the authoring space. Everything is anchored to it. */
+const CENTER_X = 300.5;
+const CENTER_Y = 348;
 
-const BILL_CX = 300.5;
-const BILL_CY = 348;
-const CONTENT_CY = BILL_CY - 17.5;
-const CONTENT_W = 322;
+/* ── The phone ──────────────────────────────────────────────────────────── */
 
-/* ── The questions ──────────────────────────────────────────────────────── */
-
-type Chip = { n: number; text: string; left: number; top: number };
-
-const CHIPS: Chip[] = [
-  { n: 1, text: "Use $20.2 cashback?", left: 76, top: 153 },
-  { n: 2, text: "Stack with coupons?", left: 177, top: 258 },
-  { n: 3, text: "Top up bonus?", left: 58, top: 363 },
-  { n: 4, text: "How much did I save?", left: 140, top: 468 },
-];
-
-const CHIP_ENTER_X = 620;
-const CHIP_EXIT_X = -760;
+/**
+ * The device the offer lives on: a body and a screen inset into it, both just
+ * translucent white over the frosted panel. It's a suggestion of a phone rather
+ * than a drawing of one — the card is what the eye should go to.
+ *
+ * Taller than the panel on purpose. It starts 187 down and runs 681, so the
+ * bottom is cut off by the panel's `overflow-hidden` and the device reads as
+ * continuing past the frame instead of floating in it.
+ */
+const PHONE = { top: 187, w: 359, h: 681, radius: 47 };
+/** Inset into the body, so the two are drawn as one unit that moves together. */
+const SCREEN = { dx: 11, dy: 12, w: 337, h: 640, radius: 40 };
+/**
+ * Far enough down to clear the panel's bottom edge: the body's top sits at 187
+ * in a 695-tall frame, so 520 puts the whole device outside the clip. It's
+ * hidden by being off-frame, not by opacity — a phone that fades in place
+ * would look like it was always there.
+ */
+const PHONE_DOWN = 520;
 
 /* ── The card ───────────────────────────────────────────────────────────── */
 
 /** Base card height for the opening variant — sets the zoom pivot. */
 const CARD_H = 153.109;
-const CARD_LEFT = BILL_CX - CARD_W / 2;
+const CARD_LEFT = CENTER_X - CARD_W / 2;
+/**
+ * The card rests below the panel's centre, which is where it sits on the
+ * phone's screen in the design — not centred in the frame.
+ */
+const CARD_CY = 398.65;
 
 /**
  * The zoom pivots on the badge, so the badge stays put while the card grows
  * around it. These offsets carry the badge centre to the panel centre; without
- * them the magnified badge would sit far off to the left.
+ * them the magnified badge would sit far off to the left, and low.
  */
-const ZOOM_X = BILL_CX - (CARD_LEFT + BADGE_CX);
-const ZOOM_Y = BILL_CY - (BILL_CY - CARD_H / 2 + BADGE_CX);
+const ZOOM_X = CENTER_X - (CARD_LEFT + BADGE_CX);
+const ZOOM_Y = CENTER_Y - (CARD_CY - CARD_H / 2 + BADGE_CX);
 /** How far in the card starts, before shrinking to its natural size. */
 const Z_NEAR = 2.4;
 
@@ -266,20 +264,13 @@ export default function CashbackFlowVisual() {
    * as the same frame twice.
    */
   const zoomPose = s <= S.COUNT;
-  /** The scene where something is actually layered over the bill. */
-  const zoomed = s === S.COUNT;
-  // The bill and its rule clear out before the card arrives.
-  const billUp = s >= S.BILL_IN && s < S.COUNT;
-  const chipsOn = s >= S.CHIPS_IN && s < S.CHIPS_OUT;
-  const resolved = s >= S.CHIPS_OUT && s < S.COUNT;
 
   /**
-   * The bill recedes whenever something is layered over it — dimmed *and*
-   * defocused. Opacity alone leaves it legible enough to compete.
+   * The phone is absent for the opening close-up and rises as the card shrinks
+   * — arriving with the card rather than waiting for it. It drops away again on
+   * CLEAR so the loop restarts on the same bare panel it opened with.
    */
-  const billDim = chipsOn || zoomed;
-  const BLUR = "blur(5px)";
-  const SHARP = "blur(0px)";
+  const phoneUp = s >= S.SHRINK && s < S.CLEAR;
 
   /**
    * The offers the same engine expresses, in the order the story shows them.
@@ -335,137 +326,48 @@ export default function CashbackFlowVisual() {
           className="absolute left-1/2 top-1/2 text-[#202020]"
           style={{ width: W, height: H, transform: `translate(-50%, -50%) scale(${scale})` }}
         >
-          {/* ── The bill ─────────────────────────────────────────────────── */}
+          {/* ── The phone ────────────────────────────────────────────────── */}
+          {/* First in source order, so it is always behind the card.
+              `left` is a number, not a -translate-x-1/2 class: Framer writes
+              its own `transform` for y, which would overwrite the class and
+              throw the phone off-centre the moment it moved. */}
           <motion.div
+            aria-hidden
             className="absolute"
             style={{
-              left: BILL_CX - BILL_W / 2,
-              top: BILL_CY - BILL_H / 2,
-              width: BILL_W,
-              height: BILL_H,
+              left: CENTER_X - PHONE.w / 2,
+              top: PHONE.top,
+              width: PHONE.w,
+              height: PHONE.h,
+              borderRadius: PHONE.radius,
+              background: "rgba(255,255,255,0.45)",
             }}
-            animate={{
-              // Slides up and stops. No swell on the hold — the pause is the
-              // point of that beat, and anything moving in it competes with
-              // the total the viewer is meant to be reading.
-              y: billUp ? 0 : 470,
-              opacity: billUp ? (billDim ? 0.3 : 1) : 0,
-              filter: billDim ? BLUR : SHARP,
-            }}
+            // Rises on the same beat as the card pulls back, so the two read as
+            // one move: the camera backing off to reveal where the offer lives.
+            animate={{ y: phoneUp ? 0 : PHONE_DOWN }}
             transition={
               snap
                 ? { duration: 0 }
-                : { duration: 0.72, ease: EASE_IN_OUT, opacity: { duration: 0.34 } }
+                : { duration: s === S.SHRINK ? 0.78 : 0.5, ease: EASE_IN_OUT }
             }
           >
-            <Bill />
+            <div
+              className="absolute"
+              style={{
+                left: SCREEN.dx,
+                top: SCREEN.dy,
+                width: SCREEN.w,
+                height: SCREEN.h,
+                borderRadius: SCREEN.radius,
+                background: "rgba(255,255,255,0.5)",
+              }}
+            />
           </motion.div>
-
-          <motion.div
-            className="absolute -translate-y-1/2"
-            style={{ left: BILL_CX - CONTENT_W / 2, top: CONTENT_CY, width: CONTENT_W }}
-            animate={{
-              y: billUp ? 0 : 470,
-              opacity: billUp && !resolved ? (billDim ? 0.3 : 1) : 0,
-              filter: billDim || resolved ? BLUR : SHARP,
-            }}
-            // Rides the paper exactly, so the printed content never lags or
-            // leads the sheet it is printed on.
-            transition={
-              snap
-                ? { duration: 0 }
-                : { duration: 0.72, ease: EASE_IN_OUT, opacity: { duration: 0.34 } }
-            }
-          >
-            <p className="text-center text-[34px] font-semibold leading-normal">
-              Your bill tonight
-            </p>
-            <div className="mt-8 flex flex-col gap-6">
-              <div className="h-4 rounded-[3px] bg-[#e5e5e5]" />
-              <div className="h-4 rounded-[3px] bg-[#e5e5e5]" />
-              <div className="h-4 rounded-[3px] bg-[#e5e5e5]" />
-            </div>
-            <div className="mt-[125px] flex items-center justify-between leading-normal">
-              <span className="text-[16px] font-medium">Total</span>
-              <span className="text-[32px] font-bold">$ 108.23</span>
-            </div>
-          </motion.div>
-
-          {/* The resolved rule. */}
-          <motion.div
-            className="absolute -translate-y-1/2 text-center"
-            style={{ left: BILL_CX - CONTENT_W / 2, top: BILL_CY, width: CONTENT_W }}
-            animate={{
-              opacity: resolved ? (zoomed ? 0.3 : 1) : 0,
-              filter: resolved && !zoomed ? SHARP : BLUR,
-              scale: resolved ? 1 : 0.96,
-            }}
-            transition={snap ? { duration: 0 } : { duration: 0.46, ease: EASE_OUT }}
-          >
-            <p className="text-[40px] font-bold leading-[1.15]">
-              One
-              <br />
-              cash back rule
-            </p>
-            <p className="mt-2 text-[22px] text-[#6b6b6b]">with all kinds of possibilities</p>
-          </motion.div>
-
-          {/* ── The questions ────────────────────────────────────────────── */}
-          {CHIPS.map((chip, i) => {
-            const struck = s >= S.CROSS_OUT && s < S.CLEAR;
-            const strikeDelay = s === S.CROSS_OUT ? i * 0.3 : 0;
-
-            let x = CHIP_ENTER_X;
-            let opacity = 0;
-            if (chipsOn) {
-              x = 0;
-              opacity = 1;
-            } else if (s >= S.CHIPS_OUT && s < S.CLEAR) {
-              x = CHIP_EXIT_X;
-              opacity = 1;
-            }
-
-            return (
-              <motion.div
-                key={chip.n}
-                className="absolute flex w-fit items-center rounded-full bg-white px-[18px] py-3 text-[28px] leading-none whitespace-nowrap"
-                style={{ left: chip.left, top: chip.top }}
-                animate={{ x, opacity }}
-                transition={
-                  snap
-                    ? { duration: 0 }
-                    : {
-                        // Enter staggered and generous; leave quicker, as a group.
-                        duration: s === S.CHIPS_IN ? 0.62 : 0.5,
-                        ease: EASE_OUT,
-                        delay: s === S.CHIPS_IN ? i * 0.07 : 0,
-                      }
-                }
-              >
-                <span className="relative">
-                  {chip.text}
-                  {/* Drawn left-to-right rather than faded in, so it reads as a
-                      pen stroke. scaleX on a 2px rule stays on the GPU. */}
-                  <motion.span
-                    aria-hidden
-                    className="absolute left-0 top-1/2 h-[2px] w-full origin-left bg-[#202020]"
-                    initial={false}
-                    animate={{ scaleX: struck ? 1 : 0, opacity: struck ? 1 : 0 }}
-                    transition={
-                      snap
-                        ? { duration: 0 }
-                        : { duration: 0.34, ease: EASE_OUT, delay: strikeDelay }
-                    }
-                  />
-                </span>
-              </motion.div>
-            );
-          })}
 
           {/* ── The offer card ───────────────────────────────────────────── */}
           <div
             className="absolute -translate-y-1/2"
-            style={{ left: CARD_LEFT, top: BILL_CY, width: CARD_W }}
+            style={{ left: CARD_LEFT, top: CARD_CY, width: CARD_W }}
           >
             <motion.div
               // Pivots on the badge, so the badge holds still while the card
@@ -515,7 +417,11 @@ export default function CashbackFlowVisual() {
       {!reduced && (
         <button
           type="button"
-          onClick={() => setPaused((p) => !p)}
+          onClick={(e) => {
+            // The chapter around this is one big link; pausing is not navigating.
+            e.stopPropagation();
+            setPaused((p) => !p);
+          }}
           aria-label={paused ? "Play the demo" : "Pause the demo"}
           className="absolute bottom-4 right-4 grid size-10 place-items-center rounded-full bg-black/25 text-white backdrop-blur-sm transition-[transform,background-color] duration-150 ease-out hover:bg-black/40 active:scale-[0.97]"
         >

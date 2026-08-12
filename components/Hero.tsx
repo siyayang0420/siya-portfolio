@@ -7,6 +7,7 @@ import Intro from "./Intro";
 import { ScrollCue } from "./ScrollCue";
 import WaveCanvas from "./WaveCanvas";
 import ChapterVisual from "./ChapterVisuals";
+import ChapterLinkArea from "./ChapterLinkArea";
 import { chapters } from "./chapters";
 
 // Muted on purpose: each stop is pulled ~25% toward a neutral of the same
@@ -37,8 +38,8 @@ function Pitch() {
           </li>
         ))}
       </ul> */}
-      <span className="mt-4 text-white/90 text-[1.25rem]">
-        Currently obsessed with AI behavior, product systems, and the invisible decisions that shape trust.
+      <span className="mt-4 text-white/90 text-[1.15rem]">
+        Currently designing and shipping payments, rewards, social and AI products at a Vancouver-based startup.
       </span>
     </>
   );
@@ -51,6 +52,29 @@ function TickRule() {
       <div className="tick-rule absolute inset-y-0 left-0 w-1.5 opacity-60" />
       <div className="absolute inset-y-0 left-1.5 w-px bg-white/15" />
     </div>
+  );
+}
+
+/**
+ * A chapter's content column. Chapters with a case study become one large
+ * click target with a pointer-following "View Project" pill; the ones still
+ * marked "Coming soon" have nowhere to go, so they stay an inert block —
+ * a hover affordance on a dead end is worse than none.
+ */
+function ChapterBlock({
+  slug,
+  className,
+  children,
+}: {
+  slug: string | null;
+  className: string;
+  children: React.ReactNode;
+}) {
+  if (!slug) return <div className={className}>{children}</div>;
+  return (
+    <ChapterLinkArea href={`/${slug}`} className={className}>
+      {children}
+    </ChapterLinkArea>
   );
 }
 
@@ -277,15 +301,21 @@ export default function Hero() {
                   </div>
                 </div>
 
-                {/* Keyed remount replays the entrance animations per chapter. */}
-                <div key={chapter.id} className="flex min-h-0 flex-1 flex-col pl-8 pt-10">
+                {/* Keyed remount replays the entrance animations per chapter.
+                    Chapters with a case study become one large click target;
+                    the rest render as a plain block. */}
+                <ChapterBlock
+                  key={chapter.id}
+                  slug={chapter.slug}
+                  className="flex min-h-0 flex-1 flex-col pl-8 pt-10"
+                >
                   {/* <p className="anim-rise mb-1 font-display text-[20px] font-medium text-white">
                     Selected work
                   </p> */}
                   <h2 className="anim-rise font-display text-[clamp(1.615rem,2.38vw,2.3375rem)] font-medium leading-tight tracking-[-0.02em] text-white">
                     {chapter.name}
                   </h2>
-                  <p className="anim-rise mt-3 max-w-xl text-[16px] leading-relaxed text-white/75" style={{ animationDelay: "60ms" }}>
+                  <p className="anim-rise mt-3 max-w-xl text-[16px] text-white/75" style={{ animationDelay: "60ms" }}>
                     {chapter.blurb}
                   </p>
                   {chapter.slug ? (
@@ -309,7 +339,7 @@ export default function Hero() {
                   <div className="flex min-h-0 flex-1 items-center justify-center pb-24 pt-8">
                     <ChapterVisual id={chapter.visual} />
                   </div>
-                </div>
+                </ChapterBlock>
               </div>
             </div>
             </div>

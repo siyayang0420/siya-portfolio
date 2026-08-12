@@ -8,6 +8,7 @@ import { BravoDecision } from './BravoDecision';
 import { BravoCampaignDemo } from './BravoCampaignDemo';
 import { BravoShowcase } from './BravoShowcase';
 import { BravoResult } from './BravoResult';
+import ActPill from './ActPill';
 
 type ActId = 'problem' | 'challenge' | 'decision' | 'outcome';
 
@@ -105,6 +106,12 @@ export function BravoActs() {
     window.scrollTo({ top, behavior: 'smooth' });
   };
 
+  const activeIndex = Math.max(
+    0,
+    DOCK_ITEMS.findIndex((i) => i.id === active),
+  );
+  const activeItem = DOCK_ITEMS[activeIndex];
+
   return (
     <section
       className="border-t border-line mt-10 [&_h2]:tracking-[0.02em] [&_h2]:leading-[1.55] [&_p]:tracking-[0.02em] [&_p]:leading-[1.55]"
@@ -113,7 +120,8 @@ export function BravoActs() {
           Fixed just below the site nav. Hidden until the Problem heading
           scrolls away, then fades + slides in. Centered to the 1100px
           content width. */}
-      <div
+      <nav
+        aria-label="Case study progress"
         aria-hidden={!barVisible}
         className={`fixed top-[76px] left-0 right-0 z-40 flex justify-center transition-all duration-300 ease-out ${
           barVisible
@@ -121,40 +129,17 @@ export function BravoActs() {
             : 'opacity-0 -translate-y-2 pointer-events-none'
         }`}
       >
-        <nav
-          aria-label="Case study sections"
-          className="w-full max-w-[800px] bg-[#f8f8f8]/90 backdrop-blur-[10px] border-b border-line"
-        >
-          <div className="flex items-center justify-between gap-4 px-6 md:px-8 py-3.5">
-            {DOCK_ITEMS.map((item) => (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => scrollToAct(item.id)}
-                aria-current={active === item.id ? 'true' : undefined}
-                className={`text-[12px] tracking-[0.14em] uppercase whitespace-nowrap transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink/30 rounded-sm ${
-                  active === item.id
-                    ? 'font-bold text-[#202020]'
-                    : 'font-normal text-muted hover:text-ink'
-                }`}
-              >
-                {item.label}
-              </button>
-            ))}
-          </div>
-          {/* Progress track + fill (grows left → right) */}
-          <div className="relative h-[2px] bg-neutral-200">
-            <span
-              aria-hidden="true"
-              className="absolute inset-y-0 left-0 bg-ink"
-              style={{
-                width: `${progress * 100}%`,
-                transition: 'width 150ms ease-out',
-              }}
-            />
-          </div>
-        </nav>
-      </div>
+        <ActPill
+          label={activeItem.label}
+          progress={progress}
+          // The four separate jump links are gone with the old bar, so the pill
+          // carries that job: it steps to the next act, and wraps at the end.
+          onClick={() => {
+            const next = DOCK_ITEMS[(activeIndex + 1) % DOCK_ITEMS.length];
+            scrollToAct(next.id);
+          }}
+        />
+      </nav>
 
       {/* ── Case study content ─────────────────────────────────────── */}
       <div className="flex flex-col gap-32 pt-12">

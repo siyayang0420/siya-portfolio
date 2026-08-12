@@ -1,15 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-
-const HEADLINE = "I believe every product shapes the people who use it.";
-
-const BODY = [
-  "People rarely use products only for what they say they want. They use them for how those products make them feel about themselves.",
-  "The best products don’t just solve problems. They reshape motivation. They make new behaviors feel natural, rewarding, and worth repeating.",
-  "That’s why I don’t just ask whether a feature works. I ask:",
-  "Who does this encourage people to become?",
-];
+import { BODY, HEADLINE } from "@/content/ethos";
 
 /**
  * How much of the whole sweep one word takes to fade in. At ~70 words the

@@ -10,8 +10,9 @@ import { PILL } from '@/components/ui/pill';
  * site nav, and a fixed bar would need a top offset on <main>'s first child,
  * which collapses out and exposes the dark body behind it.
  *
- * The pills are the shared PILL treatment plus the transition that carries its
- * hover/press fill.
+ * The pills are the shared PILL treatment, narrowed to a colour-only
+ * transition: the bar sits over the cover image, and animating every property
+ * makes the pills drift on the first paint after the cover settles.
  */
 const NAV_PILL = cn(PILL, 'transition-colors duration-200');
 
@@ -30,7 +31,7 @@ export function TopBar() {
         <Link href="/#work" className={NAV_PILL}>
           Work
         </Link>
-        <Link href="/#ethos" className={NAV_PILL}>
+        <Link href="/about" className={NAV_PILL}>
           About me
         </Link>
       </div>
