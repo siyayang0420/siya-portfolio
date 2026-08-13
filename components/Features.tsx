@@ -9,52 +9,45 @@ import {
   Search,
 } from "lucide-react";
 import WaveCanvas from "./WaveCanvas";
+import { OrbSphere } from "./orb/OrbSphere";
 
 const sources = ["Repos", "Drive", "Notes", "Docs", "Tickets"];
-const files = [
-  "security/ENCRYPTION.md",
-  "compliance/SECURITY.md",
-  "docs/API_RATE_LIMITS.md",
-  "architecture/SERVICES.md",
-];
 
 function SearchCard() {
   return (
-    <article className="relative flex flex-col overflow-hidden rounded-[1.75rem] bg-[#111113] p-7 ring-1 ring-black/5 md:col-span-2">
-      <h3 className="font-display text-2xl font-medium tracking-[-0.01em] text-white">
-        Search everything, at once.
-      </h3>
-      <p className="mt-2 max-w-sm text-sm leading-relaxed text-white/55">
-        One query across every tool you&apos;ve connected — not five tabs and a
-        guess about which one has it.
-      </p>
+    <article className="relative flex flex-col justify-between overflow-hidden rounded-[1.75rem] bg-[#111113] p-7 ring-1 ring-black/5">
+      <div>
+        <h3 className="font-display text-2xl font-medium tracking-[-0.01em] text-white">
+          Search everything, at once.
+        </h3>
+        <p className="mt-2 text-sm leading-relaxed text-white/55">
+          One query across every tool you&apos;ve connected — not five tabs and a
+          guess about which one has it.
+        </p>
+      </div>
 
-      <div className="mt-7 rounded-2xl bg-white/[0.04] p-4 ring-1 ring-white/10">
-        <div className="flex items-center gap-2.5 text-sm text-white/70">
-          <Search className="size-3.5" />
-          <span>&quot;how we handle encryption at rest&quot;</span>
-          <span className="ml-1 inline-block h-4 w-px bg-white/60 [animation:blink_1.1s_steps(1,end)_infinite]" />
-        </div>
+      {/* The orb sits behind the query line rather than beside it: the card is
+          a third of its old width, so a side-by-side would squeeze both. The
+          shader's alpha is real, so it composites straight onto the card. */}
+      <div className="relative mt-8 flex flex-1 items-center justify-center">
+        <OrbSphere className="aspect-square w-full max-w-[260px]" />
+      </div>
 
-        <div className="mt-4 flex flex-wrap gap-1.5">
-          {sources.map((s) => (
-            <span
-              key={s}
-              className="rounded-full bg-white/8 px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-white/55"
-            >
-              {s}
-            </span>
-          ))}
-        </div>
+      <div className="relative mt-6 flex items-center gap-2.5 text-sm text-white/70">
+        <Search className="size-3.5 shrink-0" />
+        <span className="truncate">&quot;how we handle encryption at rest&quot;</span>
+        <span className="inline-block h-4 w-px shrink-0 bg-white/60 [animation:blink_1.1s_steps(1,end)_infinite]" />
+      </div>
 
-        <ul className="mt-4 space-y-2.5 border-t border-white/8 pt-4">
-          {files.map((f) => (
-            <li key={f} className="flex items-center gap-2.5 text-sm text-white/75">
-              <FileText className="size-3.5 shrink-0 text-white/35" />
-              <span className="truncate font-mono text-[12px]">{f}</span>
-            </li>
-          ))}
-        </ul>
+      <div className="mt-4 flex flex-wrap gap-1.5">
+        {sources.map((s) => (
+          <span
+            key={s}
+            className="rounded-full bg-white/8 px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-white/55"
+          >
+            {s}
+          </span>
+        ))}
       </div>
     </article>
   );
@@ -163,7 +156,9 @@ export default function Features() {
           Selected Experiences
         </h2>
 
-        <div className="mt-12 grid gap-4 md:grid-cols-4">
+        {/* Three equal columns. It used to be a 4-track grid with the search
+            card spanning two, which made it twice the width of its siblings. */}
+        <div className="mt-12 grid gap-4 md:grid-cols-3">
           <SearchCard />
           <EverywhereCard />
           <IntegrationsCard />
