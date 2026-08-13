@@ -29,6 +29,13 @@ export type Project = {
   cardBg: string;
   heroBg: string;
   imgTitleDark?: boolean;
+  /** Product logo shown beside the breadcrumb. Omit for none. */
+  mark?: 'bravo';
+  /**
+   * Cover artwork for the hero band. When set it replaces the `imgTitle`
+   * wordmark treatment; `heroBg` still shows while the image loads.
+   */
+  cover?: string;
 };
 
 export const projects: Project[] = [
@@ -48,6 +55,8 @@ export const projects: Project[] = [
     heroBg: '#D9D9D9',
     // The cover is light now, so the wordmark has to be dark to read at all.
     imgTitleDark: true,
+    mark: 'bravo',
+    cover: '/work/bravo-cover.png',
   },
   {
     slug: 'bravo-onboarding',
