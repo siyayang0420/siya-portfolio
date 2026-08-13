@@ -110,7 +110,6 @@ export function BravoActs() {
     0,
     DOCK_ITEMS.findIndex((i) => i.id === active),
   );
-  const activeItem = DOCK_ITEMS[activeIndex];
 
   return (
     <section
@@ -130,7 +129,8 @@ export function BravoActs() {
         }`}
       >
         <ActPill
-          label={activeItem.label}
+          labels={DOCK_ITEMS.map((i) => i.label)}
+          activeIndex={activeIndex}
           progress={progress}
           // The four separate jump links are gone with the old bar, so the pill
           // carries that job: it steps to the next act, and wraps at the end.

@@ -1,13 +1,10 @@
 'use client';
 
 import { ArrowRight } from 'lucide-react';
-import { BravoReceipt } from './BravoReceipt';
 import { BravoDecisionCards } from './BravoDecisionCards';
 import { BravoCampaignShapes } from './BravoCampaignShapes';
-import { useDecisionVariant } from '../../ui/decisionVariant';
 
 export function BravoDecision() {
-  const variant = useDecisionVariant();
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-1">
@@ -25,10 +22,8 @@ export function BravoDecision() {
         Here&apos;s what we landed on, and what each rested on.
       </p>
 
-      {/* The 3 cut/keep calls. Two presentations, toggled from the tweaker:
-          the dense printed receipt, or three scannable verdict cards. Both
-          carry the same PostHog evidence. */}
-      {variant === 'cards' ? <BravoDecisionCards /> : <BravoReceipt />}
+      {/* The 3 cut/keep calls, as verdict cards. */}
+      <BravoDecisionCards />
 
       {/* Summary — the 3 calls retold as one story */}
       <p className="text-[16px] text-ink">

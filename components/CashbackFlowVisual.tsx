@@ -85,12 +85,15 @@ const PHONE = { top: 187, w: 359, h: 681, radius: 47 };
 /** Inset into the body, so the two are drawn as one unit that moves together. */
 const SCREEN = { dx: 11, dy: 12, w: 337, h: 640, radius: 40 };
 /**
- * Far enough down to clear the panel's bottom edge: the body's top sits at 187
- * in a 695-tall frame, so 520 puts the whole device outside the clip. It's
- * hidden by being off-frame, not by opacity — a phone that fades in place
- * would look like it was always there.
+ * How far the device is parked below the frame before it rises.
+ *
+ * It has to clear more than the 695-tall authoring box. The artwork is scaled
+ * to fit its slot and centred inside the frosted panel, so whenever the panel
+ * is taller than the scaled artwork there is spare room below it that is still
+ * inside the clip. 520 only cleared the box itself by 12px, which is why the
+ * top of the phone showed through on narrow layouts.
  */
-const PHONE_DOWN = 520;
+const PHONE_DOWN = 1100;
 
 /* ── The card ───────────────────────────────────────────────────────────── */
 
@@ -344,11 +347,20 @@ export default function CashbackFlowVisual() {
             }}
             // Rises on the same beat as the card pulls back, so the two read as
             // one move: the camera backing off to reveal where the offer lives.
-            animate={{ y: phoneUp ? 0 : PHONE_DOWN }}
+            // Opacity as well as distance, so the device is guaranteed absent
+            // from the opening frame at any viewport rather than relying on the
+            // clip alone. It ramps fast and early — by the time it reads at all
+            // the phone is already travelling, so it looks like a thing moving
+            // in, not a thing fading up.
+            animate={{ y: phoneUp ? 0 : PHONE_DOWN, opacity: phoneUp ? 1 : 0 }}
             transition={
               snap
                 ? { duration: 0 }
-                : { duration: s === S.SHRINK ? 0.78 : 0.5, ease: EASE_IN_OUT }
+                : {
+                    duration: s === S.SHRINK ? 0.78 : 0.5,
+                    ease: EASE_IN_OUT,
+                    opacity: { duration: 0.2 },
+                  }
             }
           >
             <div

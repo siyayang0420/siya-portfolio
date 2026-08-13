@@ -31,15 +31,19 @@ const H = 44;
 const W = 148;
 
 export default function ActPill({
-  label,
+  labels,
+  activeIndex,
   progress,
   onClick,
 }: {
-  label: string;
+  /** Every act name, in order — they all render, stacked. */
+  labels: string[];
+  activeIndex: number;
   /** 0 → 1 through the whole case study. */
   progress: number;
   onClick?: () => void;
 }) {
+  const label = labels[activeIndex] ?? '';
   const p = Math.max(0, Math.min(1, progress)) * 100;
   // With dasharray "a b" and offset d, the dash starts at -d along the path.
   // The fill is a dash of length p at offset 0, so its tail stays pinned to the
@@ -66,8 +70,29 @@ export default function ActPill({
       )}
       style={{ width: W, height: H }}
     >
-      <span key={label} className="anim-swap absolute inset-0 flex items-center justify-center">
-        {label}
+      {/* All four names live in one column, one pill-height per slot; the
+          column slides so the active name lands dead centre. A crossfade would
+          swap two words in place — this reads as one list being scrolled,
+          which is what the acts actually are. */}
+      <span className="absolute inset-0 overflow-hidden rounded-full">
+        <span
+          className="flex flex-col ease-[cubic-bezier(0.23,1,0.32,1)] transition-transform duration-[520ms] motion-reduce:transition-none"
+          style={{ transform: `translateY(${-activeIndex * H}px)` }}
+        >
+          {labels.map((l, i) => (
+            <span
+              key={l}
+              // Only the centred slot is legible; its neighbours are already
+              // clipped, and fading them keeps the edges from flashing text
+              // as the column passes.
+              className="flex shrink-0 items-center justify-center transition-opacity duration-[520ms]"
+              style={{ height: H, opacity: i === activeIndex ? 1 : 0 }}
+              aria-hidden={i !== activeIndex}
+            >
+              {l}
+            </span>
+          ))}
+        </span>
       </span>
 
       {/* `overflow-visible` is load-bearing: the strokes are centred on the
