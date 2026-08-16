@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import {
   Calendar,
   CheckCircle2,
@@ -11,18 +12,33 @@ import {
 import WaveCanvas from "./WaveCanvas";
 import { OrbSphere } from "./orb/OrbSphere";
 
-const sources = ["Repos", "Drive", "Notes", "Docs", "Tickets"];
+/**
+ * The orb's three states, as speed multipliers on its idle rotation.
+ *
+ * Thinking is the 3× figure; Idle is the shader's own baseline. Listening sits
+ * between them so the three read as a progression rather than a switch with a
+ * gap in the middle.
+ */
+const ORB_STATES = [
+  { label: "Idle", speed: 1, breathing: false },
+  // Listening is attentive, not hurried: the rotation barely lifts and the
+  // swell carries the state instead. Speeding it up read as a second
+  // "thinking" rather than as something waiting on you.
+  { label: "Listening", speed: 1.15, breathing: true },
+  { label: "Thinking", speed: 3, breathing: false },
+];
 
 function SearchCard() {
+  const [state, setState] = useState(ORB_STATES[0]);
+
   return (
     <article className="relative flex flex-col justify-between overflow-hidden rounded-[1.75rem] bg-[#111113] p-7 ring-1 ring-black/5">
       <div>
         <h3 className="font-display text-2xl font-medium tracking-[-0.01em] text-white">
-          Search everything, at once.
+              WebGL AI Orb
         </h3>
         <p className="mt-2 text-sm leading-relaxed text-white/55">
-          One query across every tool you&apos;ve connected — not five tabs and a
-          guess about which one has it.
+              Real-time shader and motion experiment
         </p>
       </div>
 
@@ -30,24 +46,38 @@ function SearchCard() {
           a third of its old width, so a side-by-side would squeeze both. The
           shader's alpha is real, so it composites straight onto the card. */}
       <div className="relative mt-8 flex flex-1 items-center justify-center">
-        <OrbSphere className="aspect-square w-full max-w-[260px]" />
+        <OrbSphere
+          speed={state.speed}
+          breathing={state.breathing}
+          className="aspect-square w-full max-w-[260px]"
+        />
       </div>
 
       <div className="relative mt-6 flex items-center gap-2.5 text-sm text-white/70">
-        <Search className="size-3.5 shrink-0" />
-        <span className="truncate">&quot;how we handle encryption at rest&quot;</span>
-        <span className="inline-block h-4 w-px shrink-0 bg-white/60 [animation:blink_1.1s_steps(1,end)_infinite]" />
+        <span className="truncate">WebGL · GLSL · Motion Study</span>
       </div>
 
-      <div className="mt-4 flex flex-wrap gap-1.5">
-        {sources.map((s) => (
-          <span
-            key={s}
-            className="rounded-full bg-white/8 px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-white/55"
-          >
-            {s}
-          </span>
-        ))}
+      {/* Real buttons, not styled spans — these drive the shader, so they need
+          to be reachable by keyboard and announce their state. */}
+      <div className="mt-4 flex flex-wrap gap-1.5" role="group" aria-label="Orb state">
+        {ORB_STATES.map((s) => {
+          const active = s.label === state.label;
+          return (
+            <button
+              key={s.label}
+              type="button"
+              onClick={() => setState(s)}
+              aria-pressed={active}
+              className={`rounded-full px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/60 ${
+                active
+                  ? "bg-white text-black"
+                  : "bg-white/8 text-white/55 hover:bg-white/15 hover:text-white/80"
+              }`}
+            >
+              {s.label}
+            </button>
+          );
+        })}
       </div>
     </article>
   );

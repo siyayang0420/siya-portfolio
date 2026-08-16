@@ -17,6 +17,10 @@
   --color-haze: #e1e1e1;
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  /* easeInOutSine — the curve of a real oscillation. For looping animations it
+     is the one ease with zero velocity at both ends, so the loop point is
+     invisible. */
+  --ease-sine: cubic-bezier(0.37, 0, 0.63, 1);
 
   /* ── Case-study page tokens ─────────────────────────────────
      Translated from the skill's Tailwind v3 config. `ink` and `paper` differ
@@ -60,16 +64,21 @@ body {
 
 /* Engraved heading treatment.
    Two stacked backgrounds clipped to the glyphs: a vertical grey ramp that
-   makes the letters read as pressed into the page, and above it a translucent
-   indigo highlight that sweeps across on a long loop. Headings stagger the
-   sweep with their own animation-delay. The white text-shadow is what sells
-   the bevel — it still paints even though the fill is transparent. */
+   makes the letters read as pressed into the page, and above it the brand blue
+   sweeping across on a long loop. Headings stagger the sweep with their own
+   animation-delay. The white text-shadow is what sells the bevel — it still
+   paints even though the fill is transparent.
+
+   The highlight is opaque #4f83f7. It used to carry a `90` alpha suffix, which
+   let the grey ramp underneath bleed through and left the lit glyphs looking
+   washed out rather than coloured. The gradient's own transparent stops still
+   soften both edges of the band, so nothing is lost by making the peak solid. */
 .engraved {
   background-image: linear-gradient(
       90deg,
       transparent,
       transparent 40%,
-      #4f83f790 50%,
+      #4f83f7 50%,
       transparent 60%,
       transparent
     ),
@@ -260,6 +269,56 @@ body {
 }
 .anim-drift {
   animation: drift 6s ease-in-out infinite;
+}
+
+/* The orb's "listening" state — breathing as if it were tracking a voice.
+   Deliberately done here rather than in the shader: the orb package ships the
+   same GLSL to a Flutter port and the two constants blocks are meant to stay
+   in sync, so a web-only change belongs outside the shader.
+
+   Two layers, not one. A single keyframe loop reads as a machine: the eye
+   locks onto the period within a couple of cycles. So the envelope (phrase
+   length, on the wrapper) and the flutter (syllable length, on the canvas)
+   run at 2.11s and 0.89s — both prime, so the combined motion only repeats
+   every ~188s and reads as genuinely uneven.
+
+   Easing is easeInOutSine, not the browser default. A sine ease *is* the
+   curve of a real oscillation: velocity reaches zero exactly at each
+   turnaround, so a looping keyframe has no acceleration jump where it wraps.
+   The default `ease-in-out` is subtly lopsided and gives the swell a
+   mechanical tick at the top and bottom of every cycle.
+
+   The flutter keyframes are asymmetric and never dip below 1 — an earlier
+   pass undershot, which read as a stutter rather than a glide. Amplitudes stay
+   small: the orb is already rotating, and a bigger swell becomes a heartbeat. */
+@keyframes orb-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.055);
+  }
+}
+@keyframes orb-voice {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  38% {
+    transform: scale(1.018);
+  }
+  72% {
+    transform: scale(1.007);
+  }
+}
+.orb-breathe {
+  animation: orb-breathe 2.11s var(--ease-sine) infinite;
+  will-change: transform;
+}
+.orb-breathe > canvas {
+  animation: orb-voice 0.89s var(--ease-sine) infinite;
+  will-change: transform;
 }
 
 @media (prefers-reduced-motion: reduce) {

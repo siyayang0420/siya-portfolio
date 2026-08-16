@@ -395,8 +395,12 @@ export default function Hero() {
           </p>
 
           <div className="mt-6 space-y-14 pb-20">
+            {/* Same structure and click behaviour as the desktop chapters:
+                the whole block is the target where a case study exists, with
+                "View more" carrying the affordance for touch, where there is no
+                hover to reveal the pointer pill. */}
             {chapters.map((c, i) => (
-              <div key={c.id}>
+              <ChapterBlock key={c.id} slug={c.slug} className="block">
                 <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-white/55">
                   {String(i + 1).padStart(2, "0")} — {c.meta}
                 </p>
@@ -406,10 +410,24 @@ export default function Hero() {
                 <p className="mt-2 text-[0.95rem] leading-relaxed text-white/75">
                   {c.blurb}
                 </p>
+                {c.slug ? (
+                  <Link
+                    href={`/${c.slug}`}
+                    className="mt-5 inline-block text-[15px] text-white underline underline-offset-4 transition hover:text-white/70"
+                  >
+                    View more
+                  </Link>
+                ) : (
+                  // Same slot and rhythm as the link, but not underlined — it
+                  // isn't clickable, and underlining would imply it is.
+                  <span className="mt-5 inline-block text-[15px] text-white/75">
+                    Coming soon
+                  </span>
+                )}
                 <div className="mt-6 flex justify-center">
                   <ChapterVisual id={c.visual} />
                 </div>
-              </div>
+              </ChapterBlock>
             ))}
           </div>
         </div>

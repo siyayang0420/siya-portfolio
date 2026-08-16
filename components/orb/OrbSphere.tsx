@@ -16,31 +16,51 @@ import { OrbSphere as OrbSphereEngine } from './orb-sphere.js';
  * own the element's lifetime.
  */
 
-type Engine = { destroy(): void };
+type Engine = { destroy(): void; setSpeed(v: number): void };
 
 export function OrbSphere({
   speed = 1,
+  breathing = false,
   className,
 }: {
   speed?: number;
+  /** Slow swell on top of the rotation — see `.orb-breathe` in globals.css. */
+  breathing?: boolean;
   className?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
+  const orbRef = useRef<Engine | null>(null);
 
+  // Created once. Speed changes go through `setSpeed` below rather than
+  // through this effect's deps — rebuilding on every change would tear down
+  // and recompile the WebGL context each time the state is switched.
   useEffect(() => {
     const host = ref.current;
     if (!host) return;
     // Guarded: WebGL can be unavailable (blocked, software-blacklisted, or in a
     // headless renderer), and the engine logs and returns rather than throwing.
     // A dead orb should leave the card intact, not take the page down.
-    let orb: Engine | undefined;
     try {
-      orb = new OrbSphereEngine(host, { speed }) as Engine;
+      orbRef.current = new OrbSphereEngine(host, { speed }) as Engine;
     } catch {
       return;
     }
-    return () => orb?.destroy();
+    return () => {
+      orbRef.current?.destroy();
+      orbRef.current = null;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    orbRef.current?.setSpeed(speed);
   }, [speed]);
 
-  return <div ref={ref} aria-hidden className={className} />;
+  return (
+    <div
+      ref={ref}
+      aria-hidden
+      className={`${className ?? ''}${breathing ? ' orb-breathe' : ''}`}
+    />
+  );
 }
