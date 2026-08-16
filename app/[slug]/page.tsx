@@ -68,9 +68,13 @@ export default async function ProjectPage({
               src={project.cover}
               alt=""
               fill
-              // Full-bleed at every breakpoint, so Next picks a width from the
-              // viewport rather than assuming the layout's 800px column.
-              sizes="100vw"
+              // Deliberately far wider than the viewport. `object-cover` scales
+              // the image to fill the band's *height*, so a 2.8:1 picture in a
+              // 45vh band is rendered roughly 2.7× the viewport width and then
+              // cropped — `100vw` would have the browser fetch a file about a
+              // third of the pixels it actually paints, which is what made the
+              // mobile cover soft while desktop stayed crisp.
+              sizes="(max-width: 1023px) 300vw, 120vw"
               priority
               // The cover is a UI mockup, so it is mostly small text and hard
               // edges — exactly what the default q=75 smears. The source is a

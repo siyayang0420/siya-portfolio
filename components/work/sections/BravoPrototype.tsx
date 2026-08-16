@@ -325,14 +325,15 @@ function BillScreen({ onContinue }: { onContinue: () => void }) {
       {/* Try me! handwritten annotation pointing down to the CTA */}
       <div className="absolute pointer-events-none left-1/2 -translate-x-1/2 bottom-[64px] flex items-start gap-2 select-none">
         {/* eslint-disable-next-line @next/next/no-img-element */}
+        {/* 30% smaller than the original 24×58. */}
         <img
           src="/work/bravo/try-me-arrow.svg"
           alt=""
           aria-hidden="true"
-          className="w-[24px] h-[58px] shrink-0 rotate-180"
+          className="h-[41px] w-[17px] shrink-0 rotate-180"
         />
         <span
-          className="text-[32px] text-ink leading-none mb-4"
+          className="mb-3 text-[26px] leading-none text-ink"
           style={{
             fontFamily: 'var(--font-hand), "Bradley Hand", cursive',
           }}

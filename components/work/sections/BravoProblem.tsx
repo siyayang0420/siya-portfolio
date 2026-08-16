@@ -33,12 +33,16 @@ export function BravoProblem() {
         what showing the code will actually cost.
       </p>
 
-      {/* <figure className="flex flex-col gap-2 items-center w-full">
+      {/* Three payment-success states side by side (Figma 42:1896). The
+          carousel already renders exactly that from md up — a three-column
+          grid on a 24px gap — and falls back to a snapping scroller with dots
+          below it, where three 198×460 panels would be unreadable. */}
+      <figure className="m-0 flex w-full flex-col items-center gap-1">
         <PhoneShotCarousel />
         <figcaption className="text-[12px] text-neutral-500">
           Payment successfully in different cases
         </figcaption>
-      </figure> */}
+      </figure>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { DM_Sans, Plus_Jakarta_Sans } from "next/font/google";
+import { Caveat, DM_Sans, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 
 // The site family — body, display and the mono-styled labels.
@@ -17,6 +17,15 @@ const dmSans = DM_Sans({
   display: "swap",
 });
 
+// The handwritten annotation on the Bravo prototype. `--font-hand` was already
+// being asked for there, but nothing ever defined it, so it silently fell back
+// to the body sans. Caveat is the closest Google face to Figma Hand.
+const caveat = Caveat({
+  subsets: ["latin"],
+  variable: "--font-hand",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "Siya Yang | Product Designer",
   description:
@@ -29,7 +38,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${jakarta.variable} ${dmSans.variable}`}>
+    <html
+      lang="en"
+      className={`${jakarta.variable} ${dmSans.variable} ${caveat.variable}`}
+    >
       <body>{children}</body>
     </html>
   );

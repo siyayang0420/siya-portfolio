@@ -9,6 +9,9 @@ import { BravoCampaignDemo } from './BravoCampaignDemo';
 import { BravoShowcase } from './BravoShowcase';
 import { BravoResult } from './BravoResult';
 import ActPill from './ActPill';
+import { ArrowUp } from 'lucide-react';
+import { cn } from '@/lib/cn';
+import { PILL } from '@/components/ui/pill';
 
 type ActId = 'problem' | 'challenge' | 'decision' | 'outcome';
 
@@ -122,7 +125,7 @@ export function BravoActs() {
       <nav
         aria-label="Case study progress"
         aria-hidden={!barVisible}
-        className={`fixed top-[76px] left-0 right-0 z-40 flex justify-center transition-all duration-300 ease-out ${
+        className={`fixed top-[76px] left-0 right-0 z-40 flex items-center justify-center gap-2 transition-all duration-300 ease-out ${
           barVisible
             ? 'opacity-100 translate-y-0'
             : 'opacity-0 -translate-y-2 pointer-events-none'
@@ -139,6 +142,22 @@ export function BravoActs() {
             scrollToAct(next.id);
           }}
         />
+
+        {/* Back to top. Same PILL surface as the site's nav buttons, squared
+            off to a circle at the progress pill's own 44px height so the two
+            sit as a pair — and unlike the progress pill it keeps PILL's accent
+            hover, because it is a plain action rather than a status readout. */}
+        <button
+          type="button"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          aria-label="Back to top"
+          className={cn(
+            PILL,
+            'size-11 p-0 duration-200 active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4f83f7]/40',
+          )}
+        >
+          <ArrowUp className="size-[18px] shrink-0" strokeWidth={1.75} aria-hidden="true" />
+        </button>
       </nav>
 
       {/* ── Case study content ─────────────────────────────────────── */}

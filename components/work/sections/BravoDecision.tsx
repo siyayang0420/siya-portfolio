@@ -16,10 +16,10 @@ export function BravoDecision() {
 
       {/* Intro — sets up the 3 cut/keep beats */}
       <p className="text-[16px] text-ink">
-        I didn&apos;t own the cut/keep calls — those were the CEO&apos;s.
-        What I did own was bringing the data, mapping the tradeoffs, and
-        designing the system that made each call work in practice.
-        Here&apos;s what we landed on, and what each rested on.
+        None of these calls were made in one meeting. They took a lot of back
+        and forth, and we settled them together as a team — I brought the data,
+        mapped the tradeoffs, and designed the system that made each call work
+        in practice. Here&apos;s what we landed on, and what each rested on.
       </p>
 
       {/* The 3 cut/keep calls, as verdict cards. */}
