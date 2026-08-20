@@ -5,8 +5,8 @@ export type Chapter = {
   meta: string;
   blurb: string;
   /**
-   * Which mockup to render on the stage. These still point at the placeholder
-   * visuals — swap them for real project screens when you have them.
+   * Which mockup to render on the stage. An empty string renders nothing —
+   * the two unwritten chapters sit bare until they have real project screens.
    */
   visual: string;
   /**
@@ -33,7 +33,7 @@ export const chapters: Chapter[] = [
     meta: "Internal tooling",
     blurb:
       "An assistant with the team's context already loaded. It drafts, looks things up, and shows its working — so people can check it before they trust it.",
-    visual: "deep-work",
+    visual: "",
     slug: null,
   },
   {
@@ -42,7 +42,7 @@ export const chapters: Chapter[] = [
     meta: "Design · Code · Growth",
     blurb:
       "Designed it, built it, wrote the copy, planned the SEO — then read the analytics and cut what wasn't earning its place. Revenue doubled.",
-    visual: "recap",
+    visual: "",
     slug: null,
   },
 ];

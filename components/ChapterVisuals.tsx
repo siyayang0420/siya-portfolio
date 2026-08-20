@@ -193,7 +193,9 @@ function ActionPlanVisual() {
   );
 }
 
-/* ── 04 ─ Deep Work ────────────────────────────────────────────────────── */
+/* ── 04 ─ Deep Work ──── PARKED ────────────────────────────────────────────
+   Pulled from the `visuals` registry below, so the Copilot chapter renders
+   bare for now. Kept rather than deleted: re-enabling is one line. */
 
 const steps = [
   "Pulled 14 files from your drive",
@@ -330,7 +332,9 @@ function MeetingVisual() {
   );
 }
 
-/* ── 07 ─ Daily Recap ──────────────────────────────────────────────────── */
+/* ── 07 ─ Daily Recap ──── PARKED ──────────────────────────────────────────
+   Pulled from the `visuals` registry below, so the Marketing Site chapter
+   renders bare for now. Kept rather than deleted: re-enabling is one line. */
 
 const stats = [
   { n: "23", l: "Handled" },
@@ -383,10 +387,8 @@ const visuals: Record<string, () => React.ReactElement> = {
   briefing: BriefingVisual,
   "catch-up": CatchUpVisual,
   "action-plan": ActionPlanVisual,
-  "deep-work": DeepWorkVisual,
   inbox: InboxVisual,
   "meeting-prep": MeetingVisual,
-  recap: RecapVisual,
 };
 
 export default function ChapterVisual({ id }: { id: string }) {
