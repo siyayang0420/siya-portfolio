@@ -41,7 +41,7 @@ export type Project = {
 export const projects: Project[] = [
   {
     slug: BRAVO_SLUG,
-    title: 'Bravo App',
+    title: 'Bravo Rewards App',
     imgTitle: 'BRAVO',
     heading: 'Redesigning a reward system that feels simple to users while staying powerful behind the scenes.',
     breadcrumb: 'Bravo Rewards App',
