@@ -1,4 +1,61 @@
 import type { ReactNode } from 'react';
+import { Building2, Megaphone, Scale, Users, type LucideIcon } from 'lucide-react';
+import { BODY, CARD, Heading } from './cardKit';
+
+/**
+ * The four audiences the fragmented reward system cost something.
+ *
+ * Same card as the Decision act's cut/keep/rebuild calls — both sections are
+ * "N facets of one problem", so they share the kit rather than each inventing
+ * a surface. These previously used hand-drawn PNG characters, which were the
+ * only decorative illustration in the project and read as imported from a
+ * different deck.
+ *
+ * Glyphs name the audience rather than the symptom: the symptom is already the
+ * first clause of every card's body.
+ */
+const STAKEHOLDERS: { Icon: LucideIcon; label: string; body: ReactNode }[] = [
+  {
+    Icon: Users,
+    label: 'For users',
+    body: (
+      <>
+        <strong className="font-bold">Mental math</strong> at the worst possible
+        moment. Payment felt like a calculation, not trust.
+      </>
+    ),
+  },
+  {
+    Icon: Scale,
+    label: 'For finance',
+    body: (
+      <>
+        <strong className="font-bold">Reconciliation</strong> was a guessing
+        game. Which reward hit which transaction wasn&apos;t always clear.
+      </>
+    ),
+  },
+  {
+    Icon: Megaphone,
+    label: 'For marketing',
+    body: (
+      <>
+        <strong className="font-bold">Targeted promotions</strong> were off the
+        table. Every campaign had to be one-size-fits-all.
+      </>
+    ),
+  },
+  {
+    Icon: Building2,
+    label: 'For the business',
+    body: (
+      <>
+        <strong className="font-bold">Harder to operate</strong>. Harder to
+        explain to stakeholders.
+      </>
+    ),
+  },
+];
 
 export function BravoMoreProblem() {
   return (
@@ -25,98 +82,18 @@ export function BravoMoreProblem() {
           And it wasn&apos;t just the user. The same mess showed up in four
           places at once.
         </p>
+        {/* No fixed height — the grid already equalises the two cards in a
+            row, so a hard 250px only ever added dead space under short copy. */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <StakeholderCard
-            icon="/work/bravo/illustrations/for-users.png"
-            iconHeight={82}
-            iconWidth={88}
-            innerHeight={64}
-            innerWidth={68}
-            label="For users"
-          >
-            <strong className="font-bold">Mental math</strong> at the worst
-            possible moment. Payment felt like a calculation, not trust.
-          </StakeholderCard>
-
-          <StakeholderCard
-            icon="/work/bravo/illustrations/for-finance.png"
-            iconHeight={80}
-            iconWidth={88}
-            label="For finance"
-          >
-            <strong className="font-bold">Reconciliation</strong> was a
-            guessing game. Which reward hit which transaction wasn&apos;t
-            always clear.
-          </StakeholderCard>
-
-          <StakeholderCard
-            icon="/work/bravo/illustrations/for-marketing.png"
-            iconHeight={81}
-            iconWidth={104}
-            label="For marketing"
-          >
-            <strong className="font-bold">Targeted promotions</strong> were off
-            the table. Every campaign had to be one-size-fits-all.
-          </StakeholderCard>
-
-          <StakeholderCard
-            icon="/work/bravo/illustrations/for-business.png"
-            iconHeight={87}
-            iconWidth={102}
-            label="For the business"
-          >
-            <strong className="font-bold">Harder to operate</strong>. Harder to
-            explain to stakeholders.
-          </StakeholderCard>
+          {STAKEHOLDERS.map(({ Icon, label, body }) => (
+            <div key={label} className={`${CARD} flex flex-col gap-4`}>
+              <Heading Icon={Icon}>{label}</Heading>
+              <p className={BODY}>{body}</p>
+            </div>
+          ))}
         </div>
       </div>
     </div>
   );
 }
 
-export function StakeholderCard({
-  icon,
-  iconWidth,
-  iconHeight,
-  innerWidth,
-  innerHeight,
-  label,
-  children,
-}: {
-  icon: string;
-  iconWidth: number;
-  iconHeight: number;
-  innerWidth?: number;
-  innerHeight?: number;
-  label: string;
-  children: ReactNode;
-}) {
-  return (
-    <div className="bg-white rounded-2xl px-6 py-8 flex flex-col gap-4 h-[250px]">
-      <div className="flex flex-col gap-3">
-        <div
-          style={{ width: iconWidth, height: iconHeight }}
-          className="flex items-center"
-        >
-          <div
-            style={{
-              width: innerWidth ?? iconWidth,
-              height: innerHeight ?? iconHeight,
-            }}
-            className="flex items-center"
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={icon}
-              alt=""
-              aria-hidden="true"
-              className="max-w-full max-h-full object-contain"
-            />
-          </div>
-        </div>
-        <p className="text-[14px] text-ink">{label}</p>
-      </div>
-      <p className="text-[14px] text-ink">{children}</p>
-    </div>
-  );
-}

@@ -1,4 +1,5 @@
 import { Check, RotateCw, X } from 'lucide-react';
+import { BODY, CARD, Heading } from './cardKit';
 
 /**
  * The three cut/keep/rebuild calls (Figma 593:6370).
@@ -16,23 +17,6 @@ import { Check, RotateCw, X } from 'lucide-react';
  * glyphs, and they inherit colour and stroke instead of relying on asset URLs
  * that expire after a week.
  */
-
-const CARD = 'bg-white rounded-xl p-6';
-/** Figma: 16px medium, -0.32px tracking. */
-const TITLE = 'text-[16px] font-medium tracking-[-0.32px] text-ink';
-/** Figma: 14px regular, 1.6 leading, -0.28px tracking. */
-const BODY = 'text-[14px] leading-[1.6] tracking-[-0.28px] text-ink';
-
-function Heading({ Icon, children }: { Icon: typeof X; children: string }) {
-  return (
-    // `items-end` so the glyph sits on the text baseline rather than centred
-    // against the cap height, which is what the design does.
-    <div className="flex items-end gap-1">
-      <Icon className="size-5 shrink-0 text-ink" strokeWidth={1.75} aria-hidden="true" />
-      <p className={TITLE}>{children}</p>
-    </div>
-  );
-}
 
 export function BravoDecisionCards() {
   return (
