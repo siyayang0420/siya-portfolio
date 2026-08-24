@@ -131,16 +131,18 @@ export default async function ProjectPage({
             {project.slug === BRAVO_SLUG ? (
               <p className="text-[16px] text-ink">
                 Bravo is a QR-based payments and dining rewards app operating
-                across a network of restaurant partners in Metro Vancouver. The
-                rewards system originally consisted of 4 separate mechanisms,
-                each with its own logic.{' '}
+                across a network of restaurant partners in Metro Vancouver. Its
+                rewards had grown into four overlapping mechanisms, making the
+                value difficult for customers to understand and increasingly
+                complex for the team to operate.{' '}
+                {/* The ownership claim carries the bold, as it did before —
+                    it is the one sentence a skimming reader should catch. */}
                 <strong className="font-bold">
-                  I led the redesign to consolidate them into a single scalable
-                  model
-                </strong>
-                : $1 in cashback equals $1 toward a future meal — creating a
-                system that worked for users, marketing, finance, and the
-                business at the same time.
+                  I led the redesign to simplify what customers see at payment
+                  while preserving the campaign flexibility the business needed
+                </strong>{' '}
+                — ultimately consolidating the experience around $1 cashback =
+                $1 toward a future meal.
               </p>
             ) : (
               <p className="text-[16px] text-ink">{project.overview}</p>

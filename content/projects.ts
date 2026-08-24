@@ -48,8 +48,10 @@ export const projects: Project[] = [
     year: '2025',
     role: 'Lead Product Designer',
     collaborators: 'CEO • 1 Marketing manager • 4 Software Engineers',
+    // Must stay in sync with the marked-up copy in app/[slug]/page.tsx, which
+    // renders this TL;DR directly so one clause can carry a <strong>.
     overview:
-      "Bravo Rewards App is a QR-based payments and dining rewards app operating across a network of restaurant partners in Metro Vancouver. Bravo's reward system had 4 separate mechanisms, each with its own logic. I help to reshape the experience consolidating them into one model : $1 cashback equals $1 toward the next meal, and made the system work for users, marketing, finance, and the business at the same time.",
+      'Bravo is a QR-based payments and dining rewards app operating across a network of restaurant partners in Metro Vancouver. Its rewards had grown into four overlapping mechanisms, making the value difficult for customers to understand and increasingly complex for the team to operate. I led the redesign to simplify what customers see at payment while preserving the campaign flexibility the business needed — ultimately consolidating the experience around $1 cashback = $1 toward a future meal.',
     tags: ['Fintech', 'Payments', 'Systems Design'],
     cardBg: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)',
     heroBg: '#D9D9D9',
