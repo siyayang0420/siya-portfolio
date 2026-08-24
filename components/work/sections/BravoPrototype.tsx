@@ -861,7 +861,7 @@ function SuccessScreen({
           </div>
         </div>
         <div className="flex items-center justify-between pt-2 border-t border-neutral-200 mt-2">
-          <span className="text-[13px] font-medium text-ink">Total earned</span>
+          <span className="text-[13px] font-medium text-ink">Total earned and saved</span>
           <span className="text-[14px] font-medium text-ink">
             ${totalEarned.toFixed(2)}
           </span>

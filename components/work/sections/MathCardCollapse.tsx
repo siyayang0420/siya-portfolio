@@ -14,23 +14,23 @@ import { Star, TicketPercent, TrendingUp, Wallet } from 'lucide-react';
 const TILES = [
   {
     Icon: Star,
-    title: '1240 points',
-    subtitle: '$12.4 redeemable',
+    title: '1,240 points',
+    subtitle: '$12.40 available to redeem',
   },
   {
     Icon: TicketPercent,
-    title: '$15 off',
-    subtitle: 'when spend $100',
+    title: '$15 off $100',
+    subtitle: 'Only if the payable bill stays ≥ $100',
   },
   {
     Icon: Wallet,
-    title: '4 top up tiers',
-    subtitle: 'different bonuses',
+    title: '4 bonus tiers',
+    subtitle: 'More value when adding funds',
   },
   {
     Icon: TrendingUp,
-    title: 'earn points',
-    subtitle: '5%',
+    title: '5% back',
+    subtitle: 'Earned after every payment',
   },
 ];
 
@@ -38,12 +38,12 @@ export function MathCardCollapse() {
   return (
     <div className="flex flex-col gap-4">
       <p className="text-[16px] font-medium text-ink">
-        4 rewards systems are going on at the same time
+        4 ways to save, each with different rules
       </p>
 
-      {/* One row of four from md up; two-up below, where four would leave each
-          tile under 100px. */}
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+      {/* Two-by-two. One column below sm, where half of 375px would force the
+          longer subtitles to wrap mid-phrase. */}
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         {TILES.map((tile) => (
           <StatTile key={tile.title + tile.subtitle} {...tile} />
         ))}
@@ -62,16 +62,16 @@ function StatTile({
   subtitle: string;
 }) {
   return (
-    // Icon above the text rather than beside it. Four across the 800px column
-    // leaves 191px per tile, and the side-by-side arrangement needs 203px for
-    // the longest label — stacking gets the same content into ~156px.
-    <div className="bg-white rounded-xl flex flex-col items-center justify-center gap-2 h-[117px] px-3 text-center">
+    // Left-aligned, and `min-h` rather than a fixed height: the subtitles now
+    // carry full sentences, so a hard 117px would clip the ones that wrap.
+    // `whitespace-nowrap` is gone for the same reason.
+    <div className="bg-white rounded-xl flex flex-col items-start justify-center gap-2 min-h-[117px] p-5">
       <Icon
         className="size-[26px] shrink-0 text-ink"
         strokeWidth={1.5}
         aria-hidden="true"
       />
-      <div className="flex flex-col gap-0.5 justify-center whitespace-nowrap">
+      <div className="flex flex-col gap-0.5">
         <p className="text-[16px] font-medium text-ink">{title}</p>
         <p className="text-[14px] text-neutral-500">{subtitle}</p>
       </div>
