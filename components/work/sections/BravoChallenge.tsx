@@ -1,3 +1,4 @@
+import { BravoBothSides } from './BravoBothSides';
 import { BravoTwoSides } from './BravoTwoSides';
 
 export function BravoChallenge() {
@@ -11,23 +12,15 @@ export function BravoChallenge() {
       </div>
 
       <p className="text-[16px] text-ink">
-        The problem wasn&apos;t only on the user&apos;s end. After spending
-        time with marketing and the business development team, I realized
-        there was a second problem hiding on the restaurant side.
-      </p>
+        Simplifying the rewards wasn’t as simple as removing the rules. Bravo had different commercial agreements across its restaurant network, so campaigns needed to support different rates, thresholds, time windows, and eligibility conditions.
 
-      <p className="text-[16px] text-ink">
-        Bravo earns differently from every restaurant on the network. Each
-        partner has its own{' '}
-        <strong className="font-bold">margin deal</strong>, which means
-        different restaurants{' '}
-        <strong className="font-bold">need different campaign shapes</strong>.
-        The business genuinely needed that flexibility. What it didn&apos;t
-        need was for all of it to hit the user at the moment of payment.
-        That&apos;s the worst possible moment to ask someone to think. The
-        flexibility had to stay. It just couldn&apos;t sit in front of the
-        user.
+The business needed that flexibility. Customers didn’t need to manage it at checkout.
       </p>
+      {/* States the two sets of needs and resolves them into the assertion the
+          heading makes. NOTE: BravoTwoSides below makes a closely related
+          two-column argument and ends on a question — see the handoff note in
+          the component. Worth deciding whether the act needs both. */}
+      <BravoBothSides />
 
       <BravoTwoSides />
     </div>

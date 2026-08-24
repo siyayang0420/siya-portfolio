@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
-import { Building2, Megaphone, Scale, Users, type LucideIcon } from 'lucide-react';
+import { Calculator, Megaphone, Workflow, type LucideIcon } from 'lucide-react';
 import { BODY, CARD, Heading } from './cardKit';
+import { BravoCampaignGap } from './BravoCampaignGap';
 
 /**
  * The four audiences the fragmented reward system cost something.
@@ -16,42 +17,42 @@ import { BODY, CARD, Heading } from './cardKit';
  */
 const STAKEHOLDERS: { Icon: LucideIcon; label: string; body: ReactNode }[] = [
   {
-    Icon: Users,
-    label: 'For users',
-    body: (
-      <>
-        <strong className="font-bold">Mental math</strong> at the worst possible
-        moment. Payment felt like a calculation, not trust.
-      </>
-    ),
-  },
-  {
-    Icon: Scale,
-    label: 'For finance',
-    body: (
-      <>
-        <strong className="font-bold">Reconciliation</strong> was a guessing
-        game. Which reward hit which transaction wasn&apos;t always clear.
-      </>
-    ),
-  },
-  {
     Icon: Megaphone,
-    label: 'For marketing',
+    label: 'Marketing',
     body: (
       <>
-        <strong className="font-bold">Targeted promotions</strong> were off the
-        table. Every campaign had to be one-size-fits-all.
+        {/* The explicit {' '} is load-bearing: `</strong>Special` on one line
+            renders with no gap between the two sentences. */}
+        <strong className="font-semibold">
+          Campaign changes meant manual reconfiguration.
+        </strong>{' '}
+        Special campaigns required identifying eligible restaurants, overriding existing coupon rules, then restoring them when the campaign ended.
       </>
     ),
   },
   {
-    Icon: Building2,
-    label: 'For the business',
+    Icon: Workflow,
+    label: 'Engineering & Operations',
     body: (
       <>
-        <strong className="font-bold">Harder to operate</strong>. Harder to
-        explain to stakeholders.
+        <strong className="font-semibold">
+          Time-sensitive campaigns depended on manual coordination.
+        </strong>{' '}
+        Backend reward rules and customer-facing campaign content had to be
+        turned on and off separately.
+      </>
+    ),
+  },
+  {
+    Icon: Calculator,
+    label: 'Finance',
+    body: (
+      <>
+        <strong className="font-semibold">
+          More reward types meant more reconciliation paths.
+        </strong>{' '}
+        Points earned, bonuses issued, coupons deducted, and rewards redeemed
+        created separate earning, deduction, and redemption records to reconcile.
       </>
     ),
   },
@@ -59,32 +60,19 @@ const STAKEHOLDERS: { Icon: LucideIcon; label: string; body: ReactNode }[] = [
 
 export function BravoMoreProblem() {
   return (
+    // The heading and the "each reward had been introduced" paragraph moved
+    // into BravoProblem, where they now introduce the reward-stack diagram.
     <div className="flex flex-col gap-6">
-      <div className="flex flex-col gap-1">
-        {/* <p className="text-[16px] text-ink">What was actually broken</p> */}
-        <h2 className="text-[20px] font-semibold text-ink">
-          The incentive system wasn&apos;t badly designed. It was never designed
-          as a system at all.
-        </h2>
-      </div>
-
-      <p className="text-[16px] text-ink">
-        Each mechanism had been built for a different goal: points as the
-        retention driver (100 points = $1, so users came back to spend what
-        they&apos;d earned), threshold coupons as the acquisition hook,
-        top-up bonus as the cashflow lever, stacking logic to combine them
-        at checkout. Each made sense for what it was built to do. None had
-        ever been evaluated as one experience. The cost showed up everywhere.
-      </p>
-
       <div className="flex flex-col gap-2">
         <p className="text-[16px] text-ink">
-          And it wasn&apos;t just the user. The same mess showed up in four
-          places at once.
+          Behind the scenes, the same complexity created different problems for
+          each team.
         </p>
-        {/* No fixed height — the grid already equalises the two cards in a
-            row, so a hard 250px only ever added dead space under short copy. */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {/* One card per row at every width. The three bodies differ a lot in
+            length, so side by side the shortest card carried a block of empty
+            space to match the tallest; stacked, each is only as tall as it
+            needs to be and the full column width keeps the lines readable. */}
+        <div className="flex flex-col gap-4">
           {STAKEHOLDERS.map(({ Icon, label, body }) => (
             <div key={label} className={`${CARD} flex flex-col gap-4`}>
               <Heading Icon={Icon}>{label}</Heading>
@@ -93,6 +81,22 @@ export function BravoMoreProblem() {
           ))}
         </div>
       </div>
+
+      {/* Closes the act on the same 20px-statement / 16px-body pair the
+          "complexity didn't stop at the checkout" turn uses, and hands off to
+          the Challenge. Deliberately adds no new facts — it names what the
+          three cards above already showed. */}
+      <p className="text-[20px] font-semibold text-ink">
+        Manual coordination had already caused a customer-facing failure.
+      </p>
+
+      <BravoCampaignGap />
+
+      {/* <p className="text-[16px] text-ink">
+        Each one held a piece of it — the campaign, the rules, the ledger — and
+        every change had to travel through all three. That is why simplifying
+        what customers saw could not be done at the surface alone.
+      </p> */}
     </div>
   );
 }

@@ -106,10 +106,10 @@ export function BravoTwoSides() {
         <span className="w-px h-6 bg-neutral-300" />
       </div>
       <div className="bg-white rounded-xl px-5 py-4 flex flex-col items-center gap-1 text-center">
-        <span className="text-[12px] text-muted font-medium">
+        <span className="text-[14px] text-muted font-medium">
           The same payment moment
         </span>
-        <span className="text-[14px] text-ink">
+        <span className="text-[16px] text-ink">
           Where should the complexity live?
         </span>
       </div>
