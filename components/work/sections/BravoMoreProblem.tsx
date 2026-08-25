@@ -63,23 +63,25 @@ export function BravoMoreProblem() {
     // The heading and the "each reward had been introduced" paragraph moved
     // into BravoProblem, where they now introduce the reward-stack diagram.
     <div className="flex flex-col gap-6">
-      <div className="flex flex-col gap-2">
-        <p className="text-[16px] text-ink">
-          Behind the scenes, the same complexity created different problems for
-          each team.
-        </p>
-        {/* One card per row at every width. The three bodies differ a lot in
-            length, so side by side the shortest card carried a block of empty
-            space to match the tallest; stacked, each is only as tall as it
-            needs to be and the full column width keeps the lines readable. */}
-        <div className="flex flex-col gap-4">
-          {STAKEHOLDERS.map(({ Icon, label, body }) => (
-            <div key={label} className={`${CARD} flex flex-col gap-4`}>
-              <Heading Icon={Icon}>{label}</Heading>
-              <p className={BODY}>{body}</p>
-            </div>
-          ))}
-        </div>
+      {/* Both are direct children of the gap-6 parent. They used to sit in
+          their own gap-2 wrapper, which put 8px between the line and the cards
+          where every other lead-in in this act gets the section's 24px. */}
+      <p className="text-[16px] text-ink">
+        Behind the scenes, the same complexity created different problems for
+        each team.
+      </p>
+
+      {/* One card per row at every width. The three bodies differ a lot in
+          length, so side by side the shortest card carried a block of empty
+          space to match the tallest; stacked, each is only as tall as it
+          needs to be and the full column width keeps the lines readable. */}
+      <div className="flex flex-col gap-4">
+        {STAKEHOLDERS.map(({ Icon, label, body }) => (
+          <div key={label} className={`${CARD} flex flex-col gap-4`}>
+            <Heading Icon={Icon}>{label}</Heading>
+            <p className={BODY}>{body}</p>
+          </div>
+        ))}
       </div>
 
       {/* Closes the act on the same 20px-statement / 16px-body pair the
@@ -88,6 +90,15 @@ export function BravoMoreProblem() {
           three cards above already showed. */}
       <p className="text-[20px] font-semibold text-ink">
         Manual coordination had already caused a customer-facing failure.
+      </p>
+
+      {/* Sets up the timeline below: names the two separate switches whose
+          gap the figure then measures. */}
+      <p className="text-[16px] text-ink">
+        Limited-time campaigns often ended at midnight, but there was no single
+        control to end them across the product. Engineering had to disable the
+        reward rule, while I separately removed the customer-facing campaign
+        content.
       </p>
 
       <BravoCampaignGap />

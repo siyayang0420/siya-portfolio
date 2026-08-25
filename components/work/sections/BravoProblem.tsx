@@ -39,7 +39,9 @@ export function BravoProblem() {
 
       <p className="text-[16px] text-ink">
         After our CEO experienced this firsthand, I took a booth shift myself to
-        find out where the explanation was breaking down.
+        find out where the explanation was breaking down. I didn&apos;t
+        understand how bad it was until I had to{' '}
+        <strong className="font-semibold">sell Bravo myself</strong>.
       </p>
 
       {/* The booth itself, sitting with the paragraph that puts the reader
