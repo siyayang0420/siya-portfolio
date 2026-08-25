@@ -26,15 +26,27 @@ const PARTNERS = [
 export function BravoTwoSides() {
   return (
     <figure className="flex flex-col m-0">
+      {/* The question now leads. It used to sit at the bottom, which meant the
+          figure showed its answer and then asked what the answer should be —
+          asking first turns the two cards below into the reply. */}
+      <div className="bg-white rounded-xl px-5 py-4 text-center">
+        <span className="text-[16px] font-medium text-ink">
+          Where should the complexity live?
+        </span>
+      </div>
+      <div className="flex justify-center" aria-hidden="true">
+        <span className="w-px h-6 bg-neutral-300" />
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         {/* Business side — one differently-shaped campaign per partner */}
         <div className="bg-white rounded-xl p-5 flex flex-col gap-4">
           <div className="flex flex-col gap-1">
             <span className="text-[12px] text-muted">
-              What the business needs
+              Behind the experience
             </span>
-            <span className="text-[14px] text-ink">
-              A different campaign shape per partner
+            <span className="text-[14px] font-semibold text-ink">
+              Keep the campaign flexibility
             </span>
           </div>
           <div className="flex flex-col gap-2">
@@ -72,10 +84,10 @@ export function BravoTwoSides() {
         <div className="bg-white rounded-xl p-5 flex flex-col gap-4">
           <div className="flex flex-col gap-1">
             <span className="text-[12px] text-muted">
-              What the user needs
+              Customer-facing
             </span>
-            <span className="text-[14px] text-ink">
-              One familiar surface. Zero math.
+            <span className="text-[14px] font-semibold text-ink">
+              Keep the reward model consistent
             </span>
           </div>
           <div className="flex-1 flex items-center justify-center py-2">
@@ -96,27 +108,26 @@ export function BravoTwoSides() {
             </div>
           </div>
           <span className="text-[12px] text-muted text-center">
-            The same offer card — every restaurant, every visit
+            Same reward language
           </span>
         </div>
       </div>
 
-      {/* Both sides converge on the same moment */}
+      {/* Both sides converge on the answer */}
       <div className="flex justify-center" aria-hidden="true">
         <span className="w-px h-6 bg-neutral-300" />
       </div>
       <div className="bg-white rounded-xl px-5 py-4 flex flex-col items-center gap-1 text-center">
-        <span className="text-[14px] text-muted font-medium">
-          The same payment moment
+        <span className="text-[16px] font-medium text-ink">
+          Different rules underneath. One consistent reward model for customers.
         </span>
-        <span className="text-[16px] text-ink">
-          Where should the complexity live?
-        </span>
+        <span className="text-[14px] text-muted">The same payment moment</span>
       </div>
       <figcaption className="sr-only">
-        Each restaurant partner needs a differently shaped campaign, while the
-        user needs one familiar offer card. Both sides meet at the same payment
-        moment, raising the question of where the complexity should live.
+        Asking where the complexity should live: each restaurant partner needs a
+        differently shaped campaign, while the user needs one familiar offer
+        card. The answer is different rules underneath and one consistent reward
+        model for customers, both meeting at the same payment moment.
       </figcaption>
     </figure>
   );

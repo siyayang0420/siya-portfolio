@@ -23,7 +23,7 @@ const SIDES = [
   },
   {
     eyebrow: 'Business',
-    statement: 'One consistent cashback experience',
+    statement: 'Different partners needed different campaign rules',
     needs: [
       'Different cashback rates',
       'Spend thresholds',
@@ -44,7 +44,7 @@ export function BravoBothSides() {
           <div key={side.eyebrow} className="bg-white rounded-xl p-5 flex flex-col gap-4">
             <div className="flex flex-col gap-1">
               <span className="text-[12px] text-muted">{side.eyebrow}</span>
-              <span className="text-[14px] text-ink">{side.statement}</span>
+              <span className="text-[14px] font-semibold text-ink">{side.statement}</span>
             </div>
             <ul className="flex flex-col gap-2">
               {side.needs.map((need) => (
@@ -53,7 +53,7 @@ export function BravoBothSides() {
                     aria-hidden
                     className="mt-1.5 size-1 shrink-0 rounded-full bg-neutral-300"
                   />
-                  <span className="text-[14px] text-muted">{need}</span>
+                  <span className="text-[14px] ">{need}</span>
                 </li>
               ))}
             </ul>
