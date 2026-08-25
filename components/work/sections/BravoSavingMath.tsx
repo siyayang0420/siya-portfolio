@@ -13,12 +13,27 @@
  * nobody standing at a table could hold this.
  */
 
-const STEPS = [
-  { label: 'Top up $100', effect: '+ $5 bonus balance' },
-  { label: 'Pay a $100 bill', effect: '− $15 coupon today' },
-  { label: '$85 charged', effect: '× 5% cashback' },
-  { label: 'Cashback earned', effect: '+ $4.25 for later' },
+/**
+ * `tone` colours the amount, not the label.
+ *
+ * Green for value gained, rose for value spent, muted for the rate — which is
+ * an operation rather than an amount, so colouring it would imply a direction
+ * it doesn't have. The two accents are `emerald-600` and `rose-600`, the exact
+ * pair the prototype above already uses for earned and saved, so the ledger
+ * reads in the same language as the screens it is describing.
+ */
+const STEPS: { label: string; effect: string; tone: 'gain' | 'spend' | 'rate' }[] = [
+  { label: 'Top up $100', effect: '+ $5 bonus balance', tone: 'gain' },
+  { label: 'Pay a $100 bill', effect: '− $15 coupon today', tone: 'spend' },
+  { label: '$85 charged', effect: '× 5% cashback', tone: 'rate' },
+  { label: 'Cashback earned', effect: '+ $4.25 for later', tone: 'gain' },
 ];
+
+const TONE = {
+  gain: 'text-emerald-600',
+  spend: 'text-rose-600',
+  rate: 'text-muted',
+} as const;
 
 export function BravoSavingMath() {
   return (
@@ -35,7 +50,7 @@ export function BravoSavingMath() {
               }`}
             >
               <span className="text-[14px] text-ink">{step.label}</span>
-              <span className="text-[14px] text-muted tabular-nums shrink-0">
+              <span className={`text-[14px] tabular-nums shrink-0 ${TONE[step.tone]}`}>
                 {step.effect}
               </span>
             </li>
