@@ -82,7 +82,7 @@ export function BravoCampaignGap() {
               was already off while the banner was still up. Bracketing all
               three would claim a five-minute overlap the timeline doesn't
               show, since the banner came down a minute before midnight. */}
-          <div aria-hidden className="grid grid-cols-3 gap-3 h-4 mt-4">
+          <div aria-hidden className="grid grid-cols-3 gap-3 h-4 mt-1.5">
             {EVENTS.map((e, i) => (
               <div key={e.time} className="relative">
                 {i < 2 && (
