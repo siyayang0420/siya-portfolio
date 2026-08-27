@@ -10,16 +10,13 @@ export function BravoDecision() {
       <div className="flex flex-col gap-1">
         <p className="text-[16px] text-ink">The Decision</p>
         <h2 className="text-[24px] font-semibold text-ink">
-          What I cut, what I kept, and what I rebuilt.
+          We used one question to evaluate each reward mechanism: did its value justify the complexity it added to the payment experience?
         </h2>
       </div>
 
       {/* Intro — sets up the 3 cut/keep beats */}
       <p className="text-[16px] text-ink">
-        None of these calls were made in one meeting. They took a lot of back
-        and forth, and we settled them together as a team — I brought the data,
-        mapped the tradeoffs, and designed the system that made each call work
-        in practice. Here&apos;s what we landed on, and what each rested on.
+        That led to three different decisions. We removed the mechanism whose promotional value no longer justified the complexity it introduced, preserved the mechanism customers were actively responding to, and simplified how stored reward value was understood.
       </p>
 
       {/* The 3 cut/keep calls, as verdict cards. */}
@@ -27,14 +24,7 @@ export function BravoDecision() {
 
       {/* Summary — the 3 calls retold as one story */}
       <p className="text-[16px] text-ink">
-        Three calls, one logic. The coupon went because the data said we were
-        buying downloads, not customers. Cashback stayed because the money
-        sitting in a diner&apos;s wallet was already pulling them back in. We
-        just changed the unit, so nobody had to do math at the table anymore.
-        And the top-up bonus survived because users loved it, it drove
-        revenue, and the whole decision happens at home, long before the bill
-        arrives. Anything that asked the user to think at checkout was out.
-        Everything else earned its place.
+        Three decisions, one principle: remove complexity unless we had a reason to preserve it. Threshold coupons offered clear value, but their unpredictable eligibility created checkout and operational complexity. Stored rewards showed a strong relationship with repeat behavior, so we preserved the value but removed the points conversion. Top-up bonuses stayed because customers responded strongly to them, while the decision to top up happened before checkout.
       </p>
 
       {/* Campaign shapes — one offer per partner, over their own storefront */}
