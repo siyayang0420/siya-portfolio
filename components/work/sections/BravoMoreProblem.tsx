@@ -103,6 +103,15 @@ export function BravoMoreProblem() {
 
       <BravoCampaignGap />
 
+      {/* Bounds the anecdote and hands off to the Challenge: the incident is
+          evidence about coordination, not about cashback. */}
+      <p className="text-[16px] text-ink">
+        This wasn’t a cashback-rule failure, but it exposed the risk of
+        managing campaign logic across separate systems. For the rewards
+        redesign, I wanted to avoid carrying the same kind of coordination into
+        checkout.
+      </p>
+
       {/* <p className="text-[16px] text-ink">
         Each one held a piece of it — the campaign, the rules, the ledger — and
         every change had to travel through all three. That is why simplifying

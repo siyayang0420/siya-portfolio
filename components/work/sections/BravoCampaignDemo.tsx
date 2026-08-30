@@ -176,11 +176,17 @@ export function BravoCampaignDemo() {
   return (
     <div className="flex flex-col gap-6 pt-12">
           <div className="flex flex-col gap-1">
-            <p className="text-[16px] text-ink">The Demo</p>
+            <p className="text-[16px] text-ink">The System in Practice</p>
             <h2 className="text-[24px] font-semibold text-ink">
-              Don&apos;t take my word for the flexibility. Try it.
+              Change the rules. Keep the experience consistent.
             </h2>
           </div>
+
+          {/* Outside the gap-1 heading block so it reads as body copy rather
+              than a third line of the title. */}
+          <p className="text-[16px] text-ink">
+            I broke the old campaigns into a small set of reusable rules — reward type, rate, eligibility, threshold, and time window — then designed one offer model that could combine them while keeping the customer-facing experience consistent.
+          </p>
           <div
             ref={demoSectionRef}
             className="bg-white rounded-2xl p-5 flex flex-col gap-5"
@@ -206,7 +212,7 @@ export function BravoCampaignDemo() {
             `}</style>
             <div className="bg-neutral-100 rounded-xl py-3 px-4 flex items-center justify-center">
               <p className="text-[14px] text-neutral-600 text-center">
-                Change anything on the left, and see the phone preview.
+                Adjust the campaign rules and watch the customer-facing offer update.
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-[1fr_320px] gap-5 items-stretch">
@@ -441,19 +447,11 @@ export function BravoCampaignDemo() {
           </div>
 
           <p className="text-[16px] text-ink">
-            What I built is a small set of cashback formats that all share the
-            same visual shape on the offer card. Marketing picks spend-based,
-            visit-based, time-based, or first-purchase. The backend
-            doesn&apos;t care which combination. The user — looking at the
-            card on their phone — sees the same familiar offer they&apos;ve
-            been seeing all along. Different rules underneath. Same surface.
+            I designed a small set of cashback formats, spend, visit, time, and first-purchase-based—that could be combined behind one consistent offer card. Marketing could change the rules without redesigning the customer experience.
           </p>
 
           <p className="text-[16px] text-ink">
-            Once this was in place, marketing could ship a new campaign
-            without filing an engineering ticket. Different rate, different
-            threshold, different time window — same offer card shape on the
-            user&apos;s phone. That&apos;s the whole move.
+            Different rules underneath. Same language for customers.
           </p>
     </div>
   );
