@@ -89,7 +89,7 @@ export function BravoMoreProblem() {
           the Challenge. Deliberately adds no new facts — it names what the
           three cards above already showed. */}
       <p className="text-[20px] font-semibold text-ink">
-        Manual coordination had already caused a customer-facing failure.
+        We had already seen what manual coordination could cost.
       </p>
 
       {/* Sets up the timeline below: names the two separate switches whose

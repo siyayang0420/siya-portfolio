@@ -113,6 +113,10 @@ export function BravoProblem() {
         rewards worked and how much someone would actually save.
       </p>
 
+      <p className="text-[16px] text-ink">
+        And without someone there to explain it, the same confusion showed up in customer support. Users regularly reached out to ask how their savings worked or why a reward hadn’t applied.
+      </p>
+
       {/* Its own paragraph, not a trailing clause. Sharing a <p> with the line
           above rendered as "...actually save.The reward model..." — JSX drops
           the whitespace before an element when it spans a newline. */}
@@ -136,14 +140,15 @@ export function BravoProblem() {
       {/* Widens the problem from the till to the org, and hands off to the
           four stakeholder cards in BravoMoreProblem directly below. */}
       <p className="text-[20px] font-semibold text-ink">
-        The complexity didn&apos;t stop at the checkout.
+        The same complexity was creating work behind the scenes.
       </p>
 
       <p className="text-[16px] text-ink">
-        What looked like a customer comprehension problem was also creating
-        manual work behind the scenes. The same reward rules had to be
-        configured, changed, timed, and reconciled across marketing,
-        engineering, operations, and finance.
+        The reward rules had to be configured, changed, timed, and reconciled across marketing, engineering, operations, and finance.
+      </p>
+
+      <p className="text-[16px] text-ink">
+        At the booth, we could explain the rules in person. In the app, users had to make sense of the same system on their own. The same confusion showed up in support, where customers regularly called to ask how their savings worked or why a reward hadn’t applied.
       </p>
 
       {/* Names the shape of the problem, then the diagram shows it. */}
