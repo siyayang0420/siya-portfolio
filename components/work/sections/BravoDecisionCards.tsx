@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { Check, RotateCw, X, type LucideIcon } from 'lucide-react';
-import { BODY, CARD, Heading } from './cardKit';
+import { BODY, CARD, Heading, TITLE } from './cardKit';
 
 /**
  * A measured figure with the thing it measures underneath.
@@ -47,7 +47,7 @@ const CALLS: {
       <>
         {/* The lead sits in ink and the two sentences under it in muted, so
             the tension — easy / hard — registers before the detail. */}
-        <p className="text-[16px] font-medium text-ink">Easy to understand. Hard to guarantee.</p>
+        <p className={TITLE}>Easy to understand. Hard to guarantee.</p>
         <p className="mt-3 text-ink">
           $15 off $100 gave customers immediate, concrete value. But eligibility depended on the restaurant, campaign, spend threshold,
           and commercial agreement.
@@ -108,8 +108,10 @@ export function BravoDecisionCards() {
           <div key={decision} className={`${CARD} flex flex-col gap-4`}>
             <Heading Icon={Icon}>{decision}</Heading>
             {/* A div, not a p: one card's evidence is a block of stats, and a
-                <p> cannot legally contain a <div>. */}
-            <div className={`${BODY} text-muted`}>{evidence}</div>
+                <p> cannot legally contain a <div>. No colour here — every
+                child sets its own, so the `text-muted` this used to carry was
+                overridden everywhere it landed. */}
+            <div className={BODY}>{evidence}</div>
             <Therefore>{therefore}</Therefore>
           </div>
         ))}
@@ -131,7 +133,11 @@ export function BravoDecisionCards() {
                 base size from content, so `aspect-square` is ignored there. */}
             <div className="grid grid-cols-[auto_minmax(0,240px)] items-stretch gap-4">
               <div className="h-full">
-                <span className="flex aspect-square h-full items-center justify-center rounded-2xl bg-[#202020] text-[36px] font-bold leading-none tracking-[-0.9px] text-white">
+                {/* The one tracking utility left in the case study, and it is
+                    on a display numeral rather than prose: a 36px figure needs
+                    the tightening, and a <span> is outside the wrapper's
+                    paragraph rule so nothing is fighting it. */}
+                <span className="flex aspect-square h-full items-center justify-center rounded-xl bg-[#202020] text-[36px] font-bold leading-none tracking-[-0.9px] text-white">
                   2X
                 </span>
               </div>
@@ -152,7 +158,7 @@ export function BravoDecisionCards() {
             weight for the one line that says how far the data goes. This rule
             stays: it separates two columns from a note about both, which is a
             different job from the label inside a card. */}
-        <p className="border-t border-line pt-4 text-[13px] font-semibold leading-[1.6] text-ink">
+        <p className="border-t border-line pt-4 text-[12px] font-semibold text-ink">
           *This was correlational, not proof that cashback caused the higher
           return rate. But it was enough directional evidence to avoid removing
           stored rewards while simplifying the system.

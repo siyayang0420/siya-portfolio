@@ -21,7 +21,9 @@ const BOOTH_PHOTOS = [
 
 export function BravoProblem() {
   return (
-    <div className="flex flex-col gap-8">
+    // gap-6, like the other three acts. This was gap-8, which made the longest
+    // act in the study the loosest one as well.
+    <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-1">
         <p className="text-[16px] text-ink">
           The Problem
@@ -50,6 +52,7 @@ export function BravoProblem() {
           side at every width — they are context, and at this size the scene
           still reads on a phone. */}
       <figure className="m-0 flex flex-col gap-2">
+        {/* 8px figure-to-caption, matching every other captioned figure. */}
         <div className="grid grid-cols-2 gap-3">
           {BOOTH_PHOTOS.map((photo) => (
             /* eslint-disable-next-line @next/next/no-img-element */
@@ -78,7 +81,9 @@ export function BravoProblem() {
           beats. It hands straight off to the prototype below — the reader is
           meant to try it, not just read about it. */}
       <div className="flex flex-col gap-2">
-        <p className="text-[20px] font-medium text-ink">
+        {/* 20px semibold — the study's one weight for an in-act statement.
+            This was the only 20px medium line on the page. */}
+        <p className="text-[20px] font-semibold text-ink">
           &ldquo;So how much do I actually save?&rdquo;
         </p>
         <p className="text-[14px] text-muted">
@@ -130,9 +135,9 @@ export function BravoProblem() {
           carousel already renders exactly that from md up — a three-column
           grid on a 24px gap — and falls back to a snapping scroller with dots
           below it, where three 198×460 panels would be unreadable. */}
-      <figure className="m-0 flex w-full flex-col items-center gap-1">
+      <figure className="m-0 flex w-full flex-col items-center gap-2">
         <PhoneShotCarousel />
-        <figcaption className="text-[12px] text-neutral-500">
+        <figcaption className="text-[12px] text-muted">
           Payment successfully in different cases
         </figcaption>
       </figure>
@@ -147,15 +152,22 @@ export function BravoProblem() {
         The reward rules had to be configured, changed, timed, and reconciled across marketing, engineering, operations, and finance.
       </p>
 
+      {/* The support-calls clause that used to close this paragraph is already
+          made verbatim eight paragraphs up, where it belongs to the customer
+          thread. Saying it twice read as losing the thread. */}
       <p className="text-[16px] text-ink">
-        At the booth, we could explain the rules in person. In the app, users had to make sense of the same system on their own. The same confusion showed up in support, where customers regularly called to ask how their savings worked or why a reward hadn’t applied.
+        At the booth, we could explain the rules in person. In the app, users
+        had to make sense of the same system on their own.
       </p>
 
-      {/* Names the shape of the problem, then the diagram shows it. */}
-      <h2 className="text-[20px] font-semibold text-ink">
+      {/* Names the shape of the problem, then the diagram shows it.
+          A <p>, not an <h2>: at 20px this is the same in-act statement role as
+          the two above it, and as an h2 it also put a smaller heading under the
+          act's own 24px h2, which broke the document outline. */}
+      <p className="text-[20px] font-semibold text-ink">
         The incentive system wasn&apos;t badly designed. It was never designed
         as a system at all.
-      </h2>
+      </p>
 
       <p className="text-[16px] text-ink">
         Each reward had been introduced for a different reason. Points

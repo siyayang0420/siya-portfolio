@@ -8,9 +8,12 @@ export function BravoResult() {
         </h2>
       </div>
 
-      {/* What changed after launch */}
+      {/* The "support questions became rare" result closes this act, in the
+          last paragraph. It was also made here, two paragraphs earlier, which
+          spent the finding before the section had finished setting it up. */}
       <p className="text-[16px] text-ink">
-        Earlier, “So how much do I actually save?” meant explaining points, coupons, thresholds, top-up bonuses, and how they worked together. After launch, support questions about savings became rare.
+        Earlier, “So how much do I actually save?” meant explaining points,
+        coupons, thresholds, top-up bonuses, and how they worked together.
       </p>
 
       <p className="text-[16px] text-ink">

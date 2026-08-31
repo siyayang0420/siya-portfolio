@@ -11,10 +11,18 @@ export function BravoChallenge() {
         </h2>
       </div>
 
+      {/* Two paragraphs, not one. A blank line inside JSX text collapses to a
+          single space, so these rendered glued together as one long block. */}
       <p className="text-[16px] text-ink">
-        Simplifying the rewards wasn’t as simple as removing the rules. Bravo had different commercial agreements across its restaurant network, so campaigns needed to support different rates, thresholds, time windows, and eligibility conditions.
+        Simplifying the rewards wasn’t as simple as removing the rules. Bravo
+        had different commercial agreements across its restaurant network, so
+        campaigns needed to support different rates, thresholds, time windows,
+        and eligibility conditions.
+      </p>
 
-The business needed that flexibility. Customers didn’t need to manage it at checkout.
+      <p className="text-[16px] text-ink">
+        The business needed that flexibility. Customers didn’t need to manage it
+        at checkout.
       </p>
       {/* States the two sets of needs and resolves them into the assertion the
           heading makes. NOTE: BravoTwoSides below makes a closely related
