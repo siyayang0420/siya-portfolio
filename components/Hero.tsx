@@ -24,7 +24,10 @@ const bullets = [
 function Pitch() {
   return (
     <>
-      <h1 className="mt-3 max-w-[14ch] font-display text-[clamp(2.5875rem,4.485vw,3.91rem)] font-medium leading-[1.0] tracking-[-0.025em] text-white">
+      {/* `hero-engrave` is inert on the wash and only bites under the engraved
+          treatment, where it takes the footer's pressed-metal fill and its leg
+          of the sweep relay. */}
+      <h1 className="hero-engrave mt-3 max-w-[14ch] font-display text-[clamp(2.5875rem,4.485vw,3.91rem)] font-medium leading-[1.0] tracking-[-0.025em] text-[color:var(--hero-fg)]">
         I design how products work, and build them into reality.
       </h1>
 
@@ -38,19 +41,50 @@ function Pitch() {
           </li>
         ))}
       </ul> */}
-      <span className="mt-4 text-white/90 text-[1.15rem]">
+      <span className="mt-4 text-[1.15rem] text-[color:var(--hero-fg-dim)]">
         Currently designing and shipping payments, rewards, social and AI products at a Vancouver-based startup.
       </span>
     </>
   );
 }
 
-/** The vertical ruler of ticks that splits the two hero columns. */
+/**
+ * A punched node, drawn the way the footer draws them: an 8px disc filled with
+ * the local ground colour, so it erases the rule running underneath it, with a
+ * 3.5px dot centred in the gap it leaves.
+ *
+ * `tone` has to match the ground behind the node exactly — which is why the top
+ * and bottom nodes take different values, and why the engraved ground is held
+ * flat at both ends rather than ramping the whole way.
+ */
+function LedgerNode({ at, tone }: { at: string; tone: string }) {
+  return (
+    <span
+      className={`hero-ledger absolute z-10 size-2 items-center justify-center rounded-full ${at}`}
+      style={{ backgroundColor: tone }}
+      aria-hidden
+    >
+      <span className="size-[3.5px] rounded-full bg-black/10" />
+    </span>
+  );
+}
+
+/**
+ * The vertical ruler that splits the two hero columns.
+ *
+ * On the wash it is a ruler of ticks. Under the engraved treatment the ticks
+ * are hidden and it becomes a plain hairline with punched nodes where the
+ * ledger's two rules cross it — the footer's construction exactly.
+ */
 function TickRule() {
   return (
     <div className="pointer-events-none absolute inset-y-0 left-0 w-3">
       <div className="tick-rule absolute inset-y-0 left-0 w-1.5 opacity-60" />
-      <div className="absolute inset-y-0 left-1.5 w-px bg-white/15" />
+      <div className="absolute inset-y-0 left-1.5 w-px bg-[color:var(--hero-rule)]" />
+      {/* left-[2.5px] centres the 8px disc on the 1px line at left-1.5, and
+          the 24px offsets centre it on rules inset 28px from each edge. */}
+      <LedgerNode at="left-[2.5px] top-6" tone="#e1e1e1" />
+      <LedgerNode at="left-[2.5px] bottom-6" tone="#fcfcfc" />
     </div>
   );
 }
@@ -205,13 +239,17 @@ export default function Hero() {
             }
           >
             {/* No ripple here — the hero backdrop is a plain wash. The banding
-                belongs to the CTA panel and the accent cards only. */}
+                belongs to the CTA panel and the accent cards only.
+                Both grounds are always mounted and cross-fade on the style
+                toggle: rebuilding the WebGL context would re-seed the gradient
+                to a different frame every time you switched back. */}
             <WaveCanvas
               colors={HERO_COLORS}
               ripple={0}
               origin={[-0.55, 0.35]}
-              className="absolute inset-0 size-full"
+              className="hero-canvas absolute inset-0 size-full"
             />
+            <div className="hero-ground pointer-events-none absolute inset-0" aria-hidden />
 
             <div className="relative grid h-full grid-cols-[minmax(0,57%)_minmax(0,43%)]">
             {/* Left rail: intro pinned to the top, the rest centred below it. */}
@@ -223,7 +261,7 @@ export default function Hero() {
 
               {/* 32px + 64px. The rail centres this group, so widening the gap
                   pushes the list down and the pitch up in equal measure. */}
-              <p className="mt-24 font-display text-[20px] font-medium text-white">
+              <p className="mt-24 font-display text-[20px] font-medium text-[color:var(--hero-fg)]">
                 Selected work
               </p>
               <ul className="mt-2 max-w-lg">
@@ -235,7 +273,9 @@ export default function Hero() {
                         onClick={() => goTo(i)}
                         aria-current={isActive}
                         className={`relative flex w-full items-center justify-between rounded-lg px-4 py-2 text-left transition-colors duration-300 ${
-                          isActive ? "bg-black/25" : "hover:bg-white/6"
+                          isActive
+                            ? "bg-[color:var(--hero-chip)]"
+                            : "hover:bg-[color:var(--hero-chip-hover)]"
                         }`}
                       >
                         <span
@@ -245,14 +285,18 @@ export default function Hero() {
                         />
                         <span
                           className={`text-[16px] transition-colors duration-300 ${
-                            isActive ? "font-semibold text-white" : "text-white/60"
+                            isActive
+                              ? "font-semibold text-[color:var(--hero-fg)]"
+                              : "text-[color:var(--hero-fg-faint)]"
                           }`}
                         >
                           {c.name}
                         </span>
                         <span
                           className={`font-mono text-sm tabular-nums transition-colors duration-300 ${
-                            isActive ? "text-white/80" : "text-white/40"
+                            isActive
+                              ? "text-[color:var(--hero-fg-dim)]"
+                              : "text-[color:var(--hero-fg-ghost)]"
                           }`}
                         >
                           {String(i + 1).padStart(2, "0")}
@@ -273,7 +317,7 @@ export default function Hero() {
               <TickRule />
 
               <div className="flex h-full flex-col pt-14">
-                <p className="self-end font-mono text-[11px] uppercase tracking-[0.18em] text-white/60">
+                <p className="self-end font-mono text-[11px] uppercase tracking-[0.18em] text-[color:var(--hero-fg-faint)]">
                   {chapter.meta}
                 </p>
 
@@ -282,22 +326,22 @@ export default function Hero() {
                 {/* Starts on the tick rule's vertical line (ml matches its
                     left-1.5) and runs full-bleed past the stage's right pad. */}
                 <div
-                  className="relative -mr-10 ml-1.5 mt-4 h-[0.5px] xl:-mr-14"
+                  className="hero-progress-track relative -mr-10 ml-1.5 mt-4 h-[0.5px] xl:-mr-14"
                   style={{
                     backgroundImage:
-                      "linear-gradient(90deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.5) 100%)",
+                      "linear-gradient(90deg, var(--hero-track-from) 0%, var(--hero-track-to) 100%)",
                   }}
                 >
                   <div
-                    className="absolute inset-y-0 left-0 bg-white/70"
+                    className="hero-progress-fill absolute inset-y-0 left-0 bg-[color:var(--hero-fg-dim)]"
                     style={{ width: "calc(var(--p, 0) * 100%)" }}
                   />
                   {/* -4.5px centres the 10px head on the 1px vertical line. */}
                   <div
-                    className="absolute -top-[5px] z-50 flex size-2.5 items-center justify-center rounded-full bg-white/5"
+                    className="hero-progress-head absolute -top-[5px] z-50 flex size-2.5 items-center justify-center rounded-full bg-[color:var(--hero-chip-hover)]"
                     style={{ left: "calc(var(--p, 0) * 100% - 4.5px)" }}
                   >
-                    <span className="head-core size-1 rounded-full bg-white" />
+                    <span className="head-core size-1 rounded-full bg-[color:var(--hero-fg)]" />
                   </div>
                 </div>
 
@@ -312,16 +356,19 @@ export default function Hero() {
                   {/* <p className="anim-rise mb-1 font-display text-[20px] font-medium text-white">
                     Selected work
                   </p> */}
-                  <h2 className="anim-rise font-display text-[clamp(1.615rem,2.38vw,2.3375rem)] font-medium leading-tight tracking-[-0.02em] text-white">
+                  <h2 className="anim-rise font-display text-[clamp(1.615rem,2.38vw,2.3375rem)] font-medium leading-tight tracking-[-0.02em] text-[color:var(--hero-fg)]">
                     {chapter.name}
                   </h2>
-                  <p className="anim-rise mt-3 max-w-xl text-[16px] text-white/75" style={{ animationDelay: "60ms" }}>
+                  <p
+                    className="anim-rise mt-3 max-w-xl text-[16px] text-[color:var(--hero-fg-dim)]"
+                    style={{ animationDelay: "60ms" }}
+                  >
                     {chapter.blurb}
                   </p>
                   {chapter.slug ? (
                     <Link
                       href={`/${chapter.slug}`}
-                      className="anim-rise mt-5 w-fit text-[15px] text-white underline underline-offset-4 transition hover:text-white/70"
+                      className="anim-rise mt-5 w-fit text-[15px] text-[color:var(--hero-fg)] underline underline-offset-4 transition hover:text-[color:var(--hero-fg-dim)]"
                       style={{ animationDelay: "120ms" }}
                     >
                       View more
@@ -330,7 +377,7 @@ export default function Hero() {
                     // Same slot and rhythm as the link, but not underlined —
                     // it isn't clickable, and underlining would imply it is.
                     <span
-                      className="anim-rise mt-5 w-fit text-[15px] text-white/75"
+                      className="anim-rise mt-5 w-fit text-[15px] text-[color:var(--hero-fg-dim)]"
                       style={{ animationDelay: "120ms" }}
                     >
                       Coming soon
@@ -343,11 +390,26 @@ export default function Hero() {
               </div>
             </div>
             </div>
+
+            {/* The ledger band. Two full-bleed hairlines inset 28px from the
+                frame's edges, with the column rule running between them and a
+                node punched at each crossing — the same band the footer draws.
+                28px clears every piece of content at any viewport height: the
+                name block and the meta label both start at 48px, and the
+                chapter artwork bottoms out well above the lower rule. */}
+            <div
+              className="hero-ledger pointer-events-none absolute inset-x-0 top-7 border-t border-[color:var(--hero-rule)]"
+              aria-hidden
+            />
+            <div
+              className="hero-ledger pointer-events-none absolute inset-x-0 bottom-7 border-t border-[color:var(--hero-rule)]"
+              aria-hidden
+            />
           </div>
 
           {/* Sits outside the blurred layer so it stays a clean flat wash. */}
           <div
-            className="pointer-events-none absolute inset-0 bg-[#0c0c0c]"
+            className="pointer-events-none absolute inset-0 bg-[color:var(--hero-veil)]"
             style={{ opacity: dim * 0.72 }}
             aria-hidden
           />
@@ -360,8 +422,9 @@ export default function Hero() {
           colors={HERO_COLORS}
           ripple={0}
           origin={[-0.2, 0.3]}
-          className="absolute inset-0 size-full"
+          className="hero-canvas absolute inset-0 size-full"
         />
+        <div className="hero-ground pointer-events-none absolute inset-0" aria-hidden />
         <div className="relative px-6">
           {/* First screen: intro at the top, pitch filling the rest. svh not vh
               so mobile browser chrome doesn't push the fold off-screen. */}
@@ -382,15 +445,15 @@ export default function Hero() {
               style={
                 {
                   bottom: 24,
-                  "--scroll-cue-color": "#ffffff",
-                  "--scroll-cue-track": "rgba(255,255,255,0.3)",
-                  "--scroll-cue-sweep-color": "#ffffff",
+                  "--scroll-cue-color": "var(--hero-fg)",
+                  "--scroll-cue-track": "var(--hero-rule)",
+                  "--scroll-cue-sweep-color": "var(--hero-fg)",
                 } as React.CSSProperties
               }
             />
           </div>
 
-          <p className="mt-24 font-display text-[20px] font-medium text-white">
+          <p className="mt-24 font-display text-[20px] font-medium text-[color:var(--hero-fg)]">
             Selected work
           </p>
 
@@ -401,26 +464,26 @@ export default function Hero() {
                 hover to reveal the pointer pill. */}
             {chapters.map((c, i) => (
               <ChapterBlock key={c.id} slug={c.slug} className="block">
-                <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-white/55">
+                <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[color:var(--hero-fg-faint)]">
                   {String(i + 1).padStart(2, "0")} — {c.meta}
                 </p>
-                <h2 className="mt-2 font-display text-2xl font-medium tracking-[-0.02em] text-white">
+                <h2 className="mt-2 font-display text-2xl font-medium tracking-[-0.02em] text-[color:var(--hero-fg)]">
                   {c.name}
                 </h2>
-                <p className="mt-2 text-[0.95rem] leading-relaxed text-white/75">
+                <p className="mt-2 text-[0.95rem] leading-relaxed text-[color:var(--hero-fg-dim)]">
                   {c.blurb}
                 </p>
                 {c.slug ? (
                   <Link
                     href={`/${c.slug}`}
-                    className="mt-5 inline-block text-[15px] text-white underline underline-offset-4 transition hover:text-white/70"
+                    className="mt-5 inline-block text-[15px] text-[color:var(--hero-fg)] underline underline-offset-4 transition hover:text-[color:var(--hero-fg-dim)]"
                   >
                     View more
                   </Link>
                 ) : (
                   // Same slot and rhythm as the link, but not underlined — it
                   // isn't clickable, and underlining would imply it is.
-                  <span className="mt-5 inline-block text-[15px] text-white/75">
+                  <span className="mt-5 inline-block text-[15px] text-[color:var(--hero-fg-dim)]">
                     Coming soon
                   </span>
                 )}

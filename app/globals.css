@@ -38,6 +38,150 @@
   color-scheme: light;
 }
 
+/* ── Hero treatments ──────────────────────────────────────────
+   The hero ships in two styles, switched by `data-hero-style` on <html>.
+
+   "wash" (default) is the original: a WebGL gradient with white type on it.
+   "engraved" borrows the footer's language instead — paper ground, hairline
+   rules, and the pressed-metal masthead — so the top of the page and the
+   bottom of it read as one document rather than two.
+
+   It is done entirely with custom properties, not two components. Every colour
+   in the hero already had to be written *somewhere*; naming those slots means
+   the variant is a value swap rather than a fork, and the two can't drift.
+   The one structural difference — canvas versus paper ground — is an opacity
+   on each, so nothing remounts when you flip it and there is no flash. */
+:root {
+  --hero-fg: #ffffff;
+  --hero-fg-dim: rgba(255, 255, 255, 0.75);
+  --hero-fg-faint: rgba(255, 255, 255, 0.6);
+  --hero-fg-ghost: rgba(255, 255, 255, 0.4);
+  --hero-rule: rgba(255, 255, 255, 0.15);
+  --hero-tick: rgba(255, 255, 255, 0.42);
+  /* The active chapter's chip, and the wash it gets on hover. */
+  --hero-chip: rgba(0, 0, 0, 0.25);
+  --hero-chip-hover: rgba(255, 255, 255, 0.06);
+  --hero-track-from: rgba(255, 255, 255, 0.05);
+  --hero-track-to: rgba(255, 255, 255, 0.5);
+  --hero-head-glow-1: rgba(255, 255, 255, 0.5);
+  --hero-head-glow-2: rgba(255, 255, 255, 0.9);
+  /* What the hero recedes into as the panel below slides over it. */
+  --hero-veil: #0c0c0c;
+  --hero-canvas-opacity: 1;
+  --hero-ground: none;
+}
+
+[data-hero-style='engraved'] {
+  --hero-fg: #0c0c0c;
+  --hero-fg-dim: rgba(0, 0, 0, 0.55);
+  --hero-fg-faint: rgba(0, 0, 0, 0.45);
+  --hero-fg-ghost: rgba(0, 0, 0, 0.28);
+  /* The footer's own rule value, so the two sections rule at the same weight. */
+  --hero-rule: rgba(0, 0, 0, 0.08);
+  --hero-tick: rgba(0, 0, 0, 0.26);
+  --hero-chip: rgba(0, 0, 0, 0.06);
+  --hero-chip-hover: rgba(0, 0, 0, 0.03);
+  /* Much lighter than the wash's track. There the fill is only a shade brighter
+     than the rule it runs along, so the rule has to be visible to read as a
+     track at all; here the blue bar carries itself, and a dark track competes
+     with it. */
+  --hero-track-from: rgba(0, 0, 0, 0.04);
+  --hero-track-to: rgba(0, 0, 0, 0.11);
+  /* Brand blue rather than white: on paper a white glow is invisible, and blue
+     ties the travelling head to the sweep crossing the masthead above it. */
+  --hero-head-glow-1: rgba(79, 131, 247, 0.35);
+  --hero-head-glow-2: rgba(79, 131, 247, 0.7);
+  --hero-veil: #d9d9d9;
+  --hero-canvas-opacity: 0;
+  /* The cashback visual is built from translucent whites, which is right on a
+     saturated gradient and invisible on paper — the phone behind the offer
+     card vanished into the panel. So the panel becomes a grey stage and the
+     device on it goes near-opaque white: the same figure/ground relationship
+     the wash gets, achieved from the other direction. */
+  --flow-panel: rgba(0, 0, 0, 0.06);
+  --flow-phone: rgba(255, 255, 255, 0.92);
+  --flow-screen: #ffffff;
+  /* Held flat at both ends like the footer band, so the ramp reads as one
+     sheet of paper lit from below rather than as a gradient.
+     The flat zones are load-bearing, not decorative: the ledger's nodes are
+     filled with a solid colour to erase the rule beneath them, so each node
+     has to sit on a stretch of ground that is exactly that colour. The rules
+     are inset 28px, which stays inside the 0–8% and 78–100% flats at every
+     viewport height a pinned hero can have. */
+  --hero-ground: linear-gradient(
+    to bottom,
+    #e1e1e1 0%,
+    #e1e1e1 8%,
+    #e6e6e6 30%,
+    #fcfcfc 78%,
+    #fcfcfc 100%
+  );
+}
+
+.hero-ground {
+  background-image: var(--hero-ground);
+}
+
+/* The ledger — rules and punched nodes — belongs to the engraved treatment
+   only. On the wash the ground is a moving gradient, and ruling a gradient
+   reads as a seam rather than as paper. */
+.hero-ledger {
+  display: none;
+}
+
+[data-hero-style='engraved'] .hero-ledger {
+  display: flex;
+}
+
+/* The ticks are the wash's way of marking the column edge. The engraved
+   treatment marks it the footer's way instead — one hairline, nodes where it
+   is crossed — and running both at once reads as two rulers on one line. */
+[data-hero-style='engraved'] .tick-rule {
+  display: none;
+}
+
+/* Engraved progress: the case study's own indicator, not a recoloured hairline.
+   On the wash the head is a lit point travelling a thin white rule — legible
+   because everything around it is a gradient. On paper that reads as a hair
+   with a speck on it, so the engraved variant switches to the vocabulary the
+   ActPill already uses on the work pages: a thicker brand-blue bar with a
+   round cap, running over a faint track.
+
+   The bar is 2.5px on a 0.5px rule, so it is pulled up 1px to stay centred on
+   it rather than hanging below. */
+[data-hero-style='engraved'] .hero-progress-fill {
+  top: -1px;
+  bottom: auto;
+  height: 2.5px;
+  border-radius: 999px;
+  background-color: #4f83f7;
+}
+
+/* The wash gives the head a faint disc to sit in, which separates it from the
+   busy gradient behind. On paper there is nothing to separate it from, and the
+   disc reads as a smudge around the dot. */
+[data-hero-style='engraved'] .hero-progress-head {
+  background-color: transparent;
+}
+
+[data-hero-style='engraved'] .head-core {
+  width: 5px;
+  height: 5px;
+  background-color: #4f83f7;
+}
+
+/* Cross-faded rather than unmounted: the canvas holds one WebGL context, and
+   tearing it down and rebuilding it on every toggle is both slower and visibly
+   a different gradient each time it re-seeds. */
+.hero-canvas {
+  opacity: var(--hero-canvas-opacity);
+}
+
+.hero-canvas,
+.hero-ground {
+  transition: opacity 0.45s var(--ease-out-expo);
+}
+
 html,
 body {
   height: 100%;
@@ -73,7 +217,13 @@ body {
    let the grey ramp underneath bleed through and left the lit glyphs looking
    washed out rather than coloured. The gradient's own transparent stops still
    soften both edges of the band, so nothing is lost by making the peak solid. */
-.engraved {
+/* `.hero-engrave` is the same treatment, but only while the engraved hero is
+   selected — on the wash it has to stay plain white type, since a pressed-metal
+   fill on a saturated gradient reads as a rendering fault rather than a bevel.
+   One declaration block for both so the masthead and the footer can never
+   drift apart. */
+.engraved,
+[data-hero-style='engraved'] .hero-engrave {
   background-image: linear-gradient(
       90deg,
       transparent,
@@ -82,7 +232,11 @@ body {
       transparent 60%,
       transparent
     ),
-    linear-gradient(180deg, #9695a0, #dddddd 130%);
+    linear-gradient(
+      180deg,
+      var(--engrave-from, #9695a0),
+      var(--engrave-to, #dddddd) 130%
+    );
   background-size: 200% 100%, 100% 100%;
   background-clip: text;
   -webkit-background-clip: text;
@@ -103,6 +257,27 @@ body {
      turn. It holds the 0% keyframe (off-screen) instead. */
   animation: engrave-sweep var(--engrave-cycle, 16.8s) linear infinite backwards;
   animation-delay: var(--engrave-delay, 0s);
+}
+
+/* The footer's ramp is tuned for a 40–68px heading. The hero masthead is three
+   lines tall, and because the ramp is vertical the *whole last line* sits in
+   the pale end of it — legible in the footer, nearly gone here. So the hero
+   gets its own darker pair and a shorter run, which keeps the pressed look
+   while holding the third line above a readable contrast. */
+[data-hero-style='engraved'] .hero-engrave {
+  --engrave-from: #55555f;
+  --engrave-to: #a9a9b3;
+  /* `background-clip: text` paints only inside the element's background box,
+     and the masthead is set at leading-[1.0] — so its box is exactly three
+     line-heights tall and the last line's descenders fall outside it. The "y"
+     in "reality." was being sliced off at the baseline. The wash never showed
+     this because it fills the glyphs with a colour rather than clipping a
+     background to them.
+
+     0.16em is the descender depth of Jakarta at this weight plus a hair. It is
+     padding rather than a taller line-height so the three lines keep their
+     original spacing; only the paint box grows. */
+  padding-bottom: 0.16em;
 }
 
 /* 47.619% is the sweep's share of the cycle: an 8s pass inside 16.8s. The
@@ -126,11 +301,12 @@ body {
   }
 }
 
-/* Ruler of ticks that separates the two hero columns. */
+/* Ruler of ticks that separates the two hero columns. Takes its colour from
+   the active hero treatment. */
 .tick-rule {
   background-image: linear-gradient(
     to bottom,
-    rgba(255, 255, 255, 0.42) 0 1px,
+    var(--hero-tick) 0 1px,
     transparent 1px 100%
   );
   background-size: 100% 14px;
@@ -186,10 +362,10 @@ body {
 @keyframes head-glow {
   0%,
   100% {
-    box-shadow: 0 0 5px 1px rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 5px 1px var(--hero-head-glow-1);
   }
   50% {
-    box-shadow: 0 0 11px 3px rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 11px 3px var(--hero-head-glow-2);
   }
 }
 

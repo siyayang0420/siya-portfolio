@@ -317,7 +317,10 @@ export default function CashbackFlowVisual() {
         className="absolute inset-0 overflow-hidden"
         style={{
           borderRadius: 37 * scale,
-          background: "rgba(255,255,255,0.3)",
+          // Tokenised so the engraved hero can darken it. The wash value is a
+          // frosted white that reads against a saturated gradient; on paper it
+          // is white-on-white and the phone disappears into it.
+          background: "var(--flow-panel, rgba(255,255,255,0.3))",
           backdropFilter: "blur(8.05px)",
           WebkitBackdropFilter: "blur(8.05px)",
         }}
@@ -343,7 +346,7 @@ export default function CashbackFlowVisual() {
               width: PHONE.w,
               height: PHONE.h,
               borderRadius: PHONE.radius,
-              background: "rgba(255,255,255,0.45)",
+              background: "var(--flow-phone, rgba(255,255,255,0.45))",
             }}
             // Rises on the same beat as the card pulls back, so the two read as
             // one move: the camera backing off to reveal where the offer lives.
@@ -371,7 +374,7 @@ export default function CashbackFlowVisual() {
                 width: SCREEN.w,
                 height: SCREEN.h,
                 borderRadius: SCREEN.radius,
-                background: "rgba(255,255,255,0.5)",
+                background: "var(--flow-screen, rgba(255,255,255,0.5))",
               }}
             />
           </motion.div>
