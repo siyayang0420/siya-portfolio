@@ -101,16 +101,27 @@ export default async function ProjectPage({
           <TopBar />
         </div>
 
-        <div className="max-w-[800px] mx-auto pt-12 pb-24 px-4 md:px-0">
+        {/* One owner for prose metrics, for the whole document.
+            These lived on the BravoActs <section>, which meant the TL;DR and
+            the meta block above it were set differently (normal tracking,
+            1.5 leading) from the identical-looking paragraphs below. Hoisting
+            them here makes the intro and the case study one typographic
+            system, and leaves components free of tracking utilities that a
+            descendant selector would have overridden anyway. */}
+        <div className="max-w-[800px] mx-auto pt-12 pb-24 px-4 md:px-0 [&_h2]:tracking-[0.02em] [&_h2]:leading-[1.55] [&_p]:tracking-[0.02em] [&_p]:leading-[1.55]">
         {/* The mark is per-project, so a case study without one still gets a
             correctly-spaced eyebrow rather than a gap where a logo would go. */}
         <div className="mb-[18px] flex items-center gap-2">
           {project.mark === 'bravo' && <BravoMark />}
-          <span className="text-[16px] uppercase tracking-[-0.02em] text-neutral-500">
+          {/* Uppercase always takes positive tracking — it was set to
+              -0.02em, which jams the caps together. 0.08em rather than the
+              0.14em the 12px labels use: the wider a face is set, the less
+              extra letterspacing it needs at the same optical density. */}
+          <span className="text-[16px] uppercase tracking-[0.08em] text-muted">
             {project.breadcrumb}
           </span>
         </div>
-        <h1 className="font-semibold text-[clamp(28px,3vw,32px)]  mb-6">
+        <h1 className="font-semibold text-[clamp(28px,3vw,32px)] mb-6">
           {project.heading}
         </h1>
         {/* <div className="flex flex-wrap gap-2 mb-8">
