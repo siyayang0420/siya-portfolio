@@ -2,6 +2,7 @@ import Hero from "@/components/Hero";
 import Ethos from "@/components/Ethos";
 import Features from "@/components/Features";
 import Footer from "@/components/Footer";
+import HeroStyleTweaker from "@/components/HeroStyleTweaker";
 
 export default function Home() {
   return (
@@ -12,6 +13,8 @@ export default function Home() {
       <Ethos />
       <Features />
       <Footer />
+      {/* Only on the landing page — it is the only route with a hero. */}
+      <HeroStyleTweaker />
     </main>
   );
 }
