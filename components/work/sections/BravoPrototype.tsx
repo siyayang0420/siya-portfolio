@@ -117,10 +117,10 @@ export function BravoPrototype() {
   return (
     <div
       ref={containerRef}
-      className="bg-white rounded-2xl p-6 flex flex-col gap-5"
+      className="bg-white rounded-xl p-6 flex flex-col gap-4"
     >
       <div className="bg-neutral-100 rounded-xl py-4 px-4 flex items-center justify-center">
-        <p className="text-[14px] text-neutral-600 text-center">
+        <p className="text-[14px] text-muted text-center">
           {typed}
           {typed.length < currentNarrative.length && (
             <span className="typing-caret" aria-hidden="true">
@@ -333,7 +333,7 @@ function BillScreen({ onContinue }: { onContinue: () => void }) {
           className="h-[41px] w-[17px] shrink-0 rotate-180"
         />
         <span
-          className="mb-3 text-[26px] leading-none text-ink"
+          className="mb-3 text-[26px] font-normal leading-none text-ink"
           style={{
             fontFamily: 'var(--font-hand), "Bradley Hand", cursive',
           }}

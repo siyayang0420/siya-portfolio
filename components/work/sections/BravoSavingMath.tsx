@@ -38,7 +38,7 @@ const TONE = {
 export function BravoSavingMath() {
   return (
     <figure className="m-0 flex flex-col gap-2">
-      <div className="bg-white rounded-xl p-5 flex flex-col gap-4">
+      <div className="bg-white rounded-xl p-6 flex flex-col gap-4">
         <span className="text-[12px] text-muted">A typical $100 bill</span>
 
         <ul className="flex flex-col">

@@ -53,7 +53,9 @@ export function BravoRewardStack() {
           >
             <Icon className="size-[26px] shrink-0 text-ink" strokeWidth={1.5} aria-hidden="true" />
             <div className="flex flex-col gap-0.5">
-              <span className="text-[16px] text-ink font-semibold">{name}</span>
+              {/* medium, not semibold: 600 is the study's weight for
+                  statements, 500 for labels, and this is a label. */}
+              <span className="text-[16px] font-medium text-ink">{name}</span>
               <span className="text-[14px] text-muted">{purpose}</span>
             </div>
           </div>

@@ -40,7 +40,7 @@ export function BravoTwoSides() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         {/* Business side — one differently-shaped campaign per partner */}
-        <div className="bg-white rounded-xl p-5 flex flex-col gap-4">
+        <div className="bg-white rounded-xl p-6 flex flex-col gap-4">
           <div className="flex flex-col gap-1">
             <span className="text-[12px] text-muted">
               Behind the experience
@@ -81,7 +81,7 @@ export function BravoTwoSides() {
         </div>
 
         {/* User side — one familiar offer card */}
-        <div className="bg-white rounded-xl p-5 flex flex-col gap-4">
+        <div className="bg-white rounded-xl p-6 flex flex-col gap-4">
           <div className="flex flex-col gap-1">
             <span className="text-[12px] text-muted">
               Customer-facing

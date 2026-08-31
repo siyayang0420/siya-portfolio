@@ -115,9 +115,9 @@ export function BravoActs() {
   );
 
   return (
-    <section
-      className="border-t border-line mt-10 [&_h2]:tracking-[0.02em] [&_h2]:leading-[1.55] [&_p]:tracking-[0.02em] [&_p]:leading-[1.55]"
-    >
+    // Prose tracking and leading now live on the page's content column, so the
+    // intro block above and this section are set the same way.
+    <section className="border-t border-line mt-10">
       {/* ── Horizontal progress bar ──────────────────────────────────────
           Fixed just below the site nav. Hidden until the Problem heading
           scrolls away, then fades + slides in. Centered to the 1100px

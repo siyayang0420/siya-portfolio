@@ -189,7 +189,7 @@ export function BravoCampaignDemo() {
           </p>
           <div
             ref={demoSectionRef}
-            className="bg-white rounded-2xl p-5 flex flex-col gap-5"
+            className="bg-white rounded-xl p-6 flex flex-col gap-4"
           >
             <style jsx>{`
               @keyframes demoPulseRing {
@@ -211,7 +211,7 @@ export function BravoCampaignDemo() {
               }
             `}</style>
             <div className="bg-neutral-100 rounded-xl py-3 px-4 flex items-center justify-center">
-              <p className="text-[14px] text-neutral-600 text-center">
+              <p className="text-[14px] text-muted text-center">
                 Adjust the campaign rules and watch the customer-facing offer update.
               </p>
             </div>
@@ -697,7 +697,7 @@ function NumberRow({
   return (
     <div className="flex items-center justify-between gap-2 min-h-[28px]">
       <div className="flex items-center gap-1">
-        <span className="text-[14px] text-neutral-600">{label}</span>
+        <span className="text-[14px] text-muted">{label}</span>
         <HelpIcon tooltip={tooltip} />
       </div>
       <NumberInput value={value} onChange={onChange} suffix={suffix} />

@@ -65,7 +65,9 @@ function StatTile({
     // Left-aligned, and `min-h` rather than a fixed height: the subtitles now
     // carry full sentences, so a hard 117px would clip the ones that wrap.
     // `whitespace-nowrap` is gone for the same reason.
-    <div className="bg-white rounded-xl flex flex-col items-start justify-center gap-2 min-h-[117px] p-5">
+    // p-4, the study's padding for a tile in a grid of small items (same as
+    // the reward-stack tiles). p-6 is reserved for a full-width card.
+    <div className="bg-white rounded-xl flex flex-col items-start justify-center gap-2 min-h-[117px] p-4">
       <Icon
         className="size-[26px] shrink-0 text-ink"
         strokeWidth={1.5}
@@ -73,7 +75,7 @@ function StatTile({
       />
       <div className="flex flex-col gap-0.5">
         <p className="text-[16px] font-medium text-ink">{title}</p>
-        <p className="text-[14px] text-neutral-500">{subtitle}</p>
+        <p className="text-[14px] text-muted">{subtitle}</p>
       </div>
     </div>
   );

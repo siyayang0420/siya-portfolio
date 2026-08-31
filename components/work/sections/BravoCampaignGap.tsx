@@ -43,14 +43,14 @@ const SEGMENT = ['left-1/2 -right-1.5', '-left-1.5 -right-1.5', '-left-1.5 right
 export function BravoCampaignGap() {
   return (
     <figure className="m-0 flex flex-col gap-2">
-      <div className="bg-white rounded-xl p-5 flex flex-col gap-5">
+      <div className="bg-white rounded-xl p-6 flex flex-col gap-4">
         <span className="text-[12px] text-muted">Campaign end date</span>
 
         <div className="flex flex-col">
           {/* Timestamps */}
           <div className="grid grid-cols-3 gap-3">
             {EVENTS.map((e) => (
-              <span key={e.time} className="text-center text-[13px] text-ink tabular-nums">
+              <span key={e.time} className="text-center text-[12px] text-ink tabular-nums">
                 {e.time}
               </span>
             ))}
@@ -113,7 +113,7 @@ export function BravoCampaignGap() {
         </div>
 
         {/* What followed, on the other axis. */}
-        <ol className="flex flex-col border-t border-line pt-5">
+        <ol className="flex flex-col border-t border-line pt-4">
           {CONSEQUENCE.map((step, i) => {
             const last = i === CONSEQUENCE.length - 1;
             return (

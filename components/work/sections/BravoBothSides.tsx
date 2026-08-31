@@ -41,7 +41,7 @@ export function BravoBothSides() {
     <figure className="m-0 flex flex-col">
       <div className="grid gap-3 md:grid-cols-2">
         {SIDES.map((side) => (
-          <div key={side.eyebrow} className="bg-white rounded-xl p-5 flex flex-col gap-4">
+          <div key={side.eyebrow} className="bg-white rounded-xl p-6 flex flex-col gap-4">
             <div className="flex flex-col gap-1">
               <span className="text-[12px] text-muted">{side.eyebrow}</span>
               <span className="text-[14px] font-semibold text-ink">{side.statement}</span>
@@ -53,7 +53,7 @@ export function BravoBothSides() {
                     aria-hidden
                     className="mt-1.5 size-1 shrink-0 rounded-full bg-neutral-300"
                   />
-                  <span className="text-[14px] ">{need}</span>
+                  <span className="text-[14px] text-ink">{need}</span>
                 </li>
               ))}
             </ul>

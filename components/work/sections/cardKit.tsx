@@ -11,12 +11,25 @@ import type { LucideIcon } from 'lucide-react';
  * a different visual language in the first place.
  */
 
+/**
+ * Size and weight only — tracking and leading are deliberately absent.
+ *
+ * The page wrapper sets `[&_p]:tracking-[0.02em] [&_p]:leading-[1.55]`, and a
+ * descendant selector outranks a utility class, so the `tracking-[-0.28px]`
+ * these constants used to carry never applied to a paragraph — it rendered as
+ * *+0.28px*, the opposite value. Worse, it did apply to a `<div>`, so the same
+ * constant set two different ways depending on the tag it landed on.
+ *
+ * One owner now: the wrapper sets tracking and leading for all prose, and these
+ * say nothing about either.
+ */
+
 /** Figma: white, 12px radius, 24px padding. */
 export const CARD = 'bg-white rounded-xl p-6';
-/** Figma: 16px medium, -0.32px tracking. */
-export const TITLE = 'text-[16px] font-medium tracking-[-0.32px] text-ink';
-/** Figma: 14px regular, 1.6 leading, -0.28px tracking. */
-export const BODY = 'text-[14px] leading-[1.6] tracking-[-0.28px] text-ink';
+/** Figma: 16px medium. Card and figure titles, and any label-weight line. */
+export const TITLE = 'text-[16px] font-medium text-ink';
+/** Figma: 14px regular. Card body copy. */
+export const BODY = 'text-[14px] text-ink';
 
 export function Heading({
   Icon,
