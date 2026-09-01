@@ -29,10 +29,10 @@ export const chapters: Chapter[] = [
   },
   {
     id: "copilot",
-    name: "Internal AI Copilot",
-    meta: "Internal tooling",
+    name: "Building an AI-native operations platform",
+    meta: "Jeni — Marketplace Intelligence",
     blurb:
-      "An assistant with the team's context already loaded. It drafts, looks things up, and shows its working — so people can check it before they trust it.",
+      "An AI-powered system that turns customer, merchant, and transaction signals into opportunities the team can act on.",
     visual: "",
     slug: null,
   },

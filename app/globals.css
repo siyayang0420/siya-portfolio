@@ -265,8 +265,16 @@ body {
    gets its own darker pair and a shorter run, which keeps the pressed look
    while holding the third line above a readable contrast. */
 [data-hero-style='engraved'] .hero-engrave {
-  --engrave-from: #55555f;
-  --engrave-to: #a9a9b3;
+  /* The footer's own starting tone, so the masthead reads in the same grey as
+     "Let's Chat" rather than as a darker relative of it.
+     The end stop is the one value that can't simply be copied: the footer runs
+     its whole ramp under a single 68px line, which only ever samples the top
+     of it, while the masthead spans three lines and would traverse the full
+     distance to #dddddd — putting its last line paler than any footer heading
+     ever gets. #c9c8d0 is where a footer heading actually bottoms out, so all
+     three lines stay inside the tonal range image 1 occupies. */
+  --engrave-from: #9695a0;
+  --engrave-to: #c9c8d0;
   /* `background-clip: text` paints only inside the element's background box,
      and the masthead is set at leading-[1.0] — so its box is exactly three
      line-heights tall and the last line's descenders fall outside it. The "y"
@@ -278,6 +286,36 @@ body {
      padding rather than a taller line-height so the three lines keep their
      original spacing; only the paint box grows. */
   padding-bottom: 0.16em;
+
+  /* The footer's sweep parks off-screen for more than half of every cycle,
+     because three headings share one baton there — while one is lit the other
+     two have to be dark. The masthead is on its own, so that pause is just
+     dead time, and at hero scale a highlight that stops for nine seconds reads
+     as broken rather than as rhythm.
+
+     So it runs its own loop with no parked tail. See the keyframes below for
+     why the wrap is invisible. 5.6s is not arbitrary: it is the footer's own
+     travel speed over this shorter distance, so both sweeps cross a glyph at
+     exactly the same rate. */
+  animation: engrave-sweep-loop 5.6s linear infinite;
+  animation-delay: 0s;
+}
+
+/* Continuous, with no gap between passes.
+   The band sits at 40–60% of a background tile twice the element's width, so
+   it covers the glyphs whenever the position is between 120% and −20%. Sweeping
+   exactly that range means the highlight is always on the type, and the jump
+   from −20% back to 120% at the loop point happens with the band just off the
+   right edge and just off the left — neither end is ever on a glyph, so the
+   wrap cannot be seen. The footer's 150% → −50% range is what creates its
+   pause; those endpoints are far outside the glyphs. */
+@keyframes engrave-sweep-loop {
+  from {
+    background-position: 120% 50%, 0 0;
+  }
+  to {
+    background-position: -20% 50%, 0 0;
+  }
 }
 
 /* 47.619% is the sweep's share of the cycle: an 8s pass inside 16.8s. The
