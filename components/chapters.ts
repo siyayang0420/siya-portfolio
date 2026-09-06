@@ -34,7 +34,7 @@ export const chapters: Chapter[] = [
     blurb:
       "An AI-powered system that turns customer, merchant, and transaction signals into opportunities the team can act on.",
     visual: "",
-    slug: null,
+    slug: "jeni",
   },
   {
     id: "site",
