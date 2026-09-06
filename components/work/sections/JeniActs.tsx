@@ -1,4 +1,5 @@
 import { ActsShell, type Act } from './ActsShell';
+import { JeniPipeline } from './JeniPipeline';
 
 /**
  * Four-act layout for the Jeni case study.
@@ -29,12 +30,80 @@ function Heading({ eyebrow, title }: { eyebrow: string; title: string }) {
 function Problem() {
   return (
     <div className="flex flex-col gap-6">
-      <Heading eyebrow="The Problem" title="It started as two offhand complaints." />
+      <Heading
+        eyebrow="The starting point"
+        title="I wasn’t given a product to design. I was given an ambition."
+      />
 
       <p className="text-[16px] text-ink">
-        Bravo&apos;s business development team works a market that turns over
-        constantly — restaurants across Metro Vancouver open, close, and change
-        hands — and tracking it meant searching by hand.
+        Jeni started with a complaint from Bravo’s CEO and marketing team: by the time a new restaurant opened, or an existing one was visibly struggling, Bravo was often already late to the conversation.
+      </p>
+      <p className="text-[16px] text-ink">
+      The initial ask was loose: could we use AI to spot those signals earlier, giving the team a better window to approach merchants before the opportunity became obvious?
+      </p>
+      <p className="text-[16px] text-ink">
+        I turned that idea into Jeni’s first form: a market intelligence tool that monitored public signals around restaurant openings, closures, and other merchant activity.
+      </p>
+
+      {/* The first version, showing what "monitoring public signals" actually
+          looked like. Drop the screenshot at this path — it is not in the repo
+          yet. Same treatment as the Bravo booth photos: plain <img> with the
+          study's hairline inset, and a caption at the shared 12px muted. */}
+      <figure className="m-0 flex flex-col gap-2">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/work/jeni/monitoring-overview.png"
+          alt="Jeni's monitoring overview: a Needs Attention summary bar over three columns of detected restaurants — New / Opening, Closed / At Risk, and For Sale — with counts for tracked restaurants and signals, and a list of source collectors below."
+          className="w-full rounded-xl border border-line"
+        />
+        <figcaption className="text-[12px] text-muted">
+          Jeni v1 — Metro Vancouver restaurant change detection, grouped by the
+          signal each source reported
+        </figcaption>
+      </figure>
+
+      {/* 20px semibold: the site's one weight for an in-act statement, the
+          same treatment Bravo gives its turns. This is the act's pivot — the
+          screen above is not the work — so it is set as a statement rather
+          than as another body paragraph. */}
+      <p className="text-[16px] font-semibold text-ink">
+        The hard part wasn’t the dashboard. The signals Jeni needed didn’t exist
+        as clean data.
+      </p>
+
+      <p className="text-[16px] text-ink">
+        I built a pipeline that collected information across local media, health
+        records, and business-for-sale listings, then combined deterministic
+        rules, LLM interpretation, and entity matching to turn messy public
+        information into structured merchant signals.
+      </p>
+
+      <JeniPipeline />
+      <p className="text-[16px] text-ink">
+        I deliberately kept AI narrow: deterministic logic handled what could be
+        known reliably, while the LLM stepped in for ambiguous extraction and
+        classification. When a merchant couldn’t be resolved with enough
+        evidence, Jeni surfaced it for review instead of guessing.
+      </p>
+
+      <p className="text-[16px] text-ink">
+        But after the first version worked, the brief became even less defined.
+      </p>
+      <p className="text-[16px] font-semibold italic text-ink">
+        “Jeni could be more powerful. Could we connect it with Bravo and make it directly useful to the business?”
+      </p>
+      {/* The explicit {' '} before <strong> is load-bearing: `out` followed by
+          a newline and a tag renders as "outwhat", because JSX strips the
+          trailing whitespace on a line that ends in text. The comment sits out
+          here rather than inside the paragraph for the same reason — placed
+          mid-sentence it swallows the space next to it. */}
+      <p className="text-[16px] text-ink">
+        There was no PM, feature list, defined user flow, or clear answer for
+        what “useful” meant. The next version of Jeni would have to start with
+        figuring out{' '}
+        <strong className="font-semibold">
+          what problem was actually worth solving.
+        </strong>
       </p>
 
       {/* TODO — what this act still needs:
@@ -106,7 +175,9 @@ function Outcome() {
 }
 
 const ACTS: Act[] = [
-  { id: 'problem', label: 'Problem', content: <Problem /> },
+  // The id stays 'problem' so the section anchor (#the-problem) and any link
+  // to it survive the rename — only the label a reader sees changes.
+  { id: 'problem', label: 'Starting point', content: <Problem /> },
   { id: 'challenge', label: 'Challenge', content: <Challenge /> },
   { id: 'decision', label: 'Decision', content: <Decision /> },
   { id: 'outcome', label: 'Outcome', content: <Outcome /> },
