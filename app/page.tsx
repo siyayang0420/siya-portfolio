@@ -2,7 +2,8 @@ import Hero from "@/components/Hero";
 import Ethos from "@/components/Ethos";
 import Features from "@/components/Features";
 import Footer from "@/components/Footer";
-import HeroStyleTweaker from "@/components/HeroStyleTweaker";
+// Parked with the switcher below — see the comment at its call site.
+// import HeroStyleTweaker from "@/components/HeroStyleTweaker";
 
 export default function Home() {
   return (
@@ -13,8 +14,11 @@ export default function Home() {
       <Ethos />
       <Features />
       <Footer />
-      {/* Only on the landing page — it is the only route with a hero. */}
-      <HeroStyleTweaker />
+      {/* The hero style switcher. Engraved is now the default, set on <html>
+          in the root layout, so the control is parked rather than deleted —
+          uncomment this and the pre-paint script in app/layout.tsx to compare
+          the two treatments again. */}
+      {/* <HeroStyleTweaker /> */}
     </main>
   );
 }

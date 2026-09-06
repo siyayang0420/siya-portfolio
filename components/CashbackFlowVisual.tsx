@@ -308,10 +308,25 @@ export default function CashbackFlowVisual() {
     // which floors it at the aspect-ratio box's intrinsic height. That floor is
     // what pushed the hero's own slot past the fold and got the panel clipped.
     <div className="flex h-full min-h-0 w-full max-h-[70svh] items-center justify-center">
+      {/* Bounded by width, because that is the only axis that can actually
+          constrain it. `h-full max-h-full` used to sit here and did nothing:
+          the parent's height is content-derived, so both resolved to `auto`
+          and the aspect ratio set the height unopposed. At tablet widths that
+          made the box 875px tall inside a 770px cap, and `items-center` then
+          centred the overflow — which is how the panel came to sit ~53px over
+          the "View more" link above it and blur the copy behind it.
+
+          The cap is two limits at once: never taller than the 70svh the parent
+          allows (hence the ratio conversion), and never wider than the artwork
+          was drawn, so it is only ever scaled down. At tablet the second limit
+          binds, which is also what stops the offer card rendering oversized. */}
       <div
         ref={wrapRef}
-        className="relative h-full max-h-full w-full"
-        style={{ aspectRatio: `${W} / ${H}` }}
+        className="relative w-full"
+        style={{
+          aspectRatio: `${W} / ${H}`,
+          maxWidth: `min(${W}px, calc(70svh * ${W} / ${H}))`,
+        }}
       >
       <div
         className="absolute inset-0 overflow-hidden"

@@ -38,25 +38,26 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
+    // Engraved is the hero now, set server-side so it is the first thing
+    // painted. The wash is still fully defined in globals.css under the
+    // default `:root` tokens — removing this attribute is all it takes to go
+    // back, and the HeroStyleTweaker (commented out on the landing page) can
+    // be re-enabled to switch between them again.
     <html
       lang="en"
       className={`${jakarta.variable} ${dmSans.variable} ${caveat.variable}`}
-      // The script below writes `data-hero-style` before React hydrates, so the
-      // server HTML and the live DOM legitimately differ on this one element.
-      // Scoped to <html> itself — children are still checked normally.
-      suppressHydrationWarning
+      data-hero-style="engraved"
     >
-      <head>
-        {/* Restores the saved hero treatment before first paint. In an effect
-            this would run after the wash had already been painted, so a visitor
-            who chose Engraved would see the hero flip under them on every load.
-            Deliberately tiny and dependency-free — it blocks parsing. */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `try{var s=localStorage.getItem('hero-style');if(s==='engraved')document.documentElement.dataset.heroStyle=s}catch(e){}`,
-          }}
-        />
-      </head>
+      {/* The pre-paint script that restored a saved choice is gone with the
+          tweaker: with nothing writing `data-hero-style` on the client there is
+          no longer a hydration mismatch to suppress, and a stale localStorage
+          value from someone who had picked Wash would otherwise override the
+          new default. Restore both together if the switcher comes back.
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `try{var s=localStorage.getItem('hero-style');if(s==='engraved')document.documentElement.dataset.heroStyle=s}catch(e){}`,
+            }}
+          /> */}
       <body>{children}</body>
     </html>
   );

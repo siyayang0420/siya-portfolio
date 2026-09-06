@@ -1,9 +1,10 @@
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import type { Metadata } from 'next';
-import { projects, getProject, BRAVO_SLUG } from '@/content/projects';
+import { projects, getProject, BRAVO_SLUG, JENI_SLUG } from '@/content/projects';
 import { cn } from '@/lib/cn';
 import { BravoActs } from '@/components/work/sections/BravoActs';
+import { JeniActs } from '@/components/work/sections/JeniActs';
 import { ScrollLink } from '@/components/ui/ScrollLink';
 import { TopBar } from '@/components/work/TopBar';
 import { BravoMark } from '@/components/work/BravoMark';
@@ -156,7 +157,16 @@ export default async function ProjectPage({
                 $1 toward a future meal.
               </p>
             ) : (
-              <p className="text-[16px] text-ink">{project.overview}</p>
+              // Split on blank lines rather than rendering the whole overview
+              // into one <p>: a multi-paragraph string would otherwise set as
+              // a single block, since the newlines collapse to spaces.
+              <div className="flex flex-col gap-4">
+                {project.overview.split('\n\n').map((para) => (
+                  <p key={para} className="text-[16px] text-ink">
+                    {para}
+                  </p>
+                ))}
+              </div>
             )}
             {project.slug === BRAVO_SLUG && (
               <div className="flex flex-wrap gap-3 mt-6">
@@ -178,33 +188,45 @@ export default async function ProjectPage({
             )}
           </div>
         )}
-        <div className="grid grid-cols-1 md:grid-cols-3 border-t border-line pt-8 mt-8 gap-6">
-          <div>
-            <div className="text-[12px] tracking-[0.14em] uppercase text-muted mb-2">
-              Role
+        {/* Meta grid. Built from a list rather than three hand-written cells,
+            so a project that carries a fourth field gets a fourth column
+            instead of one orphaned on a second row. Both column classes are
+            written out in full — Tailwind scans for complete strings, so a
+            composed `md:grid-cols-${n}` would never be generated. */}
+        {(() => {
+          const meta = [
+            { label: 'Role', value: project.role },
+            { label: 'Year', value: project.year },
+            { label: 'Collaborators', value: project.collaborators },
+            ...(project.builtWith
+              ? [{ label: 'Built with', value: project.builtWith }]
+              : []),
+          ];
+          return (
+            <div
+              className={cn(
+                'grid grid-cols-1 border-t border-line pt-8 mt-8 gap-6',
+                meta.length === 4 ? 'md:grid-cols-4' : 'md:grid-cols-3',
+              )}
+            >
+              {meta.map(({ label, value }) => (
+                <div key={label}>
+                  <div className="text-[12px] tracking-[0.14em] uppercase text-muted mb-2">
+                    {label}
+                  </div>
+                  <div className="font-display text-[14px] tracking-[0.04em]">
+                    {value}
+                  </div>
+                </div>
+              ))}
             </div>
-            <div className="font-display text-[14px] tracking-[0.04em]">
-              {project.role}
-            </div>
-          </div>
-          <div>
-            <div className="text-[12px] tracking-[0.14em] uppercase text-muted mb-2">
-              Year
-            </div>
-            <div className="font-display text-[14px] tracking-[0.04em]">
-              {project.year}
-            </div>
-          </div>
-          <div>
-            <div className="text-[12px] tracking-[0.14em] uppercase text-muted mb-2">
-              Collaborators
-            </div>
-            <div className="font-display text-[14px] tracking-[0.04em]">
-              {project.collaborators}
-            </div>
-          </div>
-        </div>
+          );
+        })()}
+        {/* Acts are per-project. Everything above this line — the hero band,
+            the eyebrow, the TL;DR and the meta grid — is already generic, so a
+            new case study only has to supply its own acts. */}
         {project.slug === BRAVO_SLUG && <BravoActs />}
+        {project.slug === JENI_SLUG && <JeniActs />}
         </div>
       </div>
 

@@ -9,6 +9,9 @@
  */
 export const BRAVO_SLUG = 'simplifying-a-consumer-fintech-reward-engine';
 
+/** Same reasoning as BRAVO_SLUG: the page gates its acts on this value. */
+export const JENI_SLUG = 'jeni';
+
 export type ProjectSlug =
   | typeof BRAVO_SLUG
   | 'bravo-onboarding'
@@ -24,6 +27,8 @@ export type Project = {
   year: string;
   role: string;
   collaborators: string;
+  /** Optional fourth meta column — tools and services. Omit for none. */
+  builtWith?: string;
   overview?: string;
   tags: string[];
   cardBg: string;
@@ -91,15 +96,22 @@ export const projects: Project[] = [
   },
   {
     slug: 'jeni',
-    title: 'Jeni AI Dashboard',
-    imgTitle: 'JENI AI',
-    heading: 'AGENTIC UI FOR AI WORKFLOWS',
-    breadcrumb: 'Jeni AI Dashboard',
+    // Named to match the hero chapter that links here, so the card, the
+    // browser tab and the page heading all say the same thing.
+    title: 'Jeni — Marketplace Intelligence',
+    imgTitle: 'JENI',
+    heading:
+      'Turning fragmented marketplace signals into decisions Bravo can act on.',
+    breadcrumb: 'Jeni — Marketplace Intelligence',
     year: '2026',
-    role: 'Sole Designer & Builder',
-    collaborators: 'Dashboard · SaaS UX',
+    role: 'Product Designer & Builder',
+    collaborators: 'CEO · 1 Backend Engineer',
+    builtWith: 'Claude · ChatGPT · AWS · Figma',
+    // Two paragraphs. The blank line is load-bearing: the page splits an
+    // overview on it rather than rendering the whole string into one <p>,
+    // where the break would have collapsed to a single space.
     overview:
-      "Jeni is an internal restaurant intelligence tool built for Bravo's business development team. It monitors Metro Vancouver in real time for restaurant openings, closures, and risk signals — and automates contact discovery so BD can reach new leads without manual searching. This case study covers how the tool went from two offhand complaints to a live product on the CTO's roadmap and the CEO's investor pitch deck. It's a story about turning an informal brief into something the company depends on.",
+      "Bravo is a payments and dining rewards marketplace connecting diners with 500+ restaurant partners across Metro Vancouver. While the platform had years of customer, merchant, and transaction data, the team had little infrastructure for understanding what those relationships meant—or where to act on them.\n\nWith no PM, predefined requirements, or predetermined solution, I defined, designed, and built Jeni end to end: an AI-powered intelligence system that turns fragmented marketplace signals into actionable opportunities for Bravo’s operations.",
     tags: ['SaaS', 'Dashboard'],
     cardBg: '#0d0d0d',
     heroBg: 'linear-gradient(135deg, #0d0d0d, #1a1a1a)',
