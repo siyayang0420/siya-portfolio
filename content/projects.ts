@@ -9,14 +9,20 @@
  */
 export const BRAVO_SLUG = 'simplifying-a-consumer-fintech-reward-engine';
 
-/** Same reasoning as BRAVO_SLUG: the page gates its acts on this value. */
-export const JENI_SLUG = 'jeni';
+/**
+ * Same reasoning as BRAVO_SLUG: the page gates its acts on this value.
+ *
+ * All lowercase, like every other slug here. A capitalised "AI" would make the
+ * route case-sensitive in practice — anyone typing the link by hand, or any
+ * client that lowercases URLs, would land on a 404.
+ */
+export const JENI_SLUG = 'building-an-ai-native-operations-platform';
 
 export type ProjectSlug =
   | typeof BRAVO_SLUG
+  | typeof JENI_SLUG
   | 'bravo-onboarding'
-  | 'oreo'
-  | 'jeni';
+  | 'oreo';
 
 export type Project = {
   slug: ProjectSlug;
@@ -95,7 +101,7 @@ export const projects: Project[] = [
     imgTitleDark: true,
   },
   {
-    slug: 'jeni',
+    slug: JENI_SLUG,
     // Named to match the hero chapter that links here, so the card, the
     // browser tab and the page heading all say the same thing.
     title: 'Jeni — Marketplace Intelligence',
@@ -111,7 +117,7 @@ export const projects: Project[] = [
     // overview on it rather than rendering the whole string into one <p>,
     // where the break would have collapsed to a single space.
     overview:
-      "Bravo is a payments and dining rewards marketplace connecting diners with 500+ restaurant partners across Metro Vancouver. While the platform had years of customer, merchant, and transaction data, the team had little infrastructure for understanding what those relationships meant—or where to act on them.\n\nWith no PM, predefined requirements, or predetermined solution, I defined, designed, and built Jeni end to end: an AI-powered intelligence system that turns fragmented marketplace signals into actionable opportunities for Bravo’s operations.",
+      "Bravo is a payments and dining rewards marketplace connecting diners with 500+ restaurant partners across Metro Vancouver. Despite years of customer, merchant, and transaction data, the team lacked a way to understand what those relationships meant—or where to act.\n\nWith no PM, predefined requirements, or predetermined solution, I defined, designed, and built Jeni end to end: an AI-powered intelligence system that turns fragmented marketplace signals into actionable opportunities.",
     tags: ['SaaS', 'Dashboard'],
     cardBg: '#0d0d0d',
     heroBg: 'linear-gradient(135deg, #0d0d0d, #1a1a1a)',

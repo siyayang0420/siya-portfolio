@@ -32,9 +32,9 @@ export const chapters: Chapter[] = [
     name: "Building an AI-native operations platform",
     meta: "Jeni — Marketplace Intelligence",
     blurb:
-      "An AI-powered system that turns customer, merchant, and transaction signals into opportunities the team can act on.",
+      "Turning fragmented marketplace signals into decisions Bravo can act on.",
     visual: "",
-    slug: "jeni",
+    slug: "building-an-ai-native-operations-platform",
   },
   {
     id: "site",
