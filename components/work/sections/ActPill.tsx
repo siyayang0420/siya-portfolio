@@ -24,17 +24,22 @@ const ACCENT = '#4f83f7';
 const H = 44;
 
 /**
- * Fixed rather than sized to the label. The four words differ in width, and
- * letting the pill resize as you scroll makes it twitch every time the act
- * changes — worse, it would move the dot's track underneath the dot.
+ * Wide enough for Bravo's four one-word acts.
+ *
+ * Constant rather than sized to the active label: the names differ in width,
+ * and resizing as you scroll makes the pill twitch on every act change —
+ * worse, it moves the dot's track out from under the dot. A case study whose
+ * names don't fit passes its own `width` instead, so the pill is still a fixed
+ * size *within* a study.
  */
-const W = 148;
+const DEFAULT_W = 148;
 
 export default function ActPill({
   labels,
   activeIndex,
   progress,
   onClick,
+  width = DEFAULT_W,
 }: {
   /** Every act name, in order — they all render, stacked. */
   labels: string[];
@@ -42,7 +47,13 @@ export default function ActPill({
   /** 0 → 1 through the whole case study. */
   progress: number;
   onClick?: () => void;
+  /**
+   * Must clear the longest label plus PILL's 40px of horizontal padding, or
+   * that name will be clipped. Measured, not guessed — see JeniActs.
+   */
+  width?: number;
 }) {
+  const W = width;
   const label = labels[activeIndex] ?? '';
   const p = Math.max(0, Math.min(1, progress)) * 100;
   // With dasharray "a b" and offset d, the dash starts at -d along the path.

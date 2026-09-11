@@ -28,7 +28,25 @@ export type Act = {
   content: ReactNode;
 };
 
-export function ActsShell({ acts }: { acts: Act[] }) {
+export function ActsShell({
+  acts,
+  pillWidth,
+  lead,
+}: {
+  acts: Act[];
+  /**
+   * Overrides the progress pill's width. Only needed when a case study's act
+   * names are longer than Bravo's one-word ones — see ActPill.
+   */
+  pillWidth?: number;
+  /**
+   * Something to open the case study with, before the first act — a video,
+   * a hero figure. Sits inside the rule that separates the header from the
+   * acts, so it reads as the start of the study rather than the end of the
+   * meta block. Not tracked by the progress pill.
+   */
+  lead?: ReactNode;
+}) {
   // One ref per act, filled by the callback ref below. An array rather than the
   // four named refs this started with, so the shell doesn't care how many acts
   // a case study has.
@@ -126,6 +144,7 @@ export function ActsShell({ acts }: { acts: Act[] }) {
           labels={acts.map((a) => a.label)}
           activeIndex={active}
           progress={progress}
+          width={pillWidth}
           // The pill carries the jump: it steps to the next act, and wraps at
           // the end.
           onClick={() => scrollToAct((active + 1) % acts.length)}
@@ -151,6 +170,11 @@ export function ActsShell({ acts }: { acts: Act[] }) {
           />
         </button>
       </nav>
+
+      {/* ── Lead visual, if the study has one ────────────────────────
+          Same pt-12 as the acts below, so it lands where the first act
+          otherwise would and the acts keep their own offset under it. */}
+      {lead && <div className="pt-12">{lead}</div>}
 
       {/* ── Case study content ─────────────────────────────────────── */}
       <div className="flex flex-col gap-32 pt-12">
