@@ -292,40 +292,44 @@ export default function CashbackFlowVisual() {
           : baseVariant(s);
 
   return (
-    // Two boxes because the two mount points size differently and one element
-    // can only carry one max-height.
+    // Two boxes because the two mount points size differently, and the split
+    // is what lets the artwork be sized by *height* in both of them.
     //
-    // Outer: never taller than the slot it was given, and never more than
-    // 70svh — that pair is what stops the panel running past the fold and
-    // being clipped by the hero's overflow.
-    //
-    // Inner: fills the outer. Where the outer has a real height (the desktop
-    // hero) both axes are definite and the ratio is ignored, so the panel
-    // simply fills its slot. Where it doesn't (the stacked mobile hero) the
-    // height resolves to auto and the ratio supplies one, instead of the panel
-    // collapsing to nothing.
+    // Outer — the slot. On the desktop hero it is a flex item with a real
+    // height, so `h-full` is definite and the ratio below is ignored: the box
+    // is exactly the room the chapter has left. On the stacked mobile hero the
+    // parent's height is content-derived, `h-full` resolves to `auto`, and the
+    // ratio supplies a height instead of the box collapsing. Either way the
+    // outer ends up with a height the inner can measure against, capped at
+    // 70svh so it can never run past the fold.
     // `min-h-0` matters: as a flex item this defaults to `min-height: auto`,
-    // which floors it at the aspect-ratio box's intrinsic height. That floor is
-    // what pushed the hero's own slot past the fold and got the panel clipped.
-    <div className="flex h-full min-h-0 w-full max-h-[70svh] items-center justify-center">
-      {/* Bounded by width, because that is the only axis that can actually
-          constrain it. `h-full max-h-full` used to sit here and did nothing:
-          the parent's height is content-derived, so both resolved to `auto`
-          and the aspect ratio set the height unopposed. At tablet widths that
-          made the box 875px tall inside a 770px cap, and `items-center` then
-          centred the overflow — which is how the panel came to sit ~53px over
-          the "View more" link above it and blur the copy behind it.
+    // which would floor it at its own intrinsic height and re-open the overflow.
+    <div
+      className="flex h-full min-h-0 w-full max-h-[70svh] items-center justify-center"
+      style={{ aspectRatio: `${W} / ${H}` }}
+    >
+      {/* Inner — the artwork, driven by height and only limited by width.
+          This used to be the other way round: `w-full` with the height left to
+          the aspect ratio, and a width cap converted from 70svh. But 70svh is
+          not the room the chapter actually has — the heading, blurb and link
+          above take their share first — so on a tall, narrow desktop window the
+          box came out ~70px taller than its slot and `items-center` split that
+          overflow evenly, which is how the panel came to sit over the "View
+          more" link and blur it. (The same shape of bug, at tablet widths, once
+          made it 875px tall inside a 770px cap.)
 
-          The cap is two limits at once: never taller than the 70svh the parent
-          allows (hence the ratio conversion), and never wider than the artwork
-          was drawn, so it is only ever scaled down. At tablet the second limit
-          binds, which is also what stops the offer card rendering oversized. */}
+          Taking the height from the parent and the width from the ratio means
+          the slot itself is the limit, whatever the viewport is doing. The two
+          caps that remain are honest ones: never wider than the artwork was
+          drawn, so it is only ever scaled down, and never wider than the
+          column. */}
       <div
         ref={wrapRef}
-        className="relative w-full"
+        className="relative h-full"
         style={{
           aspectRatio: `${W} / ${H}`,
-          maxWidth: `min(${W}px, calc(70svh * ${W} / ${H}))`,
+          width: "auto",
+          maxWidth: `min(${W}px, 100%)`,
         }}
       >
       <div
