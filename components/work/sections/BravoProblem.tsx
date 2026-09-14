@@ -1,3 +1,4 @@
+import { ZoomableImage } from '@/components/work/ZoomableImage';
 import { MathCardCollapse } from './MathCardCollapse';
 import { BravoPrototype } from './BravoPrototype';
 import { PhoneShotCarousel } from './PhoneShotCarousel';
@@ -55,8 +56,7 @@ export function BravoProblem() {
         {/* 8px figure-to-caption, matching every other captioned figure. */}
         <div className="grid grid-cols-2 gap-3">
           {BOOTH_PHOTOS.map((photo) => (
-            /* eslint-disable-next-line @next/next/no-img-element */
-            <img
+            <ZoomableImage
               key={photo.src}
               src={photo.src}
               alt={photo.alt}
