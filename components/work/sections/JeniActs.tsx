@@ -1,13 +1,12 @@
 import { Play } from 'lucide-react';
 import { ActsShell, type Act } from './ActsShell';
 import { JeniDinerModel } from './JeniDinerModel';
+import { ZoomableImage } from '@/components/work/ZoomableImage';
+import { JeniFactors } from './JeniFactors';
+import { JeniFigureTabs } from './JeniFigureTabs';
 import { JeniIntervention } from './JeniIntervention';
 import { JeniMoves } from './JeniMoves';
 import { JeniPasses, type Pass } from './JeniPasses';
-import { JeniReasoning } from './JeniReasoning';
-import { JeniSignals } from './JeniSignals';
-import { JeniWorkflow } from './JeniWorkflow';
-import { JeniPipeline } from './JeniPipeline';
 import { JeniRunway } from './JeniRunway';
 import { JeniValueModel } from './JeniValueModel';
 
@@ -62,18 +61,17 @@ function Problem() {
 
       {/* The first version, showing what "monitoring public signals" actually
           looked like. Drop the screenshot at this path — it is not in the repo
-          yet. Same treatment as the Bravo booth photos: plain <img> with the
+          yet. Same treatment as the Bravo booth photos: plain <ZoomableImage> with the
           study's hairline inset, and a caption at the shared 12px muted. */}
       <figure className="m-0 flex flex-col gap-2">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <ZoomableImage
           src="/work/jeni/monitoring-overview.png"
           alt="Jeni's monitoring overview: a Needs Attention summary bar over three columns of detected restaurants — New / Opening, Closed / At Risk, and For Sale — with counts for tracked restaurants and signals, and a list of source collectors below."
           className="w-full rounded-xl border border-line"
         />
         <figcaption className="text-[12px] text-muted">
-          Jeni v1 — Metro Vancouver restaurant change detection, grouped by the
-          signal each source reported
+          Jeni V1 — Bringing restaurant openings, closures, and other public
+          signals into one monitoring view.
         </figcaption>
       </figure>
 
@@ -89,71 +87,26 @@ function Problem() {
       </p>
 
       <p className="text-[16px] text-ink">
-        The monitoring capability would remain part of Jeni, but it was no
-        longer the product itself. The next version needed to address Bravo’s
-        internal needs, with no predefined problem, workflow, or solution to
-        start from.
-      </p>
-
-      {/* 20px semibold: the site's one weight for an in-act statement, the
-          same treatment Bravo gives its turns. This is the act's pivot — the
-          screen above is not the work — so it is set as a statement rather
-          than as another body paragraph. */}
-      <p className="text-[16px] font-semibold text-ink">
-        The hard part wasn’t the dashboard. The signals Jeni needed didn’t exist
-        as clean data.
-      </p>
-
-      <p className="text-[16px] text-ink">
-        I built a pipeline that collected information across local media, health
-        records, and business-for-sale listings, then combined deterministic
-        rules, LLM interpretation, and entity matching to turn messy public
-        information into structured merchant signals.
-      </p>
-
-      <JeniPipeline>
-        <p className="text-[16px] text-ink">
-          I deliberately kept AI narrow: deterministic logic handled what could
-          be known reliably, while the LLM stepped in for ambiguous extraction
-          and classification. When a merchant couldn’t be resolved with enough
-          evidence, Jeni surfaced it for review instead of guessing.
-        </p>
-      </JeniPipeline>
-
-      <p className="text-[16px] text-ink">
-        But after the first version worked, the brief became even less defined.
-      </p>
-      <p className="text-[16px] font-semibold italic text-ink">
-        “Jeni could be more powerful. Could we connect it with Bravo and make it directly useful to the business?”
-      </p>
-      {/* The explicit {' '} before <strong> is load-bearing: `out` followed by
-          a newline and a tag renders as "outwhat", because JSX strips the
-          trailing whitespace on a line that ends in text. The comment sits out
-          here rather than inside the paragraph for the same reason — placed
-          mid-sentence it swallows the space next to it. */}
-      <p className="text-[16px] text-ink">
-        There was no PM, feature list, defined user flow, or clear answer for
-        what “useful” meant. The next version of Jeni would have to start with
-        figuring out{' '}
-        <strong className="font-semibold">
-          what problem was actually worth solving.
-        </strong>
+        Monitoring would remain one capability within Jeni, but the larger
+        product was undefined. There was no predefined problem, workflow, or
+        solution. I had to determine{' '}
+        <span className="font-semibold">
+          where Jeni could actually create value inside the business.
+        </span>
       </p>
 
       {/* One of the collectors, end to end. Drop the screenshot at this path —
           it is not in the repo yet. Same treatment as the monitoring overview
-          above: plain <img>, the study's hairline inset, 12px muted caption. */}
+          above: plain <ZoomableImage>, the study's hairline inset, 12px muted caption. */}
       <figure className="m-0 flex flex-col gap-2">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <ZoomableImage
           src="/work/jeni/vch-report.png"
           alt="Jeni's VCH report: counts for active closures, reopened, and unresolved, above a table of health closures listing each restaurant, city, closure period, reason, and when it was last checked — with a separate collapsed group for unresolved listings."
           className="w-full rounded-xl border border-line"
         />
         <figcaption className="text-[12px] text-muted">
-          One collector in full — health closure orders, with the listings Jeni
-          could not tie to a merchant kept in their own group rather than
-          guessed at
+          One collector in detail — health closure orders, with unresolved
+          merchant matches preserved for review rather than guessed.
         </figcaption>
       </figure>
 
@@ -221,14 +174,12 @@ function MerchantsEvidence() {
           argument better than one at twice the width. */}
       <figure className="m-0 flex flex-col gap-2">
         <div className="grid gap-3 sm:grid-cols-2">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <ZoomableImage
             src="/work/jeni/merchant-credit-table.png"
             alt="A merchant credit table: rows of previous credit, funding amount, credit acquired, resulting Bravo credit balance, previous and new rate, and funding method."
             className="w-full rounded-xl border border-line"
           />
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <ZoomableImage
             src="/work/jeni/transactions-table.png"
             alt="A transaction table: rows of QR code payments showing amount, channel, status, balance used, points used, and coupon used."
             className="w-full rounded-xl border border-line"
@@ -312,12 +263,11 @@ function DinersEvidence() {
       {/* One diner's history, as the portal shows it. A single table at full
           width rather than Merchants' pair: the point here is one person's
           rows, read top to bottom, not the volume across partners. Same
-          treatment as every other record figure — plain <img>, the study's
+          treatment as every other record figure — plain <ZoomableImage>, the study's
           hairline inset, 12px muted caption. Drop the screenshot at this path;
           it is not in the repo yet. */}
       <figure className="m-0 flex flex-col gap-2">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <ZoomableImage
           src="/work/jeni/diner-transactions.png"
           alt="One diner's transaction history in the portal: ten rows from April to May, each with an id, date and time, transaction number, the restaurant visited, a type badge (Spend or RedPocket), and the amount broken into points and cash."
           className="w-full rounded-xl border border-line"
@@ -499,54 +449,141 @@ const PASSES: Pass[] = [
   },
 ];
 
+/** The three screenshots in the Merchant / Diner tabs — see the note there. */
+const TAB_IMG =
+  'w-full rounded-xl border border-line object-cover object-top md:h-[470px]';
+
 function Challenge() {
   return (
     <div className="flex flex-col gap-6">
       <Heading
-        eyebrow="Understanding the business"
-        title="Bravo could see the pieces. I needed to understand how they connected."
+        eyebrow="Finding the product"
+        title="The next brief was one sentence: make Jeni useful to Bravo."
       />
 
       <p className="text-[16px] text-ink">
-        I already knew many of Bravo’s operational pain points: merchant credit
-        could run out without warning, prepaid credit could sit unused,
-        high-value or lapsing diners were difficult to identify, and marketing
-        had little ability to personalize what people saw.
+        After seeing V1, Bravo’s CEO asked me to take Jeni further into the
+        business. There was no feature list, target workflow, or predefined
+        problem to solve.
       </p>
 
       <p className="text-[16px] text-ink">
-        But those were individual symptoms. Before deciding what Jeni should
-        become, I needed to understand how value actually moved through the
-        business—between diner behavior, merchant demand, and Bravo’s own
-        economics.
+        I started with the systems Bravo already used. The existing merchant portal tracked credit balances and transaction history, while customer records captured balances, rewards, referrals, and dining activity. The data was there. What was missing was a way to interpret it across the marketplace.
       </p>
 
-      <JeniValueModel />
+      {/* The two sides, as tabs: each is a finding and the records behind it.
+          The Merchant finding lives inside its tab rather than above the
+          switcher, so it isn't sitting over the Diner records when that tab
+          is open. Diner has no finding yet — just the records.
 
-      {/* One set: the statement and the two paragraphs that explain it. Their
-          own gap-3 rather than the act's gap-6, so they read as a unit rather
-          than as three separate beats — the same tightening BravoProblem uses
-          for its question and the line under it. */}
-      <div className="flex flex-col gap-3">
-        <p className="text-[16px] font-semibold text-ink">
-          Each answer exposed the next question.
-        </p>
+          All three screenshots take one height from `md`, so the pair line
+          up and the panel doesn't jump when the tab changes. 470px is the
+          taller of the merchant pair at its column width, so neither of
+          those is cropped; the diner table, which runs ~750px tall at full
+          width, is cropped to match — anchored to the top so the header and
+          the first rows survive, which is how a table should be cut. Below
+          `md` the images keep their natural height: the pair stacks there,
+          so there is nothing to line up, and a fixed height would crop the
+          diner table sideways. */}
+      <JeniFigureTabs
+        label="The two sides of the marketplace"
+        tabs={[
+          {
+            id: 'merchant',
+            label: 'Merchant',
+            content: (
+              <>
+                <p className="text-[16px] text-ink">
+                  The ledger showed credit remaining, but not when a merchant
+                  was becoming a problem.
+                </p>
+                {/* A figure, so the caption is the study's figcaption — 12px
+                    muted, gap-2 under the image — rather than a loose line. */}
+                <figure className="m-0 flex flex-col gap-2">
+                  {/* Side by side: the point is the volume across two
+                      ledgers, not any single row. */}
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    <ZoomableImage
+                      src="/work/jeni/merchant-credit-table.png"
+                      alt="A merchant credit table: rows of previous credit, funding amount, credit acquired, resulting Bravo credit balance, previous and new rate, and funding method."
+                      className={TAB_IMG}
+                    />
+                    <ZoomableImage
+                      src="/work/jeni/transactions-table.png"
+                      alt="A transaction table: rows of QR code payments showing amount, channel, status, balance used, points used, and coupon used."
+                      className={TAB_IMG}
+                    />
+                  </div>
+                  <figcaption className="text-[12px] text-muted">
+                    Bravo&rsquo;s existing merchant portal exposed balances and
+                    transactions, but recognizing urgency still required
+                    someone to interpret them manually.
+                  </figcaption>
+                </figure>
+              </>
+            ),
+          },
+          {
+            id: 'diner',
+            label: 'Diner',
+            content: (
+              <>
+                <p className="text-[16px] text-ink">
+                  Customer profiles showed activity, but not who the diner was becoming.
+                </p>
+                {/* A figure, so the caption is the study's figcaption, as in
+                    the Merchant tab. */}
+                <figure className="m-0 flex flex-col gap-2">
+                  {/* Side by side, as the Merchant tab's pair: the
+                      transaction history and the points ledger are two views
+                      of the same diner. Drop the second screenshot at this
+                      path — it is not in the repo yet. */}
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    <ZoomableImage
+                      src="/work/jeni/diner-transactions.png"
+                      alt="One diner's transaction history in the portal: ten rows from April to May, each with an id, date and time, transaction number, the restaurant visited, a type badge (Spend or RedPocket), and the amount broken into points and cash."
+                      className={TAB_IMG}
+                    />
+                    <ZoomableImage
+                      src="/work/jeni/diner-points-ledger.png"
+                      alt="A diner's points ledger: rows of points before, the change (earned in green, redeemed in red), points after, a type code, the restaurant, and the date."
+                      className={TAB_IMG}
+                    />
+                  </div>
+                  <figcaption className="text-[12px] text-muted">
+                    Bravo&rsquo;s existing customer portal captured balances,
+                    rewards, referrals, and transaction history, but
+                    understanding a diner still meant reconstructing patterns
+                    across individual records.
+                  </figcaption>
+                </figure>
+              </>
+            ),
+          },
+        ]}
+      />
 
-        <p className="text-[16px] text-ink">
-          I started connecting Bravo’s transaction data and building small ways
-          to interrogate it. What began as basic visibility quickly exposed
-          deeper questions about demand, credit, customer behavior, and
-          ultimately the economics behind each relationship.
-        </p>
+      <p className="text-[16px] text-ink">
+        Understanding both sides still didn&rsquo;t tell Bravo what to do.
+      </p>
 
-        <p className="text-[16px] text-ink">
-          Instead of defining Jeni upfront, I let each working view sharpen the
-          next question.
-        </p>
-      </div>
+      <p className="text-[16px] text-ink">
+        A merchant could need help and a diner could be a strong match, but
+        that still didn&rsquo;t mean Bravo should intervene. The decision
+        also depended on whether the expected value justified the cost.
+      </p>
 
-      <JeniPasses passes={PASSES} />
+      <JeniFactors />
 
+      <p className="text-[16px] font-semibold text-ink">
+        This became the product thesis for Jeni.
+      </p>
+
+      <p className="text-[16px] text-ink">
+        Jeni would connect merchant need, diner opportunity, and Bravo&rsquo;s
+        economics to identify where intervention was actually worth
+        considering.
+      </p>
       {/* TODO — what this act still needs:
           · the constraint that shaped the build (time, data access, cost?)
           · what you had to decide without a stakeholder to ask
@@ -559,123 +596,160 @@ function Decision() {
   return (
     <div className="flex flex-col gap-6">
       <Heading
-        eyebrow="Defining the system"
-        title="Turning the decision model into something Jeni could actually reason over."
+        eyebrow="Building Jeni"
+        title="Turning the product thesis into a decision workflow."
       />
 
+      <figure className="m-0 flex flex-col gap-2">
+        <ZoomableImage
+          src="/work/jeni/dashboard.png"
+          alt="Jeni's dashboard: Today's Executive Brief with merchant counts — 514 of 574 need attention, split into high opportunity, needs credit, at risk, and credit outstanding — and user counts flagged for a win-back play, above a Metro Vancouver heatmap of merchant locations and user activity."
+          className="w-full rounded-xl border border-line"
+        />
+      </figure>
+
       <div className="flex flex-col gap-3">
         <p className="text-[16px] text-ink">
-          The framework gave me the questions, but not yet the system. To
-          answer them consistently, Jeni needed to connect signals that had
-          previously lived apart—from merchant credit and transaction velocity
-          to diner behavior and Bravo’s own economics.
+          The thesis gave Jeni three things to reason about. The product still
+          had to make that reasoning useful to the people running Bravo.
         </p>
 
         <p className="text-[16px] text-ink">
-          I started by defining what the system needed to understand about each
-          side of the marketplace—not as raw fields, but as signals that could
-          change a decision.
+          I designed Jeni around a simple progression: surface what needs
+          attention, explain why it matters, connect the relevant merchant and
+          diner signals, and make the next decision easier to evaluate.
         </p>
       </div>
 
-      {/* The marker is bound to its figure at gap-3 rather than sitting loose
-          at the act's gap-6, so it reads as that figure's label and not as a
-          heading for everything that follows it. Same 12px uppercase
-          treatment the passes' markers and the pipeline's steps take. */}
-      <div className="flex flex-col gap-3">
-        <p className="text-[12px] uppercase tracking-[0.08em] text-muted">
-          01 / What the system needed to know
+      {/* The home page's "selected work" marker — a 3×16 accent bar beside
+          16px semibold — reused as the step title so the four steps of the
+          progression read as chapters of one thing. */}
+      <div className="flex flex-col gap-1">
+        <p className="flex items-center gap-3 text-[16px] font-semibold text-ink">
+          <span
+            aria-hidden="true"
+            className="h-4 w-[3px] shrink-0 rounded-full bg-[#4f83f7]"
+          />
+          01 / See What Needs Attention
         </p>
-
-        {/* The signals behind the product the Challenge act's last figure
-            stated — the same three factors, opened up. */}
-        <JeniSignals />
+        <h3 className="text-[16px] text-ink">
+          Start with the exceptions, not the database.
+        </h3>
       </div>
 
-      {/* Second step of the series. Wrapped in its own gap-3 group like 01,
-          so whatever goes under it binds to the marker rather than floating
-          at the act's spacing — the marker stands alone until then. */}
       <div className="flex flex-col gap-3">
-        <p className="text-[12px] uppercase tracking-[0.08em] text-muted">
-          02 / Deciding how the system should reason
-        </p>
-
-        {/* Semibold, as the passes set the line that follows their marker:
-            this is the step's claim, and the three paragraphs under it are
-            the argument for it. */}
-        <p className="text-[16px] font-semibold text-ink">
-          Not every question needed AI.
+        <p className="text-[16px] text-ink">
+          Bravo already had the data. The problem was knowing where to look
+          first.
         </p>
 
         <p className="text-[16px] text-ink">
-          Once I defined the signals Jeni needed, I had to decide how the
-          system should reason with them.
-        </p>
-
-        <p className="text-[16px] text-ink">
-          My first principle was simple: if something could be calculated
-          reliably, it shouldn’t be guessed by AI. Credit balance, transaction
-          velocity, visit recency, and spend behavior could all be derived
-          deterministically from Bravo’s data.
-        </p>
-
-        <p className="text-[16px] text-ink">
-          Rules and heuristics could then turn those facts into explicit
-          states—such as credit running low, demand slowing, or a diner
-          becoming inactive. AI was more useful one layer higher: interpreting
-          multiple signals together, explaining why an opportunity mattered,
-          and helping the team understand what to consider next.
-        </p>
-
-        {/* The three layers the paragraph above names, one merchant read
-            across all of them. */}
-        <JeniReasoning />
-      </div>
-
-      {/* Third step of the series, set like 02: marker, then the step's claim
-          in semibold. */}
-      <div className="flex flex-col gap-3">
-        <p className="text-[12px] uppercase tracking-[0.08em] text-muted">
-          03 / Making the reasoning actionable
-        </p>
-
-        <p className="text-[16px] font-semibold text-ink">
-          From analysis to a decision workflow.
-        </p>
-
-        <p className="text-[16px] text-ink">
-          Defining the reasoning model still wasn’t enough. Jeni could
-          understand that a merchant was running low on credit or that a
-          high-value diner was drifting away—but the team shouldn’t have to
-          reconstruct that reasoning themselves.
-        </p>
-
-        <p className="text-[16px] text-ink">
-          I needed to translate the system’s internal logic into a workflow
-          that moved from what is happening, to why it matters, to what Bravo
-          could do next.
-        </p>
-
-        {/* That workflow, with the steps between those three beats made
-            explicit. */}
-        <JeniWorkflow />
-
-        <p className="text-[16px] text-ink">
-          This became Jeni’s decision workflow: progressively turning raw
-          signals into context, priorities, and actions.
+          I designed Jeni to surface the merchants, diners, and opportunities
+          showing meaningful change, then prioritize them by urgency and
+          potential business value.
         </p>
       </div>
 
-      {/* Fourth step, set like 02 and 03: marker, then the step's claim. */}
+      <figure className="m-0 flex flex-col gap-2">
+        <ZoomableImage
+          src="/work/jeni/dashboard-opportunities.png"
+          alt="Further down Jeni's dashboard: Campaign opportunities ranked by net margin — spend threshold, visit frequency, happy hour — with estimated margin for each; three health panels for merchants, customers, and business impact; and an Insights list of what Jeni noticed this window."
+          className="w-full rounded-xl border border-line"
+        />
+        <figcaption className="text-[12px] text-muted">
+          Instead of another dashboard to explore, Jeni opened with what Bravo
+          could act on.
+        </figcaption>
+      </figure>
+
+      <div className="flex flex-col gap-1">
+        <p className="flex items-center gap-3 text-[16px] font-semibold text-ink">
+          <span
+            aria-hidden="true"
+            className="h-4 w-[3px] shrink-0 rounded-full bg-[#4f83f7]"
+          />
+          02 / Understand Why
+        </p>
+        <h3 className="text-[16px] text-ink">
+          Show the evidence behind the signal.
+        </h3>
+      </div>
+
       <div className="flex flex-col gap-3">
-        <p className="text-[12px] uppercase tracking-[0.08em] text-muted">
-          04 / From model to product
+        <p className="text-[16px] text-ink">
+          A flag only mattered if the team could understand what was driving
+          it.
         </p>
 
-        <p className="text-[16px] font-semibold text-ink">
-          I designed Jeni around decisions, not dashboards.
+        <p className="text-[16px] text-ink">
+          I designed Jeni to connect each state back to the underlying
+          behavior, such as credit burn, transaction activity, visit patterns,
+          and recent change, so the team could judge whether an opportunity was
+          real before acting.
         </p>
       </div>
+
+      <figure className="m-0 flex flex-col gap-2">
+        <ZoomableImage
+          src="/work/jeni/merchant-intelligence.png"
+          alt="Jeni's Merchant Intelligence page: the credit book — used, outstanding, Bravo margin, average cashback — above a Transaction flow panel with a 30-day window, credit used and average bill versus the previous period, and a stacked bar chart of credit used per day by cuisine."
+          className="w-full rounded-xl border border-line"
+        />
+        <figcaption className="text-[12px] text-muted">
+          Jeni connected credit position with actual transaction behavior,
+          turning a static balance into evidence of how quickly a
+          merchant&rsquo;s situation was changing.
+        </figcaption>
+      </figure>
+
+      <div className="flex flex-col gap-3">
+        <p className="text-[16px] text-ink">
+          A flag was only useful if the team could understand what was driving
+          it.
+        </p>
+
+        <p className="text-[16px] text-ink">
+          Opening a merchant revealed the evidence behind the signal: credit
+          position, burn rate, transaction activity, visit patterns, and
+          changes over time. Instead of asking the team to interpret raw
+          records, Jeni turned those signals into a readable picture of what
+          was happening and why it mattered.
+        </p>
+      </div>
+
+      <figure className="m-0 flex flex-col gap-2">
+        <ZoomableImage
+          src="/work/jeni/merchant-credit.png"
+          alt="One merchant's Credit panel in Jeni: runway, burn speed at $206 a day, outstanding balance, and batch size; a breakdown of where the batch went via balance and bonus; and a 60-day balance line that saw-tooths — three top-ups of $4k, each burned down to zero across the 5-day threshold band."
+          className="w-full rounded-xl border border-line"
+        />
+        <figcaption className="text-[12px] text-muted">
+          The same credit balance became more useful when Jeni placed it in
+          context: burn velocity, replenishment history, and how quickly the
+          merchant was approaching zero.
+        </figcaption>
+      </figure>
+
+      <div className="flex flex-col gap-3">
+        <p className="text-[16px] text-ink">
+          Urgency alone wasn&rsquo;t enough. Jeni also needed to understand the
+          business behind it.
+        </p>
+
+        <p className="text-[16px] text-ink">
+          Credit tells me there is urgency.
+          <br />
+          Operations tells me what kind of merchant this actually is.
+        </p>
+      </div>
+
+      <figure className="m-0 flex flex-col gap-2">
+        <ZoomableImage
+          src="/work/jeni/merchant-operations.png"
+          alt="One merchant's Operations panel in Jeni: customer mix — 80.3% of visits are repeat diners — beside service mix split across morning, lunch, and dinner; a row of 60-day visits, average spend, lifetime visits, and rating; and a Traffic bar chart of visits by day with the busiest day highlighted."
+          className="w-full rounded-xl border border-line"
+        />
+      </figure>
 
       {/* TODO — what this act still needs:
           · where the signals come from, and how they are judged reliable
@@ -707,14 +781,12 @@ const ACTS: Act[] = [
   // The id stays 'problem' so the section anchor (#the-problem) and any link
   // to it survive the rename — only the label a reader sees changes.
   { id: 'problem', label: 'Starting point', content: <Problem /> },
-  {
-    id: 'challenge',
-    label: 'Understanding the business',
-    content: <Challenge />,
-  },
+  // The id stays 'challenge' for the same reason — the anchor (#the-challenge)
+  // survives the rename.
+  { id: 'challenge', label: 'Finding the product', content: <Challenge /> },
   // The id stays 'decision' so the section anchor (#the-decision) and any
   // link to it survive the rename — only the label a reader sees changes.
-  { id: 'decision', label: 'Defining the system', content: <Decision /> },
+  { id: 'decision', label: 'Building Jeni', content: <Decision /> },
   { id: 'outcome', label: 'Outcome', content: <Outcome /> },
 ];
 
@@ -746,10 +818,11 @@ function VideoPlaceholder() {
 }
 
 export function JeniActs() {
-  // 226 = the measured width of "Understanding the business" at the pill's
-  // 14px/500 (186px) plus PILL's 40px of horizontal padding. Bravo's default
-  // 148 would clip it. Measured in the browser, not estimated.
+  // 172 = the measured width of the longest label, "Finding the product"
+  // (132px at the pill's 14px/500), plus PILL's
+  // 40px of horizontal padding. Bravo's default 148 would clip them. Measured
+  // in the browser, not estimated — re-measure if a label changes.
   return (
-    <ActsShell acts={ACTS} pillWidth={226} lead={<VideoPlaceholder />} />
+    <ActsShell acts={ACTS} pillWidth={172} lead={<VideoPlaceholder />} />
   );
 }
