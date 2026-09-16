@@ -696,26 +696,16 @@ function Decision() {
           className="w-full rounded-xl border border-line"
         />
         <figcaption className="text-[12px] text-muted">
-          Jeni connected credit position with actual transaction behavior,
-          turning a static balance into evidence of how quickly a
-          merchant&rsquo;s situation was changing.
+          Jeni first established the network baseline: how credit was being
+          used, where transaction volume was moving, and what normal looked
+          like across the marketplace.
         </figcaption>
       </figure>
 
-      <div className="flex flex-col gap-3">
-        <p className="text-[16px] text-ink">
-          A flag was only useful if the team could understand what was driving
-          it.
-        </p>
-
-        <p className="text-[16px] text-ink">
-          Opening a merchant revealed the evidence behind the signal: credit
-          position, burn rate, transaction activity, visit patterns, and
-          changes over time. Instead of asking the team to interpret raw
-          records, Jeni turned those signals into a readable picture of what
-          was happening and why it mattered.
-        </p>
-      </div>
+      <p className="text-[16px] text-ink">
+        From there, the team could drill into a flagged merchant and see what
+        was actually driving the signal.
+      </p>
 
       <figure className="m-0 flex flex-col gap-2">
         <ZoomableImage
@@ -724,22 +714,21 @@ function Decision() {
           className="w-full rounded-xl border border-line"
         />
         <figcaption className="text-[12px] text-muted">
-          The same credit balance became more useful when Jeni placed it in
-          context: burn velocity, replenishment history, and how quickly the
-          merchant was approaching zero.
+          For Happy Day Cafe Kingsway, a static credit balance became a
+          time-sensitive signal once Jeni showed burn velocity, replenishment
+          history, and runway.
         </figcaption>
       </figure>
 
       <div className="flex flex-col gap-3">
         <p className="text-[16px] text-ink">
-          Urgency alone wasn&rsquo;t enough. Jeni also needed to understand the
-          business behind it.
+          But urgency alone wasn&rsquo;t enough. Jeni also needed to understand
+          the business behind the number.
         </p>
 
         <p className="text-[16px] text-ink">
-          Credit tells me there is urgency.
-          <br />
-          Operations tells me what kind of merchant this actually is.
+          Credit showed when attention was needed. Operational behavior helped
+          explain what kind of opportunity it was.
         </p>
       </div>
 
@@ -749,6 +738,99 @@ function Decision() {
           alt="One merchant's Operations panel in Jeni: customer mix — 80.3% of visits are repeat diners — beside service mix split across morning, lunch, and dinner; a row of 60-day visits, average spend, lifetime visits, and rating; and a Traffic bar chart of visits by day with the busiest day highlighted."
           className="w-full rounded-xl border border-line"
         />
+        <figcaption className="text-[12px] text-muted">
+          Visit frequency, customer mix, daypart behavior, and spend patterns
+          gave the financial signal operational context.
+        </figcaption>
+      </figure>
+
+      <div className="flex flex-col gap-1">
+        <p className="flex items-center gap-3 text-[16px] font-semibold text-ink">
+          <span
+            aria-hidden="true"
+            className="h-4 w-[3px] shrink-0 rounded-full bg-[#4f83f7]"
+          />
+          03 / Find Who Can Move It
+        </p>
+        <h3 className="text-[16px] text-ink">
+          Connect merchant need with diner opportunity.
+        </h3>
+      </div>
+
+      <div className="flex flex-col gap-3">
+        <p className="text-[16px] text-ink">
+          Understanding the merchant explained the problem, but not who could
+          change the outcome.
+        </p>
+
+        <p className="text-[16px] text-ink">
+          I designed the diner side of Jeni around behavioral signals&mdash;
+          inactivity, top-up likelihood, value, visit history, and merchant
+          affinity&mdash;so the system could identify not just an audience, but
+          the diners most relevant to a specific merchant need.
+        </p>
+      </div>
+
+      <figure className="m-0 flex flex-col gap-2">
+        <ZoomableImage
+          src="/work/jeni/user-intelligence.png"
+          alt="Jeni's User Intelligence page: 9,292 of 43,282 users flagged, split into at risk, top-up ready, and high value; a Top-ups panel with amount topped up, bonus granted, cost per dollar loaded, and busiest rung; a 30-day bar chart of balance loaded versus bonus granted; and a table of top-up rungs."
+          className="w-full rounded-xl border border-line"
+        />
+        <figcaption className="text-[12px] text-muted">
+          Instead of treating diners as a list of accounts, Jeni organized them
+          by behavioral state: who was drifting away, likely to top up, or
+          worth retaining.
+        </figcaption>
+      </figure>
+
+      <div className="flex flex-col gap-3">
+        <p className="text-[16px] font-semibold text-ink">
+          But behavioral state alone didn&rsquo;t make a diner relevant.
+        </p>
+
+        <p className="text-[16px] text-ink">
+          Jeni also needed evidence that the diner and merchant actually
+          belonged together.
+        </p>
+      </div>
+
+      <figure className="m-0 flex flex-col gap-2">
+        <ZoomableImage
+          src="/work/jeni/diners-who-also-visit.png"
+          alt="Jeni's Diners who also visit panel for Happy Day Cafe Richmond: three merchants ranked by lift — Wasan Cafe at 2.5×, Grill King at 2.4×, AJEA Noodle at 1.0× — with shared diners and the overlap the other way, a note that the list is ranked by lift rather than raw overlap, and a prompt to plan a cross-merchant campaign."
+          className="w-full rounded-xl border border-line"
+        />
+        <figcaption className="text-[12px] text-muted">
+          Cross-merchant behavior exposed relationships that raw audience
+          overlap would miss. I used lift rather than shared-diner count so
+          large merchants wouldn&rsquo;t automatically dominate the
+          recommendation.
+        </figcaption>
+      </figure>
+
+      <div className="flex flex-col gap-3">
+        <p className="text-[16px] font-semibold text-ink">
+          Relevance could then become a specific play.
+        </p>
+
+        <p className="text-[16px] text-ink">
+          Once diner behavior and merchant context were connected, Jeni could
+          move from &ldquo;who looks interesting?&rdquo; to &ldquo;who could
+          change this outcome, and how?&rdquo;
+        </p>
+      </div>
+
+      <figure className="m-0 flex flex-col gap-2">
+        <ZoomableImage
+          src="/work/jeni/ranked-users.png"
+          alt="Jeni's Ranked users table: 9,311 flagged diners filtered by at risk, top-up, high value, and growth, with a banner that 9,311 diner-specific plays are ready. Each row shows the diner, their signal, a suggested action such as VIP perk, top-up bonus, or win-back bonus with a score and confidence, the net to Bravo, and network value."
+          className="w-full rounded-xl border border-line"
+        />
+        <figcaption className="text-[12px] text-muted">
+          Each diner carried the signal, suggested action, and expected value
+          forward, preserving the reasoning behind the recommendation.
+        </figcaption>
       </figure>
 
       {/* TODO — what this act still needs:
