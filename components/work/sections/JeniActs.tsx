@@ -833,6 +833,115 @@ function Decision() {
         </figcaption>
       </figure>
 
+      <div className="flex flex-col gap-1">
+        <p className="flex items-center gap-3 text-[16px] font-semibold text-ink">
+          <span
+            aria-hidden="true"
+            className="h-4 w-[3px] shrink-0 rounded-full bg-[#4f83f7]"
+          />
+          04 / Make the Economics Visible
+        </p>
+        <h3 className="text-[16px] text-ink">
+          A useful intervention still had to be worth running.
+        </h3>
+      </div>
+
+      <div className="flex flex-col gap-3">
+        <p className="text-[16px] text-ink">
+          Connecting the right diner to the right merchant still wasn&rsquo;t
+          enough. Every intervention had a cost to Bravo, and more activity did
+          not necessarily mean more value.
+        </p>
+
+        <p className="text-[16px] text-ink">
+          I made the economics part of the recommendation itself, so the team
+          could evaluate an opportunity against credit cost, expected margin,
+          and network value before deciding to act.
+        </p>
+      </div>
+
+      <p className="text-[16px] font-semibold text-ink">
+        The same action could look very different once Bravo&rsquo;s economics
+        entered the decision.
+      </p>
+
+      <figure className="m-0 flex flex-col gap-2">
+        <ZoomableImage
+          src="/work/jeni/net-to-bravo.png"
+          alt="A crop of Jeni's ranked users table: six rows with their signal, suggested action and confidence, net to Bravo sorted from +$7.4k down to +$1.6k, and network value — including one VIP perk at +$7.4k net whose network value is −$812."
+          className="w-full rounded-xl border border-line"
+        />
+        <figcaption className="text-[12px] text-muted">
+          I surfaced expected value beside the recommended action, making the
+          tradeoff visible before the team committed budget.
+        </figcaption>
+      </figure>
+
+      <p className="text-[16px] text-ink">
+        I didn&rsquo;t reduce value to a single number. Direct value to Bravo
+        and broader network value could point in different directions, so I
+        kept them visible separately rather than hiding the tradeoff inside
+        one score.
+      </p>
+
+      <div className="flex flex-col gap-3">
+        <p className="text-[16px] font-semibold text-ink">
+          Economics also changed prioritization.
+        </p>
+
+        <p className="text-[16px] text-ink">
+          Once Jeni could estimate the value of individual plays, the same
+          logic could compare opportunities across the business.
+        </p>
+      </div>
+
+      <figure className="m-0 flex flex-col gap-2">
+        <ZoomableImage
+          src="/work/jeni/campaign-intelligence.png"
+          alt="Jeni's Campaign Intelligence page: 8 of 14 campaign levers can run at once, with +$8k net if all run; below, seven diner cohorts ranked by movable credit — Lapsing regulars at $458k, Big-basket diners at $198k, Lapsed regulars at $183k, Card-first diners at $134k — each with its definition, size, a one-line rationale, and a suggested play."
+          className="w-full rounded-xl border border-line"
+        />
+        <figcaption className="text-[12px] text-muted">
+          Opportunities were ranked by estimated net margin rather than
+          activity alone, showing both the spend required and the expected
+          return.
+        </figcaption>
+      </figure>
+
+      <p className="text-[16px] text-ink">
+        I deliberately showed expected upside together with the spend required
+        to create it. The goal wasn&rsquo;t to make Jeni sound confident; it
+        was to give Bravo enough context to judge whether the recommendation
+        was worth taking.
+      </p>
+
+      <p className="text-[16px] font-semibold text-ink">
+        The economics came from the operating model itself.
+      </p>
+
+      <figure className="m-0 flex flex-col gap-2">
+        <ZoomableImage
+          src="/work/jeni/credit-book.png"
+          alt="Jeni's Credit book and Transaction flow panels: $8.47m of credit bought from merchants — $7.98m used, $491k outstanding, $1.14m Bravo margin, 0.8% average cashback — above a 30-day view of credit used, average bill, biggest bill, and bonus inside it, with a stacked bar chart of credit used per day by cuisine."
+          className="w-full rounded-xl border border-line"
+        />
+        <figcaption className="text-[12px] text-muted">
+          Credit usage, Bravo margin, cashback, and transaction behavior
+          provided the economic context behind each recommendation.
+        </figcaption>
+      </figure>
+
+      <div className="flex flex-col gap-3">
+        <p className="text-[16px] font-semibold text-ink">
+          The decision model was now complete.
+        </p>
+
+        <p className="text-[16px] text-ink">
+          Jeni could now identify where Bravo had a reason to act, who could
+          change the outcome, and whether acting made economic sense.
+        </p>
+      </div>
+
       {/* TODO — what this act still needs:
           · where the signals come from, and how they are judged reliable
           · what you deliberately left out of scope
