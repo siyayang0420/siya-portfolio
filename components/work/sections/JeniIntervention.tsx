@@ -1,4 +1,5 @@
 import { ArrowDown } from 'lucide-react';
+import { CARD } from './cardKit';
 
 /**
  * Every opportunity as a relationship between three questions.
@@ -14,6 +15,9 @@ import { ArrowDown } from 'lucide-react';
  * three passes' models read as the same kind of object: one grey surface
  * (it sits inside a white pass card), 12px labels, operators between,
  * footer under a rule. Folds to one column below `md`, operators hidden.
+ *
+ * The surface is the caller's: white `CARD` on the page ground, grey when it
+ * sits inside a white card, the same way the runway figure takes it.
  */
 
 const FACTORS: { label: string; question: string }[] = [
@@ -47,10 +51,14 @@ function Factor({ label, question }: (typeof FACTORS)[number]) {
   );
 }
 
-export function JeniIntervention() {
+export function JeniIntervention({
+  surface = CARD,
+}: {
+  surface?: string;
+}) {
   return (
     <figure className="m-0 flex flex-col">
-      <div className="flex flex-col gap-4 rounded-xl bg-[#f8f8f8] p-6">
+      <div className={`${surface} flex flex-col gap-4`}>
         {/* ── The product ──────────────────────────────────────────────
             Five explicit tracks: the operator columns size to their glyph,
             so the three factor columns share what is left evenly. The ×

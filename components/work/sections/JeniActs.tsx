@@ -385,7 +385,7 @@ function BravoEvidence() {
       </div>
 
       {/* The three questions the colon above announces, as a product. */}
-      <JeniIntervention />
+      <JeniIntervention surface="rounded-xl bg-[#f8f8f8] p-6" />
 
       {/* Where the three passes land — the same beat the other two folds end
           on, and the line the Decision act picks up from. */}
