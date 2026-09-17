@@ -3,6 +3,7 @@ import { ActsShell, type Act } from './ActsShell';
 import { JeniDinerModel } from './JeniDinerModel';
 import { ZoomableImage } from '@/components/work/ZoomableImage';
 import { JeniFactors } from './JeniFactors';
+import { JeniFigureCarousel } from './JeniFigureCarousel';
 import { JeniFigureTabs } from './JeniFigureTabs';
 import { JeniIntervention } from './JeniIntervention';
 import { JeniMoves } from './JeniMoves';
@@ -936,11 +937,107 @@ function Decision() {
           The decision model was now complete.
         </p>
 
-        <p className="text-[16px] text-ink">
-          Jeni could now identify where Bravo had a reason to act, who could
-          change the outcome, and whether acting made economic sense.
+        <p className="text-[16px] font-semibold text-ink">
+          Merchant Need &times; Diner Opportunity &times; Bravo Economics
+          &rarr; Intervention
         </p>
       </div>
+
+      <p className="text-[16px] text-ink">
+        Jeni could now identify where Bravo had a reason to act, who could
+        change the outcome, and whether acting made economic sense.
+      </p>
+
+      <div className="flex flex-col gap-1">
+        <p className="flex items-center gap-3 text-[16px] font-semibold text-ink">
+          <span
+            aria-hidden="true"
+            className="h-4 w-[3px] shrink-0 rounded-full bg-[#4f83f7]"
+          />
+          05 / Turn the Decision Into Action
+        </p>
+        <h3 className="text-[16px] text-ink">
+          A recommendation only mattered if the team could do something with
+          it.
+        </h3>
+      </div>
+
+      <div className="flex flex-col gap-3">
+        <p className="text-[16px] text-ink">
+          By this point, Jeni could identify an opportunity, explain the
+          evidence behind it, connect the relevant diners, and make the
+          economics visible.
+        </p>
+
+        <p className="text-[16px] text-ink">
+          The final design problem was turning that reasoning into something
+          the team could actually act on.
+        </p>
+      </div>
+
+      <JeniFigureCarousel
+        label="Recommended action cards"
+        aspectRatio={2184 / 652}
+        caption="Jeni compressed the underlying evidence into a specific next move without hiding the reasoning behind it."
+        slides={[
+          {
+            src: '/work/jeni/recommended-action.png',
+            alt: "A Recommended Action card in Jeni: 'Promote to nearby cafe fans to accelerate burn' with 66% confidence, split into Why now ($2,959 sitting unused, burning $0 a day), The move (promote to nearby fans, run a win-back push), and If it lands (+34 visits in 30 days), with Create campaign and Show the working buttons.",
+          },
+          {
+            src: '/work/jeni/recommended-action-credit.png',
+            alt: "A Recommended Action card in Jeni: 'Sales follow-up — credit is nearly gone; buy the next tranche now' with 66% confidence, split into Why now (3 days of runway left, burning $203 a day against $545 outstanding), The move (buy more credit, offer a return-visit coupon), and If it lands ($545 left, 77 visits a month), with Open the credit book and Show the working buttons.",
+          },
+          {
+            src: '/work/jeni/recommended-action-steady.png',
+            alt: "A Recommended Action card in Jeni tagged Steady: 'Maintain — healthy balance of repeat and new customers' with 66% confidence, split into Why now (60% come back, credit and traffic inside their normal bands, nothing time-bound), The move (promote to nearby fans, run a win-back push), and If it lands (+13 visits in 30 days), with Create campaign and Show the working buttons.",
+          },
+        ]}
+      />
+
+      <p className="text-[16px] text-ink">
+        I designed each recommendation around three questions: why does this
+        matter now, what should Bravo consider doing, and what could change if
+        it works. The action stayed close to the evidence, with the underlying
+        reasoning available when the team needed to inspect it.
+      </p>
+
+      <figure className="m-0 flex flex-col gap-2">
+        <ZoomableImage
+          src="/work/jeni/ranked-users-network.png"
+          alt="Jeni's Ranked users panel sorted by network value: 9,017 diner-specific plays ready with a Create campaign button; rows for Eric, littleandy, Annpanda33, nessa, and winnie1127, each with a signal, a suggested action such as VIP perk or win-back bonus, net to Bravo, and a negative network value with the number of diners referred."
+          className="w-full rounded-xl border border-line"
+        />
+        <figcaption className="text-[12px] text-muted">
+          A ranked opportunity could move directly into an intervention
+          instead of ending as another insight to interpret.
+        </figcaption>
+      </figure>
+
+      <p className="text-[16px] text-ink">
+        The same pattern extended to growth opportunities. Signals such as
+        inactivity, top-up behavior, or customer value could become a suggested
+        intervention, then move directly into campaign creation.
+      </p>
+
+      <div className="flex flex-col gap-3">
+        <p className="text-[16px] font-semibold text-ink">
+          SEE &rarr; UNDERSTAND &rarr; CONNECT &rarr; EVALUATE &rarr; ACT
+        </p>
+
+        <p className="text-[16px] text-ink">
+          This became Jeni&rsquo;s core interaction model: move from fragmented
+          signals to an inspectable decision, then make the next action easier
+          to take.
+        </p>
+      </div>
+
+      <p className="text-[16px] text-ink">
+        Jeni had started by turning messy public information into structured
+        merchant signals. It had evolved into a system for turning
+        Bravo&rsquo;s own marketplace signals into decisions the team could
+        inspect and act on.
+      </p>
 
       {/* TODO — what this act still needs:
           · where the signals come from, and how they are judged reliable

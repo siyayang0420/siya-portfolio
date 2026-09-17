@@ -52,7 +52,7 @@ export function ZoomableImage({ className, src, alt, ...img }: Props) {
         type="button"
         onClick={() => setOpen(true)}
         aria-label={`View full size: ${alt}`}
-        className="block w-full cursor-zoom-in rounded-xl text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4f83f7]/40"
+        className="block h-full w-full cursor-zoom-in rounded-xl text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4f83f7]/40"
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={src} alt={alt} className={className} {...img} />
