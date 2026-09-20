@@ -1030,10 +1030,39 @@ function Outcome() {
     <div className="flex flex-col gap-6">
       <Heading eyebrow="The Outcome" title="From a side project to the roadmap." />
 
-      <p className="text-[16px] text-ink">
-        Jeni is live. It sits on the CTO&apos;s roadmap and in the CEO&apos;s
-        investor pitch deck.
-      </p>
+      <div className="flex flex-col gap-3">
+        <p className="text-[16px] text-ink">
+          Jeni started as an open-ended experiment around restaurant
+          intelligence. It has since become a live internal product for
+          understanding Bravo&rsquo;s marketplace and identifying where the
+          team can act.
+        </p>
+
+        <p className="text-[16px] text-ink">
+          The product is now part of the CTO&rsquo;s roadmap and has been
+          included in the CEO&rsquo;s investor pitch deck as part of
+          Bravo&rsquo;s evolving intelligence capabilities.
+        </p>
+      </div>
+
+      <div className="flex flex-col gap-3">
+        <p className="text-[16px] font-semibold text-ink">
+          The project also changed my role.
+        </p>
+
+        <p className="text-[16px] text-ink">
+          I entered Jeni as a product designer with a loosely defined AI
+          opportunity. I ended up defining the product strategy, designing the
+          decision model, and building the working system myself.
+        </p>
+
+        <p className="text-[16px] text-ink">
+          More importantly, it changed how I think about product design: when
+          the path is unclear, designing the interface is only one part of the
+          job. Sometimes the larger responsibility is defining what should
+          exist in the first place.
+        </p>
+      </div>
 
       {/* TODO — what this act still needs:
           · what changed for the BD team once it shipped, in their words
