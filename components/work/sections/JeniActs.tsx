@@ -37,6 +37,28 @@ function Heading({ eyebrow, title }: { eyebrow: string; title: string }) {
   );
 }
 
+/**
+ * A step inside an act — the home page's "selected work" marker (a 3×16
+ * accent bar beside 16px semibold) over a one-line subtitle, at the same
+ * 4px gap the act heading uses between eyebrow and title. Steps are the
+ * chapters of an act, so they borrow the act heading's rhythm at a smaller
+ * size rather than inventing a third.
+ */
+function StepHeading({ marker, title }: { marker: string; title: string }) {
+  return (
+    <div className="flex flex-col gap-1">
+      <p className="flex items-center gap-3 text-[16px] font-semibold text-ink">
+        <span
+          aria-hidden="true"
+          className="h-4 w-[3px] shrink-0 rounded-full bg-[#4f83f7]"
+        />
+        {marker}
+      </p>
+      <h3 className="text-[16px] text-ink">{title}</h3>
+    </div>
+  );
+}
+
 function Problem() {
   return (
     <div className="flex flex-col gap-6">
@@ -622,21 +644,10 @@ function Decision() {
         </p>
       </div>
 
-      {/* The home page's "selected work" marker — a 3×16 accent bar beside
-          16px semibold — reused as the step title so the four steps of the
-          progression read as chapters of one thing. */}
-      <div className="flex flex-col gap-1">
-        <p className="flex items-center gap-3 text-[16px] font-semibold text-ink">
-          <span
-            aria-hidden="true"
-            className="h-4 w-[3px] shrink-0 rounded-full bg-[#4f83f7]"
-          />
-          01 / See What Needs Attention
-        </p>
-        <h3 className="text-[16px] text-ink">
-          Start with the exceptions, not the database.
-        </h3>
-      </div>
+      <StepHeading
+        marker="01 / See What Needs Attention"
+        title="Start with the exceptions, not the database."
+      />
 
       <div className="flex flex-col gap-3">
         <p className="text-[16px] text-ink">
@@ -663,18 +674,10 @@ function Decision() {
         </figcaption>
       </figure>
 
-      <div className="flex flex-col gap-1">
-        <p className="flex items-center gap-3 text-[16px] font-semibold text-ink">
-          <span
-            aria-hidden="true"
-            className="h-4 w-[3px] shrink-0 rounded-full bg-[#4f83f7]"
-          />
-          02 / Understand Why
-        </p>
-        <h3 className="text-[16px] text-ink">
-          Show the evidence behind the signal.
-        </h3>
-      </div>
+      <StepHeading
+        marker="02 / Understand Why"
+        title="Show the evidence behind the signal."
+      />
 
       <div className="flex flex-col gap-3">
         <p className="text-[16px] text-ink">
@@ -745,18 +748,10 @@ function Decision() {
         </figcaption>
       </figure>
 
-      <div className="flex flex-col gap-1">
-        <p className="flex items-center gap-3 text-[16px] font-semibold text-ink">
-          <span
-            aria-hidden="true"
-            className="h-4 w-[3px] shrink-0 rounded-full bg-[#4f83f7]"
-          />
-          03 / Find Who Can Move It
-        </p>
-        <h3 className="text-[16px] text-ink">
-          Connect merchant need with diner opportunity.
-        </h3>
-      </div>
+      <StepHeading
+        marker="03 / Find Who Can Move It"
+        title="Connect merchant need with diner opportunity."
+      />
 
       <div className="flex flex-col gap-3">
         <p className="text-[16px] text-ink">
@@ -834,18 +829,10 @@ function Decision() {
         </figcaption>
       </figure>
 
-      <div className="flex flex-col gap-1">
-        <p className="flex items-center gap-3 text-[16px] font-semibold text-ink">
-          <span
-            aria-hidden="true"
-            className="h-4 w-[3px] shrink-0 rounded-full bg-[#4f83f7]"
-          />
-          04 / Make the Economics Visible
-        </p>
-        <h3 className="text-[16px] text-ink">
-          A useful intervention still had to be worth running.
-        </h3>
-      </div>
+      <StepHeading
+        marker="04 / Make the Economics Visible"
+        title="A useful intervention still had to be worth running."
+      />
 
       <div className="flex flex-col gap-3">
         <p className="text-[16px] text-ink">
@@ -948,19 +935,10 @@ function Decision() {
         change the outcome, and whether acting made economic sense.
       </p>
 
-      <div className="flex flex-col gap-1">
-        <p className="flex items-center gap-3 text-[16px] font-semibold text-ink">
-          <span
-            aria-hidden="true"
-            className="h-4 w-[3px] shrink-0 rounded-full bg-[#4f83f7]"
-          />
-          05 / Turn the Decision Into Action
-        </p>
-        <h3 className="text-[16px] text-ink">
-          A recommendation only mattered if the team could do something with
-          it.
-        </h3>
-      </div>
+      <StepHeading
+        marker="05 / Turn the Decision Into Action"
+        title="A recommendation only mattered if the team could do something with it."
+      />
 
       <div className="flex flex-col gap-3">
         <p className="text-[16px] text-ink">
