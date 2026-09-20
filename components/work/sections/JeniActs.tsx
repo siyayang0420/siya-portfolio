@@ -1,11 +1,13 @@
 import { Play } from 'lucide-react';
 import { ActsShell, type Act } from './ActsShell';
+import { CARD } from './cardKit';
 import { JeniDinerModel } from './JeniDinerModel';
 import { ZoomableImage } from '@/components/work/ZoomableImage';
 import { JeniFactors } from './JeniFactors';
 import { JeniFigureCarousel } from './JeniFigureCarousel';
 import { JeniFigureTabs } from './JeniFigureTabs';
 import { JeniIntervention } from './JeniIntervention';
+import { JeniLoop } from './JeniLoop';
 import { JeniMoves } from './JeniMoves';
 import { JeniPasses, type Pass } from './JeniPasses';
 import { JeniRunway } from './JeniRunway';
@@ -1072,6 +1074,282 @@ function Outcome() {
   );
 }
 
+/**
+ * Three lines quoted from the agent's contract file. Set as a card rather
+ * than a figure: it is text, and the point is that it was short enough to
+ * be read at the start of every session.
+ */
+function ContractCallout() {
+  const lines = [
+    'Read this before any UI work. Every session. It is short on purpose.',
+    'Components read L2 semantic variables only. Never an L1 primitive, never a raw hex.',
+    'Confidence gates level in code, not by convention.',
+  ];
+  return (
+    <figure className="m-0 flex flex-col gap-2">
+      <div className={`${CARD} flex flex-col`}>
+        <span className="pb-3 text-[12px] uppercase tracking-[0.08em] text-muted">
+          CLAUDE.md
+        </span>
+        {lines.map((line) => (
+          <p
+            key={line}
+            className="border-t border-line py-3 text-[14px] font-medium text-ink last:pb-0"
+          >
+            &ldquo;{line}&rdquo;
+          </p>
+        ))}
+      </div>
+      <figcaption className="text-[12px] text-muted">
+        The non-negotiables, distilled into a file the coding agent reads at
+        the start of every session. When the showcase and the spec files
+        disagree, the spec files win.
+      </figcaption>
+    </figure>
+  );
+}
+
+function BuildSystem() {
+  return (
+    <div className="flex flex-col gap-6">
+      <Heading
+        eyebrow="Designing the Build System"
+        title="I turned the design system into a source of truth for both me and the agent."
+      />
+
+      <div className="flex flex-col gap-3">
+        <p className="text-[16px] text-ink">
+          Building Jeni with AI made iteration dramatically faster, but it
+          introduced a different problem: the product could drift just as
+          quickly as it could grow.
+        </p>
+
+        <p className="text-[16px] text-ink">
+          I needed more than a component library. I built a living system that
+          encoded not only how Jeni should look, but how its data, states,
+          recommendations, and interactions should behave.
+        </p>
+      </div>
+
+      {/* ── 01 ─────────────────────────────────────────────────────── */}
+      <StepHeading
+        marker="01 / Encode the Product"
+        title="More than a component library."
+      />
+
+      <div className="flex flex-col gap-3">
+        <p className="text-[16px] text-ink">
+          Drift was not hypothetical. The same bar drifted to four heights and
+          three radii. The same figure appeared twice under two labels. A fix
+          on one screen never reached the second screen carrying the same
+          data.
+        </p>
+
+        <p className="text-[16px] text-ink">
+          So the system had to hold the product, not just its parts: 22
+          sections in one HTML document, from tokens and components at the
+          top to a rulebook of 125 laws and 136 things never to do at the
+          bottom.
+        </p>
+      </div>
+
+      <figure className="m-0 flex flex-col gap-2">
+        <div className="grid gap-3">
+          <ZoomableImage
+            src="/work/jeni/ds-principles.png"
+            alt="The top of the Jeni design system document: a navigation strip naming its 22 sections — Principles, Tokens, Colour, Type, Space, Depth, Icons, Primitives, Controls, Nav, Data, Pagination, Charts, Burn, Agent, Decision, Record, Merchant, Feedback, States, Shell, Motion, Laws — above section 01, Principles, and its four principle cards: colour is an argument, numbers before prose, assertions are ranked, every number is a door."
+            className="w-full rounded-xl border border-line"
+          />
+          <ZoomableImage
+            src="/work/jeni/ds-laws.png"
+            alt="Section 23 of the same document, Laws & handoff: numbered rules such as 01 Every metric declares a polarity, 03 Every agent claim shows a source and a freshness, 05 Confidence gates assertion level, 14 Solid is measured, dashed is modelled, 21 Observed and inferred are separated structurally, followed by rules from the list of things never to do."
+            className="w-full rounded-xl border border-line"
+          />
+        </div>
+        <figcaption className="text-[12px] text-muted">
+          One document, 22 sections: tokens and components at the top, 125
+          product laws and 136 &ldquo;never&rdquo; rules at the bottom.
+        </figcaption>
+      </figure>
+
+      <figure className="m-0 flex flex-col gap-2">
+        <ZoomableImage
+          src="/work/jeni/ds-tracks.png"
+          alt="The Tracks entry from the design system: a paragraph stating that every horizontal bar in the system is one component with one geometry and that nine of them had drifted to four heights and three radii; a table of the track tokens — 6px height, 2px radius per segment, 2px gap, 16px marker, 12px tick; and a specimen showing a value on a scale, a composition, a band, a runway, a sequential ramp, and a loading bar all drawn from the same tokens."
+          className="w-full rounded-xl border border-line"
+        />
+        <figcaption className="text-[12px] text-muted">
+          Nine bars had drifted to four heights and three radii. One token now
+          sets all of them, so a tenth variant cannot appear.
+        </figcaption>
+      </figure>
+
+      <p className="text-[16px] text-ink">
+        The visual rules mattered less for how they looked than for what they
+        ruled out. Components reference the semantic token layer only; a
+        component reaching for a primitive is a bug. Stable boundaries like
+        that are what let implementation move quickly without every screen
+        becoming its own dialect.
+      </p>
+
+      {/* ── 02 ─────────────────────────────────────────────────────── */}
+      <StepHeading
+        marker="02 / Encode the Reasoning"
+        title="The system documented why, not just what."
+      />
+
+      <div className="flex flex-col gap-3">
+        <p className="text-[16px] font-semibold text-ink">
+          An AI guess never renders with the weight of a measured fact.
+        </p>
+
+        <p className="text-[16px] text-ink">
+          Most of the rules are not visual. They decide when Jeni is allowed to
+          recommend, when it must only observe, and how a number earns its
+          colour. Jeni&rsquo;s output is ranked into five levels of assertion,
+          and the level is gated in code: low confidence cannot render above
+          an insight, stale data caps Jeni at an observation, and only the
+          top two levels may ask for an action.
+        </p>
+      </div>
+
+      <figure className="m-0 flex flex-col gap-2">
+        <div className="grid gap-3">
+          <ZoomableImage
+            src="/work/jeni/ds-assertion.png"
+            alt="The five assertion levels rendered top to bottom: L1 Value — $519,058 credit outstanding on a recessed surface; L2 Observation — a plain sentence; L3 Insight — a tinted card with medium confidence and its sources; L4 Recommendation — release $84k of idle balance with an off-peak bonus, with estimated impact, reach, horizon, and reversibility and buttons to create a campaign or show the working; L5 Alert — a red-tinted card that acts by 12 August with an open recharge list button."
+            className="w-full rounded-xl border border-line"
+          />
+          <ZoomableImage
+            src="/work/jeni/ds-gating.png"
+            alt="The gating rules: confidence gates level, low confidence cannot render above L3; only L4 and L5 get buttons; stale data caps at L2; one L5 and one L4 per view; every L4 shows impact, reach, horizon and reversibility."
+            className="w-full rounded-xl border border-line"
+          />
+        </div>
+        <figcaption className="text-[12px] text-muted">
+          Five levels of assertion. Confidence decides the level; only the top
+          two may ask for an action.
+        </figcaption>
+      </figure>
+
+      <p className="text-[16px] text-ink">
+        The same principle reaches down to a single number. Colour never comes
+        from the sign of a change; it comes from a polarity every metric has
+        to declare, because up is good for visits and bad for credit
+        outstanding. A metric with no polarity renders grey. When
+        Bravo&rsquo;s credit burn broke that model&mdash;both tails bad, the
+        target a middle band&mdash;the model got a fourth polarity rather than
+        an exception.
+      </p>
+
+      <figure className="m-0 flex flex-col gap-2">
+        <ZoomableImage
+          src="/work/jeni/ds-polarity.png"
+          alt="The delta polarity table: higher-better for visits and margin, lower-better for credit outstanding and churn, neutral for merchant count, band for credit burn rate where both tails are bad, and undefined where polarity is not yet set — each with how an up and a down arrow render; followed by the rule that polarity is a required property and a metric shipped without it renders grey."
+          className="w-full rounded-xl border border-line"
+        />
+        <figcaption className="text-[12px] text-muted">
+          Colour comes from a declared polarity, never from the arrow. A
+          metric with no polarity renders grey.
+        </figcaption>
+      </figure>
+
+      <p className="text-[16px] text-ink">
+        Where Jeni models rather than measures, the system makes the
+        difference visible. A projection is dashed, names its assumption, and
+        carries its confidence. A campaign plan splits what was measured from
+        what was assumed, rounds every figure to the precision the softest
+        input earns, and&mdash;at a hand-set conversion rate with no prior
+        run&mdash;offers a test instead of a Create button.
+      </p>
+
+      <figure className="m-0 flex flex-col gap-2">
+        <div className="grid gap-3">
+          <ZoomableImage
+            src="/work/jeni/ds-burndown.png"
+            alt="The burn-down chart for Yunshang Rice Noodle: a strip of balance $1,412, burn $118 a day, runway 12 days inside the caution band, and empties 2 September captioned projected, not measured; a legend where Measured is a solid line and Projected is dashed; the chart with a recharge step and a dashed tail crossing the 5-day threshold band; and a footer stating that the projection assumes the trailing 14-day burn rate holds and no recharge lands, at 64% confidence."
+            className="w-full rounded-xl border border-line"
+          />
+          <ZoomableImage
+            src="/work/jeni/ds-plan.png"
+            alt="A campaign plan at 48% confidence, hand-set: the offer, a $20 bonus on a $100 top-up across two merchants; a warning that the merchants differ 2.6× in average bill and an existing campaign overlaps; a modelled return chain where each row carries a modelled, measured, or bounded chip and figures round to the precision the softest input earns; a sensitivity strip on uplift with a break-even at $66; two evidence columns headed Measured and Assumed; and an action row reading Adjust sizing and preview, Run as a 500-diner test, Dismiss."
+            className="w-full rounded-xl border border-line"
+          />
+        </div>
+        <figcaption className="text-[12px] text-muted">
+          Measured is solid; modelled is dashed and names its assumption. A
+          plan built on a hand-set rate rounds to what that guess earns, and
+          gets a test button, not a Create button.
+        </figcaption>
+      </figure>
+
+      <p className="text-[16px] text-ink">
+        These are deterministic rules, not model behaviour. Writing them down
+        is what let the product stay honest at the speed it was being built.
+      </p>
+
+      {/* ── 03 ─────────────────────────────────────────────────────── */}
+      <StepHeading
+        marker="03 / Build From Shared Context"
+        title="The same rules guided both design and implementation."
+      />
+
+      <div className="flex flex-col gap-3">
+        <p className="text-[16px] text-ink">
+          The system ends in a handoff contract written for whoever builds the
+          next screen: which values are derived at render and never stored,
+          which thresholds live in config rather than in components, how
+          sentinels are resolved in one shared formatter, which Figma nodes the
+          buttons are pulled from, and what to build first.
+        </p>
+
+        <p className="text-[16px] text-ink">
+          That is what stopped drift between surfaces. A runway computed from
+          balance and burn cannot disagree with itself; a campaign state
+          derived from its dates cannot outlive its window.
+        </p>
+      </div>
+
+      <figure className="m-0 flex flex-col gap-2">
+        <ZoomableImage
+          src="/work/jeni/ds-handoff.png"
+          alt="Six rows from the handoff notes. Campaign plan: a plan returns measured and assumed as separate objects so a new assumption cannot arrive looking observed. Campaign monitor: state is never returned as a string; the client derives Draft, Scheduled, Live, or Ended from three timestamps. Formatting boundary: sentinels are resolved server-side or in one shared formatter, never per component — minus one becomes Unlimited. Burn data model: runway is derived, not stored, and zone thresholds live in config, not in components. Figma source: buttons come from three named Bravo Design System Core nodes; re-pull them rather than editing CSS by hand. Build order: tokens and Lucide wrapper first, then metric tile and delta, block frame and table, segment strip, filter bar, assertion levels, and the agent panel last."
+          className="w-full rounded-xl border border-line"
+        />
+        <figcaption className="text-[12px] text-muted">
+          The rules carried their implementation: what is derived and never
+          stored, which thresholds live in config, which Figma nodes to
+          re-pull, and what to build first.
+        </figcaption>
+      </figure>
+
+      <p className="text-[16px] text-ink">
+        The coding agent read the same rules I did. A short contract file
+        distilled the non-negotiables, and the full system sat behind it as
+        the detail to load when needed&mdash;so design intent did not have to
+        be re-explained at the start of every task.
+      </p>
+
+      <ContractCallout />
+
+      <p className="text-[16px] text-ink">
+        When a rule was broken in the product, the fix went back into the
+        system as a &ldquo;what changed and why&rdquo; entry with its reason,
+        so the next build started from the corrected rule rather than from my
+        memory of it. The system became a feedback loop, not static
+        documentation.
+      </p>
+
+      <JeniLoop />
+
+      <p className="text-[16px] font-semibold text-ink">
+        The system became the shared memory of the product: what Jeni looked
+        like, how it behaved, and why those decisions existed.
+      </p>
+    </div>
+  );
+}
+
 const ACTS: Act[] = [
   // The id stays 'problem' so the section anchor (#the-problem) and any link
   // to it survive the rename — only the label a reader sees changes.
@@ -1083,6 +1361,7 @@ const ACTS: Act[] = [
   // link to it survive the rename — only the label a reader sees changes.
   { id: 'decision', label: 'Building Jeni', content: <Decision /> },
   { id: 'outcome', label: 'Outcome', content: <Outcome /> },
+  { id: 'build', label: 'Build system', content: <BuildSystem /> },
 ];
 
 /**
