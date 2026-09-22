@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
-import { useState, type KeyboardEvent } from 'react';
+import { useEffect, useState, type KeyboardEvent } from 'react';
 import { cn } from '@/lib/cn';
 import { ZoomableImage } from '@/components/work/ZoomableImage';
 
@@ -23,6 +23,12 @@ import { ZoomableImage } from '@/components/work/ZoomableImage';
  * don't move the caption and controls as you page. Pass the shortest
  * slide's ratio: taller ones are cropped from the bottom, where these cards
  * carry only padding.
+ *
+ * `autoplay` advances the track on an interval. It pauses while the pointer
+ * or keyboard focus is on the figure — a reader who has stopped to look
+ * should not have the slide pulled out from under them — and a manual page
+ * restarts the clock, so a click is never followed a moment later by an
+ * automatic advance. Off under `prefers-reduced-motion`.
  */
 
 export type CarouselSlide = {
@@ -41,8 +47,11 @@ export function JeniFigureCarousel({
   caption,
   label,
   aspectRatio,
+  autoplay,
 }: {
   slides: CarouselSlide[];
+  /** Milliseconds between automatic advances. Omit for manual paging only. */
+  autoplay?: number;
   /** width / height. Omit to let each slide take its natural height. */
   aspectRatio?: number;
   /** Fallback caption, used by any slide without its own. */
@@ -51,8 +60,25 @@ export function JeniFigureCarousel({
   label: string;
 }) {
   const [index, setIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
+  // Bumped on every manual page so the interval effect re-runs and the
+  // clock starts over from the slide the reader chose.
+  const [epoch, setEpoch] = useState(0);
   const count = slides.length;
-  const go = (delta: number) => setIndex((i) => (i + delta + count) % count);
+  const step = (delta: number) =>
+    setIndex((i) => (i + delta + count) % count);
+  const go = (delta: number) => {
+    step(delta);
+    setEpoch((e) => e + 1);
+  };
+
+  useEffect(() => {
+    if (!autoplay || paused || count < 2) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const id = window.setInterval(() => step(1), autoplay);
+    return () => window.clearInterval(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autoplay, paused, count, epoch]);
   const slide = slides[index];
   const text = slide.caption ?? caption;
 
@@ -73,6 +99,10 @@ export function JeniFigureCarousel({
       aria-roledescription="carousel"
       aria-label={label}
       onKeyDown={onKey}
+      onPointerEnter={() => setPaused(true)}
+      onPointerLeave={() => setPaused(false)}
+      onFocus={() => setPaused(true)}
+      onBlur={() => setPaused(false)}
     >
       <div
         className="overflow-hidden rounded-xl"
