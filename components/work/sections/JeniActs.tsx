@@ -921,11 +921,6 @@ function Decision() {
         </p>
       </div>
 
-      <p className="text-[16px] text-ink">
-        Jeni could now identify where Bravo had a reason to act, who could
-        change the outcome, and whether acting made economic sense.
-      </p>
-
       <StepHeading
         marker="05 / Turn the Decision Into Action"
         title="A recommendation only mattered if the team could do something with it."
@@ -976,25 +971,15 @@ function Decision() {
           The recommendation stayed close to the evidence, with the underlying
           reasoning available for the team to inspect before acting.
         </p>
-      </div>
-
-      <div className="flex flex-col gap-3">
-        <p className="text-[16px] font-semibold text-ink">
-          SEE &rarr; UNDERSTAND &rarr; CONNECT &rarr; EVALUATE &rarr; ACT
-        </p>
 
         <p className="text-[16px] text-ink">
-          This became Jeni&rsquo;s core interaction model: move from fragmented
-          signals to an inspectable decision, then make the next action easier
-          to take.
+          Actionable did not mean automatic. The team still controlled whether
+          and how to intervene.
         </p>
       </div>
 
-      <p className="text-[16px] text-ink">
-        Jeni had started by turning messy public information into structured
-        merchant signals. It had evolved into a system for turning
-        Bravo&rsquo;s own marketplace signals into decisions the team could
-        inspect and act on.
+      <p className="text-[16px] font-semibold text-ink">
+        SEE &rarr; UNDERSTAND &rarr; CONNECT &rarr; EVALUATE &rarr; ACT
       </p>
 
       {/* TODO — what this act still needs:
