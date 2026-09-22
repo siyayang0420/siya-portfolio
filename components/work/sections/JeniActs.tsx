@@ -663,11 +663,18 @@ function Decision() {
       </div>
 
       <figure className="m-0 flex flex-col gap-2">
-        <ZoomableImage
-          src="/work/jeni/dashboard-opportunities.png"
-          alt="Further down Jeni's dashboard: Campaign opportunities ranked by net margin — spend threshold, visit frequency, happy hour — with estimated margin for each; three health panels for merchants, customers, and business impact; and an Insights list of what Jeni noticed this window."
-          className="w-full rounded-xl border border-line"
-        />
+        <div className="grid gap-3">
+          <ZoomableImage
+            src="/work/jeni/dashboard-opportunities.png"
+            alt="Jeni's Campaign opportunities panel — the best set that can run at once: if all eight run, $134,159 of spend across 8 campaigns for +$8k net margin; the top three ranked by net margin — spend threshold at +$5k, visit frequency at +$1k, happy hour at +$781 — with five more in the runnable set."
+            className="w-full rounded-xl border border-line"
+          />
+          <ZoomableImage
+            src="/work/jeni/dashboard-health.png"
+            alt="Three health panels from Jeni's dashboard. Merchant health: 426 need attention, 387 with upside, 198 sitting on credit. Customer health: 3,894 need attention, 447 new customers, 81 merchants worth promoting. Business impact: 0 visits Bravo can evidence, $7,951,323 of credit used, $1,136,103 Bravo margin realised as credit burns."
+            className="w-full rounded-xl border border-line"
+          />
+        </div>
         <figcaption className="text-[12px] text-muted">
           Instead of another dashboard to explore, Jeni opened with what Bravo
           could act on.
@@ -714,7 +721,7 @@ function Decision() {
       <figure className="m-0 flex flex-col gap-2">
         <ZoomableImage
           src="/work/jeni/merchant-credit.png"
-          alt="One merchant's Credit panel in Jeni: runway, burn speed at $206 a day, outstanding balance, and batch size; a breakdown of where the batch went via balance and bonus; and a 60-day balance line that saw-tooths — three top-ups of $4k, each burned down to zero across the 5-day threshold band."
+          alt="One merchant's Credit panel in Jeni: 14 days of runway emptying 5 October, burn speed $152 a day marked above the healthy band, $2,274 outstanding, a $2,952 batch from $4,000 cash; a breakdown of where the batch went via balance and bonus; and a 60-day balance line that saw-tooths through two $4k top-ups, with a dashed projection running to empty and a footer naming the assumption at 75% confidence."
           className="w-full rounded-xl border border-line"
         />
         <figcaption className="text-[12px] text-muted">
@@ -739,7 +746,7 @@ function Decision() {
       <figure className="m-0 flex flex-col gap-2">
         <ZoomableImage
           src="/work/jeni/merchant-operations.png"
-          alt="One merchant's Operations panel in Jeni: customer mix — 80.3% of visits are repeat diners — beside service mix split across morning, lunch, and dinner; a row of 60-day visits, average spend, lifetime visits, and rating; and a Traffic bar chart of visits by day with the busiest day highlighted."
+          alt="One merchant's Operations panel in Jeni: customer mix — only 36% of visits come back, tagged Mostly new — beside service mix split across morning, lunch, and dinner, with morning flagged n=1; a row of 491 visits over 60 days, $21.50 average spend, 200 lifetime visits, and a 4.79 rating; and a Traffic bar chart of visits by day with the busiest day, Saturday 29 August, highlighted."
           className="w-full rounded-xl border border-line"
         />
         <figcaption className="text-[12px] text-muted">
@@ -770,7 +777,7 @@ function Decision() {
       <figure className="m-0 flex flex-col gap-2">
         <ZoomableImage
           src="/work/jeni/user-intelligence.png"
-          alt="Jeni's User Intelligence page: 9,292 of 43,282 users flagged, split into at risk, top-up ready, and high value; a Top-ups panel with amount topped up, bonus granted, cost per dollar loaded, and busiest rung; a 30-day bar chart of balance loaded versus bonus granted; and a table of top-up rungs."
+          alt="Jeni's User Intelligence page: 9,041 of 43,320 users flagged at score 40 or above, split into 6,949 at risk, 549 top-up ready, and 884 high value; a Top-ups panel for the last 30 days — $288,355 topped up, $21,933 bonus granted, $0.08 cost per dollar loaded, $50 busiest rung — and a bar chart of balance loaded versus bonus granted by day."
           className="w-full rounded-xl border border-line"
         />
         <figcaption className="text-[12px] text-muted">
@@ -820,7 +827,7 @@ function Decision() {
       <figure className="m-0 flex flex-col gap-2">
         <ZoomableImage
           src="/work/jeni/ranked-users.png"
-          alt="Jeni's Ranked users table: 9,311 flagged diners filtered by at risk, top-up, high value, and growth, with a banner that 9,311 diner-specific plays are ready. Each row shows the diner, their signal, a suggested action such as VIP perk, top-up bonus, or win-back bonus with a score and confidence, the net to Bravo, and network value."
+          alt="Eight rows of Jeni's Ranked users table: each diner with their average spend or inactivity, a High value or Inactive signal, a suggested action of VIP perk or win-back bonus, net to Bravo from +$874 down to +$684, and network value with diners referred. A hover tooltip on one action reads: Card boost — spend $210 at Bar Bravo, $15 in balance."
           className="w-full rounded-xl border border-line"
         />
         <figcaption className="text-[12px] text-muted">
@@ -856,7 +863,7 @@ function Decision() {
       <figure className="m-0 flex flex-col gap-2">
         <ZoomableImage
           src="/work/jeni/net-to-bravo.png"
-          alt="A crop of Jeni's ranked users table: six rows with their signal, suggested action and confidence, net to Bravo sorted from +$7.4k down to +$1.6k, and network value — including one VIP perk at +$7.4k net whose network value is −$812."
+          alt="A crop of Jeni's ranked users table: seven rows with their signal — churn risk, referral potential, inactive, high value — a suggested action of re-engagement offer, referral invite, win-back bonus, or VIP perk, net to Bravo sorted from +$667 down to +$620, and network value with diners referred — including one referral invite at +$655 net whose network value is −$21."
           className="w-full rounded-xl border border-line"
         />
         <figcaption className="text-[12px] text-muted">
@@ -903,22 +910,6 @@ function Decision() {
         was worth taking.
       </p>
 
-      <p className="text-[16px] font-semibold text-ink">
-        The economics came from the operating model itself.
-      </p>
-
-      <figure className="m-0 flex flex-col gap-2">
-        <ZoomableImage
-          src="/work/jeni/credit-book.png"
-          alt="Jeni's Credit book and Transaction flow panels: $8.47m of credit bought from merchants — $7.98m used, $491k outstanding, $1.14m Bravo margin, 0.8% average cashback — above a 30-day view of credit used, average bill, biggest bill, and bonus inside it, with a stacked bar chart of credit used per day by cuisine."
-          className="w-full rounded-xl border border-line"
-        />
-        <figcaption className="text-[12px] text-muted">
-          Credit usage, Bravo margin, cashback, and transaction behavior
-          provided the economic context behind each recommendation.
-        </figcaption>
-      </figure>
-
       <div className="flex flex-col gap-3">
         <p className="text-[16px] font-semibold text-ink">
           The decision model was now complete.
@@ -948,15 +939,16 @@ function Decision() {
         </p>
 
         <p className="text-[16px] text-ink">
-          The final design problem was turning that reasoning into something
-          the team could actually act on.
+          The final step was turning that reasoning into a specific next move
+          the team could evaluate and act on.
         </p>
       </div>
 
       <JeniFigureCarousel
         label="Recommended action cards"
         aspectRatio={2184 / 652}
-        caption="Jeni compressed the underlying evidence into a specific next move without hiding the reasoning behind it."
+        autoplay={2500}
+        caption="Each recommendation shows why action matters now, what to do next, and what could change if it works."
         slides={[
           {
             src: '/work/jeni/recommended-action.png',
@@ -973,30 +965,18 @@ function Decision() {
         ]}
       />
 
-      <p className="text-[16px] text-ink">
-        I designed each recommendation around three questions: why does this
-        matter now, what should Bravo consider doing, and what could change if
-        it works. The action stayed close to the evidence, with the underlying
-        reasoning available when the team needed to inspect it.
-      </p>
+      <div className="flex flex-col gap-3">
+        <p className="text-[16px] text-ink">
+          I structured each recommendation around three questions: why does
+          this matter now, what should Bravo consider doing, and what could
+          change if it works.
+        </p>
 
-      <figure className="m-0 flex flex-col gap-2">
-        <ZoomableImage
-          src="/work/jeni/ranked-users-network.png"
-          alt="Jeni's Ranked users panel sorted by network value: 9,017 diner-specific plays ready with a Create campaign button; rows for Eric, littleandy, Annpanda33, nessa, and winnie1127, each with a signal, a suggested action such as VIP perk or win-back bonus, net to Bravo, and a negative network value with the number of diners referred."
-          className="w-full rounded-xl border border-line"
-        />
-        <figcaption className="text-[12px] text-muted">
-          A ranked opportunity could move directly into an intervention
-          instead of ending as another insight to interpret.
-        </figcaption>
-      </figure>
-
-      <p className="text-[16px] text-ink">
-        The same pattern extended to growth opportunities. Signals such as
-        inactivity, top-up behavior, or customer value could become a suggested
-        intervention, then move directly into campaign creation.
-      </p>
+        <p className="text-[16px] text-ink">
+          The recommendation stayed close to the evidence, with the underlying
+          reasoning available for the team to inspect before acting.
+        </p>
+      </div>
 
       <div className="flex flex-col gap-3">
         <p className="text-[16px] font-semibold text-ink">
