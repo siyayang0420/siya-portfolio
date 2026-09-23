@@ -767,10 +767,7 @@ function Decision() {
         </p>
 
         <p className="text-[16px] text-ink">
-          I designed the diner side of Jeni around behavioral signals&mdash;
-          inactivity, top-up likelihood, value, visit history, and merchant
-          affinity&mdash;so the system could identify not just an audience, but
-          the diners most relevant to a specific merchant need.
+          I designed the diner side of Jeni around behavioral signals such as inactivity, top-up activity, customer value, visit history, and merchant affinity. This helped the system identify not just an audience, but the diners most relevant to a specific merchant need.
         </p>
       </div>
 
@@ -782,7 +779,7 @@ function Decision() {
         />
         <figcaption className="text-[12px] text-muted">
           Instead of treating diners as a list of accounts, Jeni organized them
-          by behavioral state: who was drifting away, likely to top up, or
+          by behavioral state: who was drifting away, showing top up signal or
           worth retaining.
         </figcaption>
       </figure>
@@ -937,13 +934,19 @@ function Decision() {
           The final step was turning that reasoning into a specific next move
           the team could evaluate and act on.
         </p>
+
+        <p className="text-[16px] text-ink">
+          The same framework could support different kinds of decisions, from
+          creating demand to replenishing credit to maintaining a healthy
+          state.
+        </p>
       </div>
 
       <JeniFigureCarousel
         label="Recommended action cards"
         aspectRatio={2184 / 652}
         autoplay={2500}
-        caption="Each recommendation shows why action matters now, what to do next, and what could change if it works."
+        caption="The same framework supported different decisions: create demand, replenish credit, or simply keep monitoring. Each recommendation explained why it mattered, what to do next, and what could change."
         slides={[
           {
             src: '/work/jeni/recommended-action.png',
