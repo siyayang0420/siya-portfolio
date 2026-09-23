@@ -1007,8 +1007,8 @@ function Outcome() {
         </p>
 
         <p className="text-[16px] text-ink">
-          The product is now part of the CTO&rsquo;s roadmap and has been
-          included in the CEO&rsquo;s investor pitch deck as part of
+          The product is now part of the CEO&rsquo;s roadmap and has been
+          included in the investor pitch deck as part of
           Bravo&rsquo;s evolving intelligence capabilities.
         </p>
       </div>
