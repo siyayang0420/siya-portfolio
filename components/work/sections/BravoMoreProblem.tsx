@@ -84,16 +84,24 @@ export function BravoMoreProblem() {
         ))}
       </div>
 
-      {/* Closes the act on the same 20px-statement / 16px-body pair the
-          "complexity didn't stop at the checkout" turn uses, and hands off to
-          the Challenge. Deliberately adds no new facts — it names what the
-          three cards above already showed. */}
+      {/* PARKED — the midnight-campaign anecdote: the coordination statement,
+          its setup, the timeline figure and the paragraph that bounds it. The
+          act now ends on the three cards above. Kept rather than deleted; the
+          inner comments below lost their own markers because a JSX comment
+          cannot nest one.
+
+          · Closed the act on the same 20px-statement / 16px-body pair the
+            "complexity didn't stop at the checkout" turn uses, and handed off
+            to the Challenge. Deliberately added no new facts — it named what
+            the three cards above already showed.
+
       <p className="text-[20px] font-semibold text-ink">
         We had already seen what manual coordination could cost.
       </p>
 
-      {/* Sets up the timeline below: names the two separate switches whose
-          gap the figure then measures. */}
+          · Set up the timeline below: named the two separate switches whose
+            gap the figure then measured.
+
       <p className="text-[16px] text-ink">
         Limited-time campaigns often ended at midnight, but there was no single
         control to end them across the product. Engineering had to disable the
@@ -103,14 +111,15 @@ export function BravoMoreProblem() {
 
       <BravoCampaignGap />
 
-      {/* Bounds the anecdote and hands off to the Challenge: the incident is
-          evidence about coordination, not about cashback. */}
+          · Bounded the anecdote and handed off to the Challenge: the incident
+            is evidence about coordination, not about cashback.
+
       <p className="text-[16px] text-ink">
         This wasn’t a cashback-rule failure, but it exposed the risk of
         managing campaign logic across separate systems. For the rewards
         redesign, I wanted to avoid carrying the same kind of coordination into
         checkout.
-      </p>
+      </p> */}
 
       {/* <p className="text-[16px] text-ink">
         Each one held a piece of it — the campaign, the rules, the ledger — and
