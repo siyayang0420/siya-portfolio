@@ -596,7 +596,8 @@ function Challenge() {
         also depended on whether the expected value justified the cost.
       </p>
 
-      <JeniFactors />
+      {/* <JeniFactors /> */}
+      <JeniFactors heading="" plain />
 
       <p className="text-[16px] font-semibold text-ink">
         This became the product thesis for Jeni.

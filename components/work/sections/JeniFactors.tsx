@@ -19,12 +19,18 @@ const FACTORS: { label: string; question: string }[] = [
 
 export function JeniFactors({
   heading = 'What I found',
+  plain = false,
 }: {
+  /** Empty string drops the heading, for a second row under the first. */
   heading?: string;
+  /** Flat icons on white, no isometric field. */
+  plain?: boolean;
 }) {
   return (
     <figure className="m-0 flex flex-col gap-4">
-      <p className="text-[16px] font-semibold text-ink">{heading}</p>
+      {heading && (
+        <p className="text-[16px] font-semibold text-ink">{heading}</p>
+      )}
       <div className="flex w-full flex-col gap-3 md:flex-row md:items-stretch md:gap-1.5">
         {FACTORS.map((factor, i) => (
           <div key={factor.label} className="contents">
@@ -36,7 +42,7 @@ export function JeniFactors({
               />
             )}
             <div className="flex min-w-0 flex-1 flex-col rounded-2xl bg-white px-5 pb-5 pt-4">
-              <FactorArt index={i} />
+              <FactorArt index={i} plain={plain} />
               <div className="mt-auto flex flex-col gap-1 pt-4">
                 <p className="text-[16px] font-semibold text-ink">
                   {factor.label}
