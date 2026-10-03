@@ -121,6 +121,13 @@ export default async function ProjectPage({
           <span className="text-[16px] uppercase tracking-[0.08em] text-muted">
             {project.breadcrumb}
           </span>
+          {/* Sentence case and no letterspacing: it is an aside, not part of
+              the label, and setting it as caps would read as more breadcrumb. */}
+          {project.breadcrumbNote && (
+            <span className="text-[14px] text-muted">
+              {project.breadcrumbNote}
+            </span>
+          )}
         </div>
         <h1 className="font-semibold text-[clamp(28px,3vw,32px)] mb-6">
           {project.heading}

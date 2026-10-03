@@ -43,6 +43,11 @@ export type Project = {
   /** Product logo shown beside the breadcrumb. Omit for none. */
   mark?: 'bravo';
   /**
+   * A status aside after the breadcrumb, for a study that is still being
+   * written. Omit once it is finished rather than leaving a stale note up.
+   */
+  breadcrumbNote?: string;
+  /**
    * Cover artwork for the hero band. When set it replaces the `imgTitle`
    * wordmark treatment; `heroBg` still shows while the image loads.
    */
@@ -109,6 +114,7 @@ export const projects: Project[] = [
     heading:
       'Turning fragmented marketplace signals into decisions Bravo can act on.',
     breadcrumb: 'Jeni — Marketplace Intelligence',
+    breadcrumbNote: '(Still building at the moment)',
     year: '2026',
     role: 'Product Designer & Builder',
     collaborators: 'CEO · 1 Backend Engineer',
@@ -117,7 +123,7 @@ export const projects: Project[] = [
     // overview on it rather than rendering the whole string into one <p>,
     // where the break would have collapsed to a single space.
     overview:
-      "Bravo is a payments and dining rewards marketplace connecting diners with 500+ restaurant partners across Metro Vancouver. Despite years of customer, merchant, and transaction data, the team lacked a way to understand what those relationships meant—or where to act.\n\nWith no PM, predefined requirements, or predetermined solution, I defined, designed, and built Jeni end to end: an AI-powered intelligence system that turns fragmented marketplace signals into actionable opportunities.",
+      "Bravo is a payments and dining rewards marketplace connecting diners with 500+ restaurant partners across Metro Vancouver. Despite years of customer, merchant, and transaction data, the team lacked a way to understand what those relationships meant—or where to act.\n\nWith no PM, predefined requirements, or predetermined solution, I defined, designed, and built Jeni end to end: an AI-powered intelligence system that turns Bravo's fragmented marketplace signals into actionable opportunities.",
     tags: ['SaaS', 'Dashboard'],
     cardBg: '#0d0d0d',
     heroBg: 'linear-gradient(135deg, #0d0d0d, #1a1a1a)',

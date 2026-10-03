@@ -996,10 +996,6 @@ function Decision() {
         </p>
       </div>
 
-      <p className="text-[16px] font-semibold text-ink">
-        SEE &rarr; UNDERSTAND &rarr; CONNECT &rarr; EVALUATE &rarr; ACT
-      </p>
-
       {/* TODO — what this act still needs:
           · where the signals come from, and how they are judged reliable
           · what you deliberately left out of scope
