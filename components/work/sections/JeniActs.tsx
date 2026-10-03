@@ -44,9 +44,18 @@ function Heading({ eyebrow, title }: { eyebrow: string; title: string }) {
  * chapters of an act, so they borrow the act heading's rhythm at a smaller
  * size rather than inventing a third.
  */
-function StepHeading({ marker, title }: { marker: string; title: string }) {
+function StepHeading({
+  id,
+  marker,
+  title,
+}: {
+  /** Deep-link target, and what the progress pill's list jumps to. */
+  id?: string;
+  marker: string;
+  title: string;
+}) {
   return (
-    <div className="flex flex-col gap-1">
+    <div id={id} className="flex scroll-mt-[135px] flex-col gap-1">
       <p className="flex items-center gap-3 text-[16px] font-semibold text-ink">
         <span
           aria-hidden="true"
@@ -646,6 +655,7 @@ function Decision() {
       </div>
 
       <StepHeading
+        id="step-see"
         marker="01 / See What Needs Attention"
         title="Start with the exceptions, not the database."
       />
@@ -683,6 +693,7 @@ function Decision() {
       </figure>
 
       <StepHeading
+        id="step-understand"
         marker="02 / Understand Why"
         title="Show the evidence behind the signal."
       />
@@ -757,6 +768,7 @@ function Decision() {
       </figure>
 
       <StepHeading
+        id="step-connect"
         marker="03 / Find Who Can Move It"
         title="Connect merchant need with diner opportunity."
       />
@@ -835,6 +847,7 @@ function Decision() {
       </figure>
 
       <StepHeading
+        id="step-evaluate"
         marker="04 / Make the Economics Visible"
         title="A useful intervention still had to be worth running."
       />
@@ -920,6 +933,7 @@ function Decision() {
       </div>
 
       <StepHeading
+        id="step-act"
         marker="05 / Turn the Decision Into Action"
         title="A recommendation only mattered if the team could do something with it."
       />

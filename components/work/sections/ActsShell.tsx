@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
-import { ArrowUp } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import ActPill from './ActPill';
 import { cn } from '@/lib/cn';
 import { PILL } from '@/components/ui/pill';
@@ -51,6 +51,8 @@ export function ActsShell({
   // four named refs this started with, so the shell doesn't care how many acts
   // a case study has.
   const actRefs = useRef<(HTMLDivElement | null)[]>([]);
+  // The pill and the chevron together, so a click on either counts as inside.
+  const menuRef = useRef<HTMLDivElement>(null);
 
   const [active, setActive] = useState(0);
   // 0 → hero untouched, 1 → fully covered by the panel above it.
@@ -58,6 +60,8 @@ export function ActsShell({
   // Bar stays hidden until the first heading scrolls away, and hides again
   // once the last act has scrolled past.
   const [barVisible, setBarVisible] = useState(false);
+  // The pill opened out into the full list of acts.
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const ACTIVATION_LINE = 160; // px from viewport top (below nav + bar)
@@ -119,12 +123,44 @@ export function ActsShell({
     };
   }, [acts.length]);
 
-  const scrollToAct = useCallback((index: number) => {
-    const el = actRefs.current[index];
+  // A menu that outlives the bar it hangs off would float on its own.
+  useEffect(() => {
+    if (!barVisible) setOpen(false);
+  }, [barVisible]);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false);
+    };
+    const onDown = (e: PointerEvent) => {
+      if (!menuRef.current?.contains(e.target as Node)) setOpen(false);
+    };
+    window.addEventListener('keydown', onKey);
+    window.addEventListener('pointerdown', onDown);
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      window.removeEventListener('pointerdown', onDown);
+    };
+  }, [open]);
+
+  const scrollToEl = useCallback((el: Element | null) => {
     if (!el) return;
     const top = el.getBoundingClientRect().top + window.scrollY - 135;
     window.scrollTo({ top, behavior: 'smooth' });
   }, []);
+
+  const scrollToAct = useCallback(
+    (index: number) => scrollToEl(actRefs.current[index]),
+    [scrollToEl],
+  );
+
+  /** The open list: one row per act, addressed by its section id. */
+  const items = acts.map((act, i) => ({
+    label: act.label,
+    id: `the-${act.id}`,
+    active: i === active,
+  }));
 
   return (
     <section className="border-t border-line mt-10">
@@ -134,41 +170,55 @@ export function ActsShell({
       <nav
         aria-label="Case study progress"
         aria-hidden={!barVisible}
-        className={`fixed top-[76px] left-0 right-0 z-40 flex items-center justify-center gap-2 transition-all duration-300 ease-out ${
+        className={`fixed top-[76px] left-0 right-0 z-40 flex items-start justify-center gap-2 transition-all duration-300 ease-out ${
           barVisible
             ? 'opacity-100 translate-y-0'
             : 'opacity-0 -translate-y-2 pointer-events-none'
         }`}
       >
-        <ActPill
-          labels={acts.map((a) => a.label)}
-          activeIndex={active}
-          progress={progress}
-          width={pillWidth}
-          // The pill carries the jump: it steps to the next act, and wraps at
-          // the end.
-          onClick={() => scrollToAct((active + 1) % acts.length)}
-        />
-
-        {/* Back to top. Same PILL surface as the site's nav buttons, squared
-            off to a circle at the progress pill's own 44px height so the two
-            sit as a pair — and unlike the progress pill it keeps PILL's accent
-            hover, because it is a plain action rather than a status readout. */}
-        <button
-          type="button"
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          aria-label="Back to top"
-          className={cn(
-            PILL,
-            'size-11 p-0 duration-200 active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4f83f7]/40',
-          )}
-        >
-          <ArrowUp
-            className="size-[18px] shrink-0"
-            strokeWidth={1.75}
-            aria-hidden="true"
+        <div ref={menuRef} className="flex items-center gap-2">
+          <ActPill
+            labels={acts.map((a) => a.label)}
+            activeIndex={active}
+            progress={progress}
+            width={pillWidth}
+            open={open}
+            // Closed, the pill carries the jump: it steps to the next act and
+            // wraps at the end. Open, each row carries its own.
+            onClick={() => scrollToAct((active + 1) % acts.length)}
+            items={items}
+            onSelect={(id) => {
+              scrollToEl(document.getElementById(id));
+              setOpen(false);
+            }}
           />
-        </button>
+
+          {/* Opens the pill out into the full list. Same PILL surface as the
+              site's nav buttons, squared off to a circle at the progress
+              pill's own 44px height so the two sit as a pair — and unlike the
+              progress pill it keeps PILL's accent hover, because it is a plain
+              action rather than a status readout. */}
+          <button
+            type="button"
+            onClick={() => setOpen((o) => !o)}
+            aria-label={open ? 'Hide sections' : 'Show sections'}
+            aria-expanded={open}
+            aria-controls="act-list"
+            className={cn(
+              PILL,
+              'size-11 self-start p-0 duration-200 active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4f83f7]/40',
+            )}
+          >
+            <ChevronDown
+              className={cn(
+                'size-[18px] shrink-0 transition-transform duration-300 ease-out',
+                open && 'rotate-180',
+              )}
+              strokeWidth={1.75}
+              aria-hidden="true"
+            />
+          </button>
+        </div>
       </nav>
 
       {/* ── Lead visual, if the study has one ────────────────────────
