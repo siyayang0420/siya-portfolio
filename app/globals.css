@@ -222,8 +222,15 @@ body {
    fill on a saturated gradient reads as a rendering fault rather than a bevel.
    One declaration block for both so the masthead and the footer can never
    drift apart. */
+/* The paint itself — the two stacked backgrounds and the sweep — is one
+   block shared by everything wearing the treatment: the footer headings,
+   the hero masthead, and `.engrave-glyph` for an icon. Only the way it is
+   clipped differs, and that is the only thing the rules below override. A
+   second copy of these gradients anywhere is how the masthead and an icon
+   drift apart. */
 .engraved,
-[data-hero-style='engraved'] .hero-engrave {
+[data-hero-style='engraved'] .hero-engrave,
+.engrave-glyph {
   background-image: linear-gradient(
       90deg,
       transparent,
@@ -238,13 +245,6 @@ body {
       var(--engrave-to, #dddddd) 130%
     );
   background-size: 200% 100%, 100% 100%;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-  text-shadow:
-    0 1px 2px rgba(255, 255, 255, 0.1),
-    0 0 2.3px rgba(255, 255, 255, 0.25);
   /* One baton passed between the three headings rather than three independent
      sweeps. Over a 12s cycle each heading sweeps for 3s (25% of it) and parks
      off-screen for the other 9s. Starts are 0s / 5s / 8s, so the sweep length
@@ -257,6 +257,42 @@ body {
      turn. It holds the 0% keyframe (off-screen) instead. */
   animation: engrave-sweep var(--engrave-cycle, 16.8s) linear infinite backwards;
   animation-delay: var(--engrave-delay, 0s);
+}
+
+/* Type clips the paint to its own glyphs. The white text-shadow is what
+   sells the bevel — it still paints even though the fill is transparent. */
+.engraved,
+[data-hero-style='engraved'] .hero-engrave {
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  text-shadow:
+    0 1px 2px rgba(255, 255, 255, 0.1),
+    0 0 2.3px rgba(255, 255, 255, 0.25);
+}
+
+/* A glyph clips it to a mask instead — the one substitution an icon needs,
+   since `background-clip: text` only ever clips to type. The bevel becomes
+   a pair of drop-shadows carrying the same two values the text-shadow does,
+   and the ramp takes the masthead's tighter pair so an icon beside that type
+   sits in the same tonal range rather than fading to the footer's #dddddd.
+   Its sweep is the masthead's continuous loop, not the footer's parked one:
+   an icon on its own has no baton to pass. */
+.engrave-glyph {
+  --engrave-from: #9695a0;
+  --engrave-to: #c9c8d0;
+  mask-image: var(--engrave-mask);
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-image: var(--engrave-mask);
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  filter: drop-shadow(0 1px 2px rgba(255, 255, 255, 0.1))
+    drop-shadow(0 0 2.3px rgba(255, 255, 255, 0.25));
+  animation: engrave-sweep-loop 5.6s linear infinite;
 }
 
 /* The footer's ramp is tuned for a 40–68px heading. The hero masthead is three
@@ -544,3 +580,4 @@ body {
     transition-duration: 0.001ms !important;
   }
 }
+
