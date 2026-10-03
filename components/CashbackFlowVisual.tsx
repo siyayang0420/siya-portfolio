@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { animate, motion, useMotionValue, useReducedMotion } from "framer-motion";
+import { animate, motion, useMotionValue } from "framer-motion";
+import { useLoopStep } from "./useLoopStep";
 import OfferCard, { BADGE_CX, CARD_W, type Variant } from "./work/cashback/OfferCard";
 
 /**
@@ -65,6 +66,23 @@ const S = {
   SPEND_130: 9,
   CLEAR: 10,
 } as const;
+
+/**
+ * The room behind the phone — one photograph per beat of the story, so the
+ * panel reads as a place the offer is being used in rather than a frosted
+ * rectangle. Cuts land on the card's own changes: the opening close-up, then
+ * each offer the engine expresses.
+ *
+ * `from` is the first step the scene covers; the list is walked backwards, so
+ * a scene holds until the next one starts.
+ */
+const SCENES = [
+  { from: 0, src: "/work/cashback/scene-1.webp" },
+  { from: 3, src: "/work/cashback/scene-2.webp" }, // the card reads "Every purchase"
+  { from: 7, src: "/work/cashback/scene-3.webp" }, // Happy hour
+  { from: 8, src: "/work/cashback/scene-4.webp" }, // Every 3 purchases
+  { from: 9, src: "/work/cashback/scene-5.webp" }, // Every $130 spent
+];
 
 /** The panel's centre, in the authoring space. Everything is anchored to it. */
 const CENTER_X = 300.5;
@@ -210,11 +228,11 @@ function RateCounter({ step }: { step: number }) {
 /* ───────────────────────────────────────────────────────────────────────── */
 
 export default function CashbackFlowVisual() {
-  const reduced = useReducedMotion();
-  const wrapRef = useRef<HTMLDivElement>(null);
-  const [step, setStep] = useState<number>(0);
-  const [onScreen, setOnScreen] = useState(true);
-  const [paused, setPaused] = useState(false);
+  // The loop, the off-screen stop, the pause and the reduced-motion gate all
+  // live in the hook; the ResizeObserver below hangs off the same ref.
+  const { step, paused, setPaused, reduced, ref: wrapRef } = useLoopStep(
+    STEPS.map((s) => s.ms),
+  );
 
   /**
    * Framer only server-renders an explicit `initial`; everything here is driven
@@ -225,22 +243,6 @@ export default function CashbackFlowVisual() {
    */
   const [ready, setReady] = useState(false);
   useEffect(() => setReady(true), []);
-
-  useEffect(() => {
-    const el = wrapRef.current;
-    if (!el) return;
-    const io = new IntersectionObserver(([e]) => setOnScreen(e.isIntersecting), {
-      rootMargin: "80px",
-    });
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-
-  useEffect(() => {
-    if (reduced || !onScreen || paused) return;
-    const id = setTimeout(() => setStep((n) => (n + 1) % STEPS.length), STEPS[step].ms);
-    return () => clearTimeout(id);
-  }, [step, reduced, onScreen, paused]);
 
   // Reduced motion gets a resolved frame, never the loop.
   const s = reduced ? S.SETTLE : step;
@@ -256,6 +258,12 @@ export default function CashbackFlowVisual() {
     ro.observe(el);
     return () => ro.disconnect();
   }, []);
+
+  // Walk backwards so each scene holds until the next one starts.
+  const sceneIndex = SCENES.reduce(
+    (found, scene, i) => (s >= scene.from ? i : found),
+    0,
+  );
 
   const snap = s === S.IDLE;
 
@@ -292,7 +300,7 @@ export default function CashbackFlowVisual() {
           : baseVariant(s);
 
   return (
-    // Two boxes because the two mount points size differently, and the split
+    // Three boxes because the two mount points size differently, and the split
     // is what lets the artwork be sized by *height* in both of them.
     //
     // Outer — the slot. On the desktop hero it is a flex item with a real
@@ -323,6 +331,42 @@ export default function CashbackFlowVisual() {
           caps that remain are honest ones: never wider than the artwork was
           drawn, so it is only ever scaled down, and never wider than the
           column. */}
+      {/* The panel. It takes the column's full width rather than the
+          artwork's, so the grey always runs the whole measure of the
+          chapter instead of leaving a margin either side of a portrait
+          frame. The artwork keeps its own ratio and centres inside it. */}
+      <div
+        className="relative flex h-full w-full items-center justify-center overflow-hidden"
+        style={{
+          borderRadius: 37 * scale,
+          // Still tokenised, and still the whole surface when a scene has not
+          // loaded: the photographs sit on top of this, so a failed image
+          // leaves the frosted panel the artwork was built against rather
+          // than a hole.
+          background: "var(--flow-panel, rgba(255,255,255,0.3))",
+          backdropFilter: "blur(8.05px)",
+          WebkitBackdropFilter: "blur(8.05px)",
+        }}
+      >
+      {/* All five are mounted and cross-faded on opacity. Swapping one `src`
+          would re-decode on every cut and flash the panel empty mid-story;
+          five stacked images decode once, and the browser composites the
+          fade. */}
+      {SCENES.map((scene, i) => (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          key={scene.src}
+          src={scene.src}
+          alt=""
+          aria-hidden="true"
+          draggable={false}
+          // The first is eager so the panel is never briefly bare; the rest
+          // have whole seconds of story before they are needed.
+          loading={i === 0 ? "eager" : "lazy"}
+          className="pointer-events-none absolute inset-0 size-full object-cover transition-opacity duration-700 ease-out motion-reduce:transition-none"
+          style={{ opacity: i === sceneIndex ? 1 : 0 }}
+        />
+      ))}
       <div
         ref={wrapRef}
         className="relative h-full"
@@ -330,18 +374,6 @@ export default function CashbackFlowVisual() {
           aspectRatio: `${W} / ${H}`,
           width: "auto",
           maxWidth: `min(${W}px, 100%)`,
-        }}
-      >
-      <div
-        className="absolute inset-0 overflow-hidden"
-        style={{
-          borderRadius: 37 * scale,
-          // Tokenised so the engraved hero can darken it. The wash value is a
-          // frosted white that reads against a saturated gradient; on paper it
-          // is white-on-white and the phone disappears into it.
-          background: "var(--flow-panel, rgba(255,255,255,0.3))",
-          backdropFilter: "blur(8.05px)",
-          WebkitBackdropFilter: "blur(8.05px)",
         }}
       >
         {/* Client-only — see `ready`. The frosted panel above stays server
