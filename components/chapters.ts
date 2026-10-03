@@ -6,7 +6,7 @@ export type Chapter = {
   blurb: string;
   /**
    * Which mockup to render on the stage. An empty string renders nothing —
-   * the two unwritten chapters sit bare until they have real project screens.
+   * a chapter sits bare until it has real project screens.
    */
   visual: string;
   /**
@@ -33,16 +33,7 @@ export const chapters: Chapter[] = [
     meta: "Jeni — Marketplace Intelligence",
     blurb:
       "Turning fragmented marketplace signals into decisions Bravo can act on.",
-    visual: "",
+    visual: "signals",
     slug: "building-an-ai-native-operations-platform",
-  },
-  {
-    id: "site",
-    name: "Marketing Site, End to End",
-    meta: "Design · Code · Growth",
-    blurb:
-      "Designed it, built it, wrote the copy, planned the SEO — then read the analytics and cut what wasn't earning its place. Revenue doubled.",
-    visual: "",
-    slug: null,
   },
 ];
