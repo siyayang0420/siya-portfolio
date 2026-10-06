@@ -228,6 +228,8 @@ export default function JeniChatVisual({
   const { step, paused, setPaused, reduced, ref: wrapRef } = useLoopStep(MS);
   // Reduced motion gets the finished answer, not the loop.
   const s = reduced ? S.HOLD : step;
+  const stepRef = useRef(s);
+  stepRef.current = s;
   const snap = s === S.IDLE;
 
   /**
@@ -276,11 +278,14 @@ export default function JeniChatVisual({
   const chipRef = useRef<HTMLDivElement>(null);
   const chipsRef = useRef<HTMLDivElement>(null);
   const tableRef = useRef<HTMLDivElement>(null);
+  const traceRef = useRef<HTMLDivElement>(null);
   const summaryRef = useRef<HTMLDivElement>(null);
   const [geo, setGeo] = useState({
     chip: { x: 9, y: 28, w: 250, h: 23 },
     /** Right edge of the widest question, in the window's own space. */
     chipsRight: 345,
+    /** Bottom of the finished trace, in the window's own space. */
+    traceBottom: 300,
     tableScroll: 280,
     summaryScroll: 420,
   });
@@ -298,7 +303,16 @@ export default function JeniChatVisual({
       if (c.offsetWidth === 0 || t.offsetHeight === 0) return;
       const tableScroll = Math.max(0, t.offsetTop - 6);
       const chips = [...(chipsRef.current?.children ?? [])] as HTMLElement[];
-      setGeo({
+      const tr = traceRef.current;
+      // The thinking shot is solved from this, so it is frozen while that
+      // shot is on screen: the "I'm reading…" row wraps to two lines and then
+      // settles to one, and re-reading the height mid-scene re-solved the
+      // zoom and made the camera pump in and out under the trace. Read in the
+      // settled layout and held, the shot stays put until the table arrives.
+      const st = stepRef.current;
+      const holding = st >= S.SEND && st < S.TABLE;
+      setGeo((prev) => ({
+        traceBottom: holding || !tr ? prev.traceBottom : tr.offsetTop + tr.offsetHeight,
         chip: { x: c.offsetLeft, y: c.offsetTop, w: c.offsetWidth, h: c.offsetHeight },
         chipsRight: Math.max(...chips.map((el) => el.offsetLeft + el.offsetWidth)),
         tableScroll,
@@ -308,7 +322,7 @@ export default function JeniChatVisual({
           tableScroll,
           m.offsetTop + m.offsetHeight - (WIN.h - COMPOSER_H - COMPOSER_INSET) + 10,
         ),
-      });
+      }));
     };
     // A ResizeObserver rather than a one-off read: it fires again when a
     // hidden mount is shown and when the web font swaps in, which are exactly
@@ -317,6 +331,7 @@ export default function JeniChatVisual({
     ro.observe(c);
     ro.observe(t);
     ro.observe(m);
+    if (traceRef.current) ro.observe(traceRef.current);
     measure();
     return () => ro.disconnect();
   }, [ready]);
@@ -360,8 +375,36 @@ export default function JeniChatVisual({
     x: panelLeft + FRAME_L * pw - closeS * WIN.x,
     y: FRAME_T * H - closeS * WIN.y,
   };
+  /**
+   * The thinking shot: held close while Jeni works, so the trace reads at a
+   * glance. The window's top sits at FRAME_T like the question close-up and
+   * it is centred across the panel; the scale is the largest that keeps both
+   * the whole window width (times and all) inside the panel's 91% and the
+   * whole trace above the panel's bottom 5% — so the newest step is never
+   * cropped off. Never looser than the reading shot.
+   */
+  const RUNNING_SLACK = 16; // the two-line "I'm reading…" row, before it settles to one
+  const thinkS = Math.max(
+    readS,
+    Math.min(
+      2.6,
+      (0.91 * pw) / WIN.w,
+      ((0.95 - FRAME_T) * H) / (geo.traceBottom + RUNNING_SLACK),
+    ),
+  );
+  const THINK = {
+    scale: thinkS,
+    x: panelLeft + (pw - thinkS * WIN.w) / 2 - thinkS * WIN.x,
+    y: FRAME_T * H - thinkS * WIN.y,
+  };
   const camera =
-    s >= S.ZOOM && s <= S.CLICK ? CLOSE_UP : s >= S.SEND && s < S.CLEAR ? READ : WIDE;
+    s >= S.ZOOM && s <= S.CLICK
+      ? CLOSE_UP
+      : s >= S.SEND && s < S.TABLE
+        ? THINK
+        : s >= S.TABLE && s < S.CLEAR
+          ? READ
+          : WIDE;
 
   /* ── Cursor, in the window's own space so it rides the camera ── */
   const tip = {
@@ -445,7 +488,15 @@ export default function JeniChatVisual({
                 initial={false}
                 animate={camera}
                 transition={
-                  snap ? { duration: 0 } : { duration: s === S.ZOOM ? 1.1 : 0.85, ease: EASE_IN_OUT }
+                  snap
+                    ? { duration: 0 }
+                    : {
+                        // ZOOM is the slow push onto the question; TABLE matches
+                        // the window's 1s scroll so the pull-back and the move
+                        // down to the table are a single camera move.
+                        duration: s === S.ZOOM ? 1.1 : s === S.TABLE ? 1.0 : 0.85,
+                        ease: EASE_IN_OUT,
+                      }
                 }
               >
                 {/* ── The app window ────────────────────────────────── */}
@@ -526,7 +577,7 @@ export default function JeniChatVisual({
                     </motion.div>
 
                     {/* The trace. */}
-                    <div className="relative" style={{ marginTop: 9 }}>
+                    <div ref={traceRef} className="relative" style={{ marginTop: 9 }}>
                       {/* Appears once the work is done, as the collapsible
                           summary of it. Its line is reserved from the start
                           so the steps never jump when it arrives. */}
