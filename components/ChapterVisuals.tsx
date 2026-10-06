@@ -2,6 +2,7 @@
 
 import CashbackFlowVisual from "./CashbackFlowVisual";
 import JeniSignalVisual from "./JeniSignalVisual";
+import JeniChatVisual from "./JeniChatVisual";
 
 import {
   ArrowUpRight,
@@ -386,6 +387,7 @@ function RecapVisual() {
 const visuals: Record<string, () => React.ReactElement> = {
   "reward-engine": CashbackFlowVisual,
   signals: JeniSignalVisual,
+  "jeni-chat": JeniChatVisual,
   briefing: BriefingVisual,
   "catch-up": CatchUpVisual,
   "action-plan": ActionPlanVisual,

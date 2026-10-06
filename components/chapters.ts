@@ -19,6 +19,15 @@ export type Chapter = {
 
 export const chapters: Chapter[] = [
   {
+    id: "copilot",
+    name: "Building an AI-native operations platform",
+    meta: "Jeni — Marketplace Intelligence",
+    blurb:
+      "Turning fragmented marketplace signals into decisions Bravo can act on.",
+    visual: "jeni-chat",
+    slug: "building-an-ai-native-operations-platform",
+  },
+  {
     id: "cashback",
     name: "Simplifying a consumer fintech reward engine",
     meta: "Bravo Rewards App",
@@ -26,14 +35,5 @@ export const chapters: Chapter[] = [
       "Redesigning a reward system that feels simple to users while staying powerful behind the scenes.",
     visual: "reward-engine",
     slug: "simplifying-a-consumer-fintech-reward-engine",
-  },
-  {
-    id: "copilot",
-    name: "Building an AI-native operations platform",
-    meta: "Jeni — Marketplace Intelligence",
-    blurb:
-      "Turning fragmented marketplace signals into decisions Bravo can act on.",
-    visual: "signals",
-    slug: "building-an-ai-native-operations-platform",
   },
 ];
