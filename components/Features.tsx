@@ -78,9 +78,10 @@ export default function Features() {
   return (
     <section
       id="features"
-      // Same white as the panel above; a hairline is the only thing marking the
-      // boundary. The bottom rounds off to reveal the footer grey behind.
-      className="relative z-10 rounded-b-[2.5rem] border-t border-black/[0.07] bg-white px-3 pb-28 pt-32"
+      // Same white as the panel above, and now no rule between them: with the
+      // ethos copy parked there is nothing on the other side of the hairline
+      // for it to separate. The bottom rounds off to reveal the footer grey.
+      className="relative z-10 rounded-b-[2.5rem] bg-white px-3 pb-28 pt-32"
     >
       {/* Same gutter scale as the Ethos copy above (px-3 sheet inset + this),
           so both sections share one left edge. */}
@@ -92,13 +93,13 @@ export default function Features() {
           Selected AI Experiences
         </h2>
 
-        {/* Three equal columns. The other two experiments were pulled, so the
-            orb card stands in for them until real ones land — each copy is an
+        {/* Two equal columns. The other experiments were pulled, so the orb
+            card stands in for them until real ones land — each copy is an
             independent instance with its own state, which also means its own
-            WebGL context. Three is comfortably inside the browser's limit, but
-            it is a reason not to leave the placeholders here indefinitely. */}
-        <div className="mt-12 grid gap-4 md:grid-cols-3">
-          {[0, 1, 2].map((i) => (
+            WebGL context. A reason not to leave the placeholders here
+            indefinitely. */}
+        <div className="mt-12 grid gap-4 md:grid-cols-2">
+          {[0, 1].map((i) => (
             <OrbCard key={i} />
           ))}
         </div>

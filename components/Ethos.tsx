@@ -112,8 +112,19 @@ export default function Ethos() {
       <div className="relative overflow-hidden rounded-t-[2rem]">
         <div
           ref={copyRef}
-          className="ethos-copy relative flex min-h-screen flex-col justify-center px-8 py-32 sm:px-14 lg:px-20"
+          // `min-h-screen py-32` while the copy below is parked: with nothing
+          // in it that is a blank screen between the hero and Features. The
+          // section still slides over the pin, it just no longer reserves a
+          // viewport for text that is not there. Restore both when the copy
+          // comes back.
+          className="ethos-copy relative flex flex-col justify-center px-8 sm:px-14 lg:px-20"
         >
+          {/* PARKED — the copy itself. The section stays: it is what stacks
+              over the pinned hero and carries the white sheet into Features,
+              so removing the panel as well would take the hero's runway with
+              it. The scroll effect still writes --p to an empty container,
+              which costs nothing.
+
           <h2 className="max-w-[18ch] font-display text-[clamp(2rem,4.4vw,3.5rem)] font-medium leading-[1.08] tracking-[-0.025em]">
             <Words words={headWords} offset={0} />
           </h2>
@@ -122,14 +133,14 @@ export default function Ethos() {
             {bodyBlocks.map((words, i) => (
               <p
                 key={i}
-                // The closing question is the payoff the line above sets up
-                // with its colon, so it carries a little more weight.
+                The closing question is the payoff the line above sets up
+                with its colon, so it carries a little more weight.
                 className={i === bodyBlocks.length - 1 ? "font-medium" : undefined}
               >
                 <Words words={words} offset={blockOffsets[i]} />
               </p>
             ))}
-          </div>
+          </div> */}
         </div>
       </div>
     </section>
