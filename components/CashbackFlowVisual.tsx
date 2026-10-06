@@ -259,11 +259,16 @@ export default function CashbackFlowVisual() {
     return () => ro.disconnect();
   }, []);
 
-  // Walk backwards so each scene holds until the next one starts.
-  const sceneIndex = SCENES.reduce(
-    (found, scene, i) => (s >= scene.from ? i : found),
-    0,
-  );
+  /**
+   * Walk backwards so each scene holds until the next one starts. CLEAR takes
+   * the opening scene rather than nothing: the card and the phone leave, but
+   * the room cross-fades straight back to the first, so the loop never shows
+   * the bare panel between the last frame and the next first one.
+   */
+  const sceneIndex =
+    s >= S.CLEAR
+      ? 0
+      : SCENES.reduce((found, scene, i) => (s >= scene.from ? i : found), 0);
 
   const snap = s === S.IDLE;
 
