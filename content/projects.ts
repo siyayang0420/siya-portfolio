@@ -43,6 +43,12 @@ export type Project = {
   /** Product logo shown beside the breadcrumb. Omit for none. */
   mark?: 'bravo';
   /**
+   * A home-hero chapter visual to play in this study's hero band instead of
+   * a cover or the wordmark, so the study opens on the same animation the
+   * home page shows for it. One of the ids registered in ChapterVisuals.
+   */
+  heroVisual?: string;
+  /**
    * A status aside after the breadcrumb, for a study that is still being
    * written. Omit once it is finished rather than leaving a stale note up.
    */
@@ -114,6 +120,7 @@ export const projects: Project[] = [
     heading:
       'Turning fragmented marketplace signals into decisions Bravo can act on.',
     breadcrumb: 'Jeni — Marketplace Intelligence',
+    heroVisual: 'jeni-chat',
     breadcrumbNote: '(Still building at the moment)',
     year: '2026',
     role: 'Product Designer & Builder',

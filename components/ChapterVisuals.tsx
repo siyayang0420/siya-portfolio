@@ -384,7 +384,7 @@ function RecapVisual() {
 
 /* ──────────────────────────────────────────────────────────────────────── */
 
-const visuals: Record<string, () => React.ReactElement> = {
+const visuals: Record<string, (props: { bare?: boolean }) => React.ReactElement> = {
   "reward-engine": CashbackFlowVisual,
   signals: JeniSignalVisual,
   "jeni-chat": JeniChatVisual,
@@ -395,7 +395,7 @@ const visuals: Record<string, () => React.ReactElement> = {
   "meeting-prep": MeetingVisual,
 };
 
-export default function ChapterVisual({ id }: { id: string }) {
+export default function ChapterVisual({ id, bare }: { id: string; bare?: boolean }) {
   const Visual = visuals[id];
-  return Visual ? <Visual /> : null;
+  return Visual ? <Visual bare={bare} /> : null;
 }

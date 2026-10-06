@@ -9,6 +9,7 @@ import { ScrollLink } from '@/components/ui/ScrollLink';
 import { TopBar } from '@/components/work/TopBar';
 import { BravoMark } from '@/components/work/BravoMark';
 import Footer from '@/components/Footer';
+import ChapterVisual from '@/components/ChapterVisuals';
 
 export function generateStaticParams() {
   return projects.map((p) => ({ slug: p.slug }));
@@ -57,6 +58,16 @@ export default async function ProjectPage({
             proportional and the clamp stops it swallowing a large display.
             Either way the phone mockup sits dead centre in the source, so
             `object-cover` trims the outer offer cards first. */}
+        {project.heroVisual ? (
+          // The home hero's own animation, at the same band size as a cover
+          // and grey edge to edge — `bare` drops the rounded panel and the
+          // play/pause control. The grey and the window it paints are the
+          // flow tokens set on <html>, so it reads exactly as on home.
+          <div className="relative h-[45vh] w-full overflow-hidden lg:h-[clamp(200px,40vw,560px)]">
+            <ChapterVisual id={project.heroVisual} bare />
+            <TopBar />
+          </div>
+        ) : (
         <div
           className={cn(
             'relative w-full overflow-hidden',
@@ -101,6 +112,7 @@ export default async function ProjectPage({
           )}
           <TopBar />
         </div>
+        )}
 
         {/* One owner for prose metrics, for the whole document.
             These lived on the BravoActs <section>, which meant the TL;DR and

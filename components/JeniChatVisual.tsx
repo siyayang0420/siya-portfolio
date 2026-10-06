@@ -215,7 +215,16 @@ function Cursor() {
 
 /* ───────────────────────────────────────────────────────────────────────── */
 
-export default function JeniChatVisual() {
+export default function JeniChatVisual({
+  bare = false,
+}: {
+  /**
+   * For a full-bleed band (the study's own hero): the grey runs edge to edge
+   * with no rounded panel and no play/pause control, and the band — not a
+   * 70svh cap — sets the height.
+   */
+  bare?: boolean;
+} = {}) {
   const { step, paused, setPaused, reduced, ref: wrapRef } = useLoopStep(MS);
   // Reduced motion gets the finished answer, not the loop.
   const s = reduced ? S.HOLD : step;
@@ -342,7 +351,10 @@ export default function JeniChatVisual() {
   // The panel in canvas units, and where its left edge sits in them.
   const pw = panelW > 0 && scale > 0 ? panelW / scale : W;
   const panelLeft = (W - pw) / 2;
-  const closeS = ((FRAME_R - FRAME_L) * pw) / geo.chipsRight;
+  // Capped: in a full-bleed band the panel can be twice the canvas's width,
+  // and solving the frame against all of it would blow the questions up past
+  // the point of reading as a close-up of an app.
+  const closeS = Math.min(2.6, ((FRAME_R - FRAME_L) * pw) / geo.chipsRight);
   const CLOSE_UP = {
     scale: closeS,
     x: panelLeft + FRAME_L * pw - closeS * WIN.x,
@@ -397,8 +409,12 @@ export default function JeniChatVisual() {
     // Same two-box arrangement as the cashback demo: the outer takes whatever
     // height the slot gives it, the inner is driven by that height.
     <div
-      className="flex h-full min-h-0 w-full max-h-[70svh] items-center justify-center"
-      style={{ aspectRatio: `${W} / ${H}` }}
+      className={
+        bare
+          ? "flex h-full w-full"
+          : "flex h-full min-h-0 w-full max-h-[70svh] items-center justify-center"
+      }
+      style={bare ? undefined : { aspectRatio: `${W} / ${H}` }}
     >
       {/* The panel takes the column's full width, so the close-up can spill
           past the authoring box and still be clipped by the panel's edge. */}
@@ -406,7 +422,7 @@ export default function JeniChatVisual() {
         ref={panelRef}
         className="relative flex h-full w-full items-center justify-center overflow-hidden"
         style={{
-          borderRadius: 37 * scale,
+          borderRadius: bare ? 0 : 37 * scale,
           background: "var(--flow-panel, rgba(255,255,255,0.3))",
           backdropFilter: "blur(8.05px)",
           WebkitBackdropFilter: "blur(8.05px)",
@@ -789,7 +805,7 @@ export default function JeniChatVisual() {
           )}
         </div>
 
-        {!reduced && (
+        {!reduced && !bare && (
           <button
             type="button"
             onClick={(e) => {
