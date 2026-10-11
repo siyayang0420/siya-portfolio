@@ -21,7 +21,7 @@ export const chapters: Chapter[] = [
   {
     id: "copilot",
     name: "Building an AI-native operations platform",
-    meta: "Jeni — Marketplace Intelligence",
+    meta: "Jeni — Marketplace Intelligence · Ongoing",
     blurb:
       "Turning fragmented marketplace signals into decisions Bravo can act on.",
     visual: "jeni-chat",

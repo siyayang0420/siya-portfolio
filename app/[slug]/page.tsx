@@ -10,6 +10,8 @@ import { TopBar } from '@/components/work/TopBar';
 import { BravoMark } from '@/components/work/BravoMark';
 import Footer from '@/components/Footer';
 import ChapterVisual from '@/components/ChapterVisuals';
+import { PasswordGate } from '@/components/work/PasswordGate';
+import { isUnlocked } from '@/lib/gate';
 
 export function generateStaticParams() {
   return projects.map((p) => ({ slug: p.slug }));
@@ -39,6 +41,8 @@ export default async function ProjectPage({
   const { slug } = await params;
   const project = getProject(slug);
   if (!project) notFound();
+  // Only a locked study reads cookies, so every other study stays static.
+  const unlocked = !project.passwordEnv || (await isUnlocked(slug));
 
   return (
     // The landing sets a dark body; this route is a light document, so it
@@ -243,9 +247,11 @@ export default async function ProjectPage({
         })()}
         {/* Acts are per-project. Everything above this line — the hero band,
             the eyebrow, the TL;DR and the meta grid — is already generic, so a
-            new case study only has to supply its own acts. */}
-        {project.slug === BRAVO_SLUG && <BravoActs />}
-        {project.slug === JENI_SLUG && <JeniActs />}
+            new case study only has to supply its own acts. A locked study
+            renders the gate instead, so its acts never reach the browser. */}
+        {!unlocked && <PasswordGate slug={slug} title={project.title} />}
+        {unlocked && project.slug === BRAVO_SLUG && <BravoActs />}
+        {unlocked && project.slug === JENI_SLUG && <JeniActs />}
         </div>
       </div>
 

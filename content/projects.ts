@@ -49,10 +49,17 @@ export type Project = {
    */
   heroVisual?: string;
   /**
-   * A status aside after the breadcrumb, for a study that is still being
-   * written. Omit once it is finished rather than leaving a stale note up.
+   * A status aside after the breadcrumb, for a product that is still being
+   * built. Omit once it ships rather than leaving a stale note up.
    */
   breadcrumbNote?: string;
+  /**
+   * Name of the env var holding this study's password. When set, everything
+   * below the meta grid is gated (see lib/gate.ts); the hero, heading, TL;DR
+   * and meta stay public so anyone can see what it is. Each study names its
+   * own var, so every locked study can have its own password.
+   */
+  passwordEnv?: string;
   /**
    * Cover artwork for the hero band. When set it replaces the `imgTitle`
    * wordmark treatment; `heroBg` still shows while the image loads.
@@ -121,7 +128,8 @@ export const projects: Project[] = [
       'Turning fragmented marketplace signals into decisions Bravo can act on.',
     breadcrumb: 'Jeni — Marketplace Intelligence',
     heroVisual: 'jeni-chat',
-    breadcrumbNote: '(Still building at the moment)',
+    breadcrumbNote: '• Ongoing',
+    passwordEnv: 'JENI_PASSWORD',
     year: '2026',
     role: 'Product Designer & Builder',
     collaborators: 'CEO · 1 Backend Engineer',
