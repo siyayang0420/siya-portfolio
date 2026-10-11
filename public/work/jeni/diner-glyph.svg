@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 190" width="240" height="190">
+  <!--
+    The silhouette behind the "Diner Opportunity" card: an avatar with a
+    magnifier over it. Used as a CSS mask by `.engrave-glyph`, so the shapes
+    are opaque black and everything else is transparent — the engrave paint
+    shows through the black.
+
+    The magnifier is cut away from the body by a gap in the mask rather than
+    by an outline: inside `#cut` the body is white, the magnifier is stroked
+    black to open that gap, then filled white on top. Same device the
+    footer's punched nodes use.
+  -->
+  <mask id="cut" maskUnits="userSpaceOnUse" x="0" y="0" width="240" height="190">
+    <rect width="240" height="190" fill="#000000"/>
+    <!-- Authored at a readable size, then centred and scaled into the frame. -->
+    <g transform="translate(-10 -26) scale(1.2)">
+      <circle cx="138" cy="62" r="26" fill="#ffffff"/>
+      <rect x="96" y="100" width="84" height="48" rx="20" fill="#ffffff"/>
+      <g stroke="#000000" stroke-width="8" fill="none">
+        <path d="M 60 112 a 32 32 0 1 0 64 0 a 32 32 0 1 0 -64 0 Z M 71 112 a 21 21 0 1 0 42 0 a 21 21 0 1 0 -42 0 Z"/>
+        <rect x="56" y="132" width="15" height="34" rx="7.5" transform="rotate(45 63.5 149)"/>
+      </g>
+      <rect x="56" y="132" width="15" height="34" rx="7.5" fill="#ffffff" transform="rotate(45 63.5 149)"/>
+      <path d="M 60 112 a 32 32 0 1 0 64 0 a 32 32 0 1 0 -64 0 Z M 71 112 a 21 21 0 1 0 42 0 a 21 21 0 1 0 -42 0 Z" fill="#ffffff" fill-rule="evenodd"/>
+    </g>
+  </mask>
+  <rect width="240" height="190" fill="#000000" mask="url(#cut)"/>
+</svg>
