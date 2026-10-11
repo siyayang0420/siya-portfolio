@@ -80,7 +80,8 @@ function TickRule() {
   return (
     <div className="pointer-events-none absolute inset-y-0 left-0 w-3">
       <div className="tick-rule absolute inset-y-0 left-0 w-1.5 opacity-60" />
-      <div className="absolute inset-y-0 left-1.5 w-px bg-[color:var(--hero-rule)]" />
+      {/* Stops on the lower ledger rule (bottom-7): below it is empty band. */}
+      <div className="absolute bottom-7 top-0 left-1.5 w-px bg-[color:var(--hero-rule)]" />
       {/* left-[2.5px] centres the 8px disc on the 1px line at left-1.5, and
           the 24px offsets centre it on rules inset 28px from each edge. */}
       <LedgerNode at="left-[2.5px] top-6" tone="#e1e1e1" />
