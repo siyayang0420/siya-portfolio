@@ -4,7 +4,7 @@ import { useActionState } from 'react';
 import { ArrowRight, Lock } from 'lucide-react';
 import { unlock } from '@/app/[slug]/actions';
 import { PILL } from '@/components/ui/pill';
-import { EMAIL } from '@/components/ui/useCopyEmail';
+import { EMAIL, useCopyEmail } from '@/components/ui/useCopyEmail';
 import { cn } from '@/lib/cn';
 
 /** A grey bar standing in for a line of the locked study. */
@@ -22,6 +22,7 @@ export function PasswordGate({ slug, title }: { slug: string; title: string }) {
   const [state, action, pending] = useActionState(unlock.bind(null, slug), {
     error: false,
   });
+  const { copied, copy } = useCopyEmail();
   // A drafted request, so asking for access is one click and a send.
   const mailto = `mailto:${EMAIL}?${new URLSearchParams({
     subject: `Password request: ${title}`,
@@ -103,6 +104,20 @@ export function PasswordGate({ slug, title }: { slug: string; title: string }) {
             >
               Email me
             </a>
+            {/* mailto does nothing useful without a mail app — a private
+                window, or a browser with no handler, just opens a blank tab —
+                so the address can be copied instead. */}
+            {' '}or{' '}
+            <button
+              type="button"
+              onClick={copy}
+              className="underline underline-offset-4 transition-colors hover:text-ink"
+            >
+              {copied ? 'email copied!' : 'copy my email'}
+            </button>
+            <span className="sr-only" role="status" aria-live="polite">
+              {copied ? `${EMAIL} copied to clipboard` : ''}
+            </span>
           </p>
         </form>
       </div>
