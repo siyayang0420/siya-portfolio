@@ -122,6 +122,13 @@
   background-image: var(--hero-ground);
 }
 
+/* The stacked hero (below lg) has no ledger whose nodes need the white flat,
+   and it runs straight into the flat-grey playground — so ramping to white
+   here only ends in a hard seam. It stays the grey the whole way down. */
+[data-hero-style='engraved'] .hero-ground-flat {
+  --hero-ground: linear-gradient(#e1e1e1, #e1e1e1);
+}
+
 /* The ledger — rules and punched nodes — belongs to the engraved treatment
    only. On the wash the ground is a moving gradient, and ruling a gradient
    reads as a seam rather than as paper. */

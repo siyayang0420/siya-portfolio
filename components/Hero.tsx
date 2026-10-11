@@ -425,7 +425,7 @@ export default function Hero() {
           origin={[-0.2, 0.3]}
           className="hero-canvas absolute inset-0 size-full"
         />
-        <div className="hero-ground pointer-events-none absolute inset-0" aria-hidden />
+        <div className="hero-ground hero-ground-flat pointer-events-none absolute inset-0" aria-hidden />
         <div className="relative px-6">
           {/* First screen: intro at the top, pitch filling the rest. svh not vh
               so mobile browser chrome doesn't push the fold off-screen. */}
