@@ -1,5 +1,7 @@
 import Hero from "@/components/Hero";
-import Ethos from "@/components/Ethos";
+// Parked: the white sheet that stacked over the hero. Playground now rides
+// up over the pin on its own — see Features.
+// import Ethos from "@/components/Ethos";
 import Features from "@/components/Features";
 import Footer from "@/components/Footer";
 // Parked with the switcher below — see the comment at its call site.
@@ -11,7 +13,7 @@ export default function Home() {
     // white Features section have something to reveal.
     <main id="top" className="bg-[#e1e1e1]">
       <Hero />
-      <Ethos />
+      {/* <Ethos /> */}
       <Features />
       <Footer />
       {/* The hero style switcher. Engraved is now the default, set on <html>

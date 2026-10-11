@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { OrbSphere } from "./orb/OrbSphere";
 
 /**
@@ -74,35 +75,89 @@ function OrbCard() {
   );
 }
 
+/** Placeholder count until real experiments land — each is its own WebGL context. */
+const CARDS = 4;
+
+// The old sheet's inset plus its copy gutter (12px + 32/56/80px), inline
+// because the dev build skips new arbitrary classes in this file.
+const GUTTER = "clamp(44px, 6.4vw, 92px)";
+
 export default function Features() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  // How far the track has to travel: its overflow past the viewport. The
+  // section is that much taller than a screen, so one px down = one px across.
+  const [travel, setTravel] = useState(0);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    const measure = () =>
+      setTravel(Math.max(track.scrollWidth - window.innerWidth, 0));
+    const ro = new ResizeObserver(measure);
+    ro.observe(track);
+    window.addEventListener("resize", measure);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", measure);
+    };
+  }, []);
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end end"],
+  });
+  const x = useTransform(scrollYProgress, [0, 1], [0, -travel]);
+  // The page grey fades in as the section rises, so by the time it pins the
+  // hero sliding away underneath is already covered.
+  const { scrollYProgress: rise } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "start start"],
+  });
+
   return (
     <section
+      ref={sectionRef}
       id="features"
-      // Same white as the panel above, and now no rule between them: with the
-      // ethos copy parked there is nothing on the other side of the hairline
-      // for it to separate. The bottom rounds off to reveal the footer grey.
-      className="relative z-10 rounded-b-[2.5rem] bg-white px-3 pb-28 pt-32"
+      // No sheet: transparent, it rides up over the pinned hero (-100vh, the
+      // runway the Ethos panel used) as the hero blurs behind it.
+      className="relative z-10 lg:-mt-[100vh]"
+      style={{ height: `calc(100vh + ${travel}px)` }}
     >
-      {/* Same gutter scale as the Ethos copy above (px-3 sheet inset + this),
-          so both sections share one left edge. */}
-      <div className="px-8 sm:px-14 lg:px-20">
-        <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-black/45">
-          Playground
-        </p>
-        <h2 className="mt-5 font-display text-[clamp(2rem,4.4vw,3.5rem)] font-medium leading-none tracking-[-0.02em] text-black">
-          Selected AI Experiences
-        </h2>
-
-        {/* Two equal columns. The other experiments were pulled, so the orb
-            card stands in for them until real ones land — each copy is an
-            independent instance with its own state, which also means its own
-            WebGL context. A reason not to leave the placeholders here
-            indefinitely. */}
-        <div className="mt-12 grid gap-4 md:grid-cols-2">
-          {[0, 1].map((i) => (
-            <OrbCard key={i} />
-          ))}
+      {/* Feathered 50vh above the section so the rising edge has no line. */}
+      <motion.div
+        className="pointer-events-none absolute inset-x-0 bottom-0 -z-10"
+        style={{
+          top: "-50vh",
+          opacity: rise,
+          backgroundImage: "linear-gradient(to bottom, transparent, #e1e1e1 50vh)",
+        }}
+        aria-hidden
+      />
+      <div className="sticky top-0 flex h-screen flex-col justify-center overflow-hidden">
+        <div style={{ paddingInline: GUTTER }}>
+          <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-black/45">
+            Playground
+          </p>
+          <h2 className="mt-5 font-display text-[clamp(2rem,4.4vw,3.5rem)] font-medium leading-none tracking-[-0.02em] text-black">
+            Selected AI Experiences
+          </h2>
         </div>
+
+        {/* Vertical scroll drives this sideways; the padding keeps the first
+            and last card on the heading's left edge. */}
+        <motion.div
+          ref={trackRef}
+          style={{ x, paddingInline: GUTTER }}
+          className="mt-12 flex w-max gap-4"
+        >
+          {Array.from({ length: CARDS }, (_, i) => (
+            <div key={i} className="grid shrink-0"
+              style={{ width: "min(80vw, 560px)" }}>
+              <OrbCard />
+            </div>
+          ))}
+        </motion.div>
       </div>
     </section>
   );
