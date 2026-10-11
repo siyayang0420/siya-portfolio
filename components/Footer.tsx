@@ -98,7 +98,7 @@ export default function Footer() {
         <div className="grid md:grid-cols-[1.8fr_0.85fr_1fr_1fr]">
           <Cell className="gap-4 md:px-10">
             <p
-              className="engraved font-display text-[clamp(2.75rem,5vw,4.25rem)] font-medium leading-none tracking-[-0.035em]"
+              className="engraved font-display text-[clamp(2.75rem,5vw,4.25rem)] font-medium leading-none tracking-[-0.035em] pb-[0.16em] -mb-[0.16em]"
               // First leg of the relay; the columns take the next two.
               style={
                 {
@@ -123,8 +123,13 @@ export default function Footer() {
               key={c.title}
               className={`gap-4 border-t md:border-t-0 ${RULE} md:px-10`}
             >
+              {/* `background-clip: text` paints only inside the box, and the
+                  tight leading left descenders outside it — the "g" in
+                  "Pages" was sliced at the baseline. The padding grows the
+                  paint box by the descender depth; the negative margin hands
+                  the space back so the layout doesn't move. */}
               <p
-                className="engraved font-display text-3xl font-medium leading-none tracking-[-0.035em] md:text-[40px] md:leading-[48px]"
+                className="engraved font-display text-3xl font-medium leading-none tracking-[-0.035em] md:text-[40px] md:leading-[48px] pb-[0.16em] -mb-[0.16em]"
                 // Picks up its own leg of the relay: 5s, then 8s.
                 style={
                   {
