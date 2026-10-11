@@ -525,7 +525,7 @@ export default function JeniChatVisual({
                       className="uppercase"
                       style={{ fontSize: 8.5, letterSpacing: "0.08em", color: "#a3a3a3", fontWeight: 600 }}
                     >
-                      Questions that span two sources
+                      Ask Jeni about Bravo
                     </p>
                     <div ref={chipsRef} className="flex flex-col items-start" style={{ marginTop: 6, gap: 4 }}>
                       {QUESTIONS.map((q, i) => (
@@ -758,7 +758,7 @@ export default function JeniChatVisual({
                       <motion.p style={{ fontSize: 10.5, lineHeight: "15px", color: "#222", marginTop: 6 }} initial={false} {...fade(summaryOn, 0.6)}>
                         This covers restaurants viewed in the bravo app only, which is a subset of all stores. This figure
                         cannot be added up across rows. No period was given in the question, so this covers the last 30
-                        days. Some matching rows were not carried through, so this is not a complete list.
+                        days.
                       </motion.p>
                       <motion.p
                         className="flex items-center"
