@@ -129,7 +129,8 @@ export const projects: Project[] = [
     breadcrumb: 'Jeni — Marketplace Intelligence',
     heroVisual: 'jeni-chat',
     breadcrumbNote: '• Ongoing',
-    passwordEnv: 'JENI_PASSWORD',
+    // The lock switch: uncomment to put the study back behind JENI_PASSWORD.
+    // passwordEnv: 'JENI_PASSWORD',
     year: '2026',
     role: 'Product Designer & Builder',
     collaborators: 'CEO · 1 Backend Engineer',
