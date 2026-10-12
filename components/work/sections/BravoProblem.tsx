@@ -138,7 +138,7 @@ export function BravoProblem() {
       <figure className="m-0 flex w-full flex-col items-center gap-2">
         <PhoneShotCarousel />
         <figcaption className="text-[12px] text-muted">
-          Payment successfully in different cases
+          Payment success screens across different reward scenarios.
         </figcaption>
       </figure>
 
