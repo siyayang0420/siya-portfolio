@@ -908,9 +908,9 @@ function Decision() {
           className="w-full rounded-xl border border-line"
         />
         <figcaption className="text-[12px] text-muted">
-          Opportunities were ranked by estimated net margin rather than
-          activity alone, showing both the spend required and the expected
-          return.
+          These estimates use explicit planning assumptions, not measured
+          campaign lift. I treated them as a way to compare opportunities, not
+          as forecasts of guaranteed returns.
         </figcaption>
       </figure>
 
@@ -959,21 +959,25 @@ function Decision() {
 
       <JeniFigureCarousel
         label="Recommended action cards"
-        aspectRatio={2184 / 652}
+        aspectRatio={1002 / 282}
         autoplay={2500}
         caption="The same framework supported different decisions: create demand, replenish credit, or simply keep monitoring. Each recommendation explained why it mattered, what to do next, and what could change."
         slides={[
           {
-            src: '/work/jeni/recommended-action.png',
-            alt: "A Recommended Action card in Jeni: 'Promote to nearby cafe fans to accelerate burn' with 66% confidence, split into Why now ($2,959 sitting unused, burning $0 a day), The move (promote to nearby fans, run a win-back push), and If it lands (+34 visits in 30 days), with Create campaign and Show the working buttons.",
+            src: '/work/jeni/recAction1.webp',
+            alt: "A Recommended Action card in Jeni: 'Maintain — healthy balance of repeat and new customers', stable with no immediate intervention needed. Why now: 50% comeback, credit and traffic within normal ranges. What to watch: credit runway, visit velocity, and the repeat vs. new customer mix.",
           },
           {
-            src: '/work/jeni/recommended-action-credit.png',
-            alt: "A Recommended Action card in Jeni: 'Sales follow-up — credit is nearly gone; buy the next tranche now' with 66% confidence, split into Why now (3 days of runway left, burning $203 a day against $545 outstanding), The move (buy more credit, offer a return-visit coupon), and If it lands ($545 left, 77 visits a month), with Open the credit book and Show the working buttons.",
+            src: '/work/jeni/recAction2.webp',
+            alt: "A Recommended Action card in Jeni: 'Review credit before the next transaction' — credit is depleted but burn data is too thin to estimate runway. Why now: $0 remaining, 2 visits in the last 30 days. The move: review the credit position and confirm the merchant's balance before recommending a new tranche.",
           },
           {
-            src: '/work/jeni/recommended-action-steady.png',
-            alt: "A Recommended Action card in Jeni tagged Steady: 'Maintain — healthy balance of repeat and new customers' with 66% confidence, split into Why now (60% come back, credit and traffic inside their normal bands, nothing time-bound), The move (promote to nearby fans, run a win-back push), and If it lands (+13 visits in 30 days), with Create campaign and Show the working buttons.",
+            src: '/work/jeni/recAction3.webp',
+            alt: "A Recommended Action card in Jeni: 'Promote to nearby drinks & bubble tea fans to accelerate burn.' Why now: $989 sitting unused, burning $0 a day. The move: create targeted demand among nearby diners whose behaviour matches this merchant. Scenario: +13 visits in 30 days, using a 15% visit-lift planning assumption.",
+          },
+          {
+            src: '/work/jeni/recAction4.webp',
+            alt: "A Recommended Action card in Jeni: 'Convert first-time diners into regulars.' Why now: 70% of observed visits are new and repeat share is 30%. The move: encourage a second visit by targeting recent first-time diners with a bounded return-visit incentive.",
           },
         ]}
       />
