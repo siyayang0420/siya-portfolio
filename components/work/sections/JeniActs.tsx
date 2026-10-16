@@ -1,3 +1,4 @@
+import { JeniAgentTrace } from './JeniAgentTrace';
 import { Play } from 'lucide-react';
 import { ActsShell, type Act } from './ActsShell';
 import { JeniDinerModel } from './JeniDinerModel';
@@ -1008,6 +1009,43 @@ function Decision() {
   );
 }
 
+function Exploration() {
+  return (
+    <div className="flex flex-col gap-6">
+      <Heading
+        eyebrow="AI-Native Exploration"
+        title="Not every question could be designed into a dashboard."
+      />
+
+      <div className="flex flex-col gap-3">
+        <p className="text-[16px] text-ink">
+          I designed Jeni&rsquo;s core workflows around the questions Bravo
+          needed to answer repeatedly. But some questions were more
+          exploratory, and the answer could live across systems that were never
+          designed to work together.
+        </p>
+
+        <p className="text-[16px] text-ink">
+          For those moments, I built an agent that could translate a business
+          question into the data it needed, work across Bravo&rsquo;s production
+          database, Jeni&rsquo;s own data, and PostHog, then validate the result
+          before returning an answer.
+        </p>
+      </div>
+
+      <figure className="m-0 flex flex-col gap-2">
+        <JeniAgentTrace />
+        <figcaption className="text-[12px] text-muted">
+          &ldquo;Which restaurants get lots of views but few payments?&rdquo;
+          required Jeni to combine restaurant attention from PostHog with
+          payment activity from Bravo&rsquo;s production data, then check the
+          result against its shared definitions and source health.
+        </figcaption>
+      </figure>
+    </div>
+  );
+}
+
 function Outcome() {
   return (
     <div className="flex flex-col gap-6">
@@ -1065,6 +1103,7 @@ const ACTS: Act[] = [
   // The id stays 'decision' so the section anchor (#the-decision) and any
   // link to it survive the rename — only the label a reader sees changes.
   { id: 'decision', label: 'Building Jeni', content: <Decision /> },
+  { id: 'exploration', label: 'AI-Native Exploration', content: <Exploration /> },
   { id: 'outcome', label: 'Outcome', content: <Outcome /> },
 ];
 
