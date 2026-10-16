@@ -962,7 +962,7 @@ function Decision() {
         label="Recommended action cards"
         aspectRatio={1002 / 282}
         autoplay={2500}
-        caption="The same framework supported different decisions: create demand, replenish credit, or simply keep monitoring. Each recommendation explained why it mattered, what to do next, and what could change."
+        caption="The same framework could lead to different decisions: create demand, replenish credit, encourage a second visit, or simply keep monitoring."
         slides={[
           {
             src: '/work/jeni/recAction1.webp',
@@ -991,13 +991,9 @@ function Decision() {
         </p>
 
         <p className="text-[16px] text-ink">
-          The recommendation stayed close to the evidence, with the underlying
-          reasoning available for the team to inspect before acting.
-        </p>
-
-        <p className="text-[16px] text-ink">
-          Actionable did not mean automatic. The team still controlled whether
-          and how to intervene.
+          Actionable did not mean automatic. Each recommendation stayed close
+          to the evidence, with the underlying reasoning available for the team
+          to inspect before deciding whether and how to intervene.
         </p>
       </div>
 

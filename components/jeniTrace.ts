@@ -23,7 +23,7 @@ export const TRACE: TraceStep[] = [
   },
   {
     title:
-      "This needs PostHog and Bravo’s production MySQL and PostHog: the restaurant attention against payment activity and restaurant detail page views (PostHog).",
+      "This needs two sources: payment activity from Bravo’s production MySQL and restaurant attention from PostHog.",
     sub: "posthog detail views joined to bravo settled bills on store id, over one shared window · $screen events whose current_page_name is '/store', aggregated per restaurant · last 30 days",
   },
   {
