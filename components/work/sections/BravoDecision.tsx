@@ -33,7 +33,7 @@ export function BravoDecision() {
 
       {/* Summary — the 3 calls retold as one story */}
       <p className="text-[16px] text-ink">
-        Three decisions, one principle: remove complexity unless we had a reason to preserve it. Threshold coupons offered clear value, but their unpredictable eligibility created checkout and operational complexity. Stored rewards showed a strong relationship with repeat behavior, so we preserved the value but removed the points conversion. Top-up bonuses stayed because the elevated-bonus period showed much larger top-ups and broader participation, while the decision to top up happened before checkout.
+        Three decisions, one principle: remove complexity unless we had evidence to preserve it.
       </p>
 
       {/* Campaign shapes — one offer per partner, over their own storefront */}

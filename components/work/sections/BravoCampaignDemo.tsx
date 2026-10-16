@@ -447,7 +447,7 @@ export function BravoCampaignDemo() {
           </div>
 
           <p className="text-[16px] text-ink">
-            I designed a small set of cashback formats, spend, visit, time, and first-purchase-based—that could be combined behind one consistent offer card. Marketing could change the rules without redesigning the customer experience.
+            I designed a small set of cashback formats based on spend, visits, time, and first purchase. These rules could be combined behind one consistent offer card, letting Marketing change campaign logic without redesigning the customer experience.
           </p>
 
           <p className="text-[16px] text-ink">
