@@ -128,7 +128,7 @@ export const projects: Project[] = [
       'Turning fragmented marketplace signals into decisions Bravo can act on.',
     breadcrumb: 'Jeni — Marketplace Intelligence',
     heroVisual: 'jeni-chat',
-    breadcrumbNote: '• Ongoing',
+    breadcrumbNote: '• ONGOING',
     // The lock switch: uncomment to put the study back behind JENI_PASSWORD.
     // passwordEnv: 'JENI_PASSWORD',
     year: '2026',

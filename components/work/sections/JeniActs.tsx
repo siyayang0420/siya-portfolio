@@ -1056,7 +1056,9 @@ function Outcome() {
           Jeni started as an open-ended experiment around restaurant
           intelligence. It has since become a live internal product for
           understanding Bravo&rsquo;s marketplace and identifying where the
-          team can act.
+          team can act. The product continues to evolve as the team learns
+          which signals, recommendations, and interventions are most useful in
+          practice.
         </p>
 
         <p className="text-[16px] text-ink">
@@ -1113,6 +1115,7 @@ const ACTS: Act[] = [
  * as a video that isn't here yet rather than a figure that failed to load.
  * Replace the whole element with the player when the cut exists.
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- parked, see JeniActs
 function VideoPlaceholder() {
   return (
     <div
@@ -1140,6 +1143,8 @@ export function JeniActs() {
   // 40px of horizontal padding. Bravo's default 148 would clip them. Measured
   // in the browser, not estimated — re-measure if a label changes.
   return (
-    <ActsShell acts={ACTS} pillWidth={172} lead={<VideoPlaceholder />} />
+    // Video placeholder parked until the walkthrough exists — restore with
+    // lead={<VideoPlaceholder />}.
+    <ActsShell acts={ACTS} pillWidth={172} />
   );
 }
