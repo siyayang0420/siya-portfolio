@@ -35,6 +35,10 @@ const COMPOSER_INSET = 9;
 
 const EASE_OUT = [0.23, 1, 0.32, 1] as const;
 const EASE_IN_OUT = [0.77, 0, 0.175, 1] as const;
+/** The read-across: a short beat after the cursor appears, then an even glide. */
+const READ_S = 2.2;
+const READ_DELAY = 0.3;
+const READ_EASE = [0.45, 0, 0.55, 1] as const;
 
 const TEAL = "#17a589";
 const LAVENDER = "#c7cff3";
@@ -44,10 +48,14 @@ const STEPS = [
   // Reset frame: everything snaps back while the opening is already showing.
   { id: "idle", ms: 150 },
   { id: "open", ms: 1400 },
-  // The close-up, then the cursor, then the click — one beat each, so the
-  // question is readable before anything touches it.
+  // The push-in onto the question's first word, then the cursor reads it
+  // across to the last one with the camera riding along — the question is
+  // long, and following a pointer through it reads better than a static
+  // frame — then the click.
   { id: "zoom", ms: 1100 },
-  { id: "cursor", ms: 1000 },
+  { id: "cursor", ms: 2700 },
+  // Eases back just far enough to see the whole question again, then clicks.
+  { id: "reveal", ms: 1000 },
   { id: "click", ms: 450 },
   { id: "send", ms: 900 },
   { id: "t1", ms: 800 },
@@ -73,20 +81,21 @@ const S = {
   OPEN: 1,
   ZOOM: 2,
   CURSOR: 3,
-  CLICK: 4,
-  SEND: 5,
-  T1: 6,
-  T2: 7,
-  RUN: 8,
-  DONE: 9,
-  T5: 10,
-  T6: 11,
-  T7: 12,
-  HEADER: 13,
-  TABLE: 14,
-  SUMMARY: 15,
-  HOLD: 16,
-  CLEAR: 17,
+  REVEAL: 4,
+  CLICK: 5,
+  SEND: 6,
+  T1: 7,
+  T2: 8,
+  RUN: 9,
+  DONE: 10,
+  T5: 11,
+  T6: 12,
+  T7: 13,
+  HEADER: 14,
+  TABLE: 15,
+  SUMMARY: 16,
+  HOLD: 17,
+  CLEAR: 18,
 } as const;
 
 const MS = STEPS.map((st) => st.ms);
@@ -291,6 +300,9 @@ export default function JeniChatVisual({
   };
 
   /**
+   * The old whole-window close-up. Its scale now only floors the tighter
+   * reading shot below, so that shot is never looser than this one was.
+   *
    * The close-up is a push-in on the whole window, the way a camera would:
    * its top-left corner held near the panel's top-left with a strip of grey
    * above and beside it, the questions large and readable, and the rest of
@@ -311,11 +323,6 @@ export default function JeniChatVisual({
   // and solving the frame against all of it would blow the questions up past
   // the point of reading as a close-up of an app.
   const closeS = Math.min(2.6, ((FRAME_R - FRAME_L) * pw) / geo.chipsRight);
-  const CLOSE_UP = {
-    scale: closeS,
-    x: panelLeft + FRAME_L * pw - closeS * WIN.x,
-    y: FRAME_T * H - closeS * WIN.y,
-  };
   /**
    * The thinking shot: held close while Jeni works, so the trace reads at a
    * glance. The window's top sits at FRAME_T like the question close-up and
@@ -338,21 +345,51 @@ export default function JeniChatVisual({
     x: panelLeft + (pw - thinkS * WIN.w) / 2 - thinkS * WIN.x,
     y: FRAME_T * H - thinkS * WIN.y,
   };
+  /**
+   * The reading shot: tighter than the close-up, aimed at the first question's
+   * text line so the words land at ~READ_PX on screen. The cursor runs from
+   * the first word to the last; the camera pans with it so the pointer only
+   * covers the middle third of the panel and the rest of the travel is the
+   * camera's. Both share one duration and ease, so the pointer's screen path
+   * stays straight and steady.
+   */
+  const READ_PX = 30;
+  const tightS = Math.min(5, Math.max(closeS, READ_PX / (9.5 * scale)));
+  const wordFrom = geo.chip.x + 9;
+  const wordTo = geo.chip.x + geo.chip.w - 9;
+  const lineY = geo.chip.y + geo.chip.h * 0.62;
+  const span = tightS * (wordTo - wordFrom);
+  const travel = Math.min(span, 0.34 * pw);
+  const READ_FROM = {
+    scale: tightS,
+    x: panelLeft + (pw - travel) / 2 - tightS * (WIN.x + wordFrom),
+    y: 0.5 * H - tightS * (WIN.y + lineY),
+  };
+  const READ_TO = { ...READ_FROM, x: READ_FROM.x - (span - travel) };
+  /** Pulled back just enough for the whole question, centred, before the click. */
+  const fitS = Math.min(tightS, (0.86 * pw) / geo.chip.w);
+  const FIT = {
+    scale: fitS,
+    x: panelLeft + pw / 2 - fitS * (WIN.x + geo.chip.x + geo.chip.w / 2),
+    y: 0.5 * H - fitS * (WIN.y + lineY),
+  };
   const camera =
-    s >= S.ZOOM && s <= S.CLICK
-      ? CLOSE_UP
-      : s >= S.SEND && s < S.TABLE
+    s === S.ZOOM
+      ? READ_FROM
+      : s === S.CURSOR
+        ? READ_TO
+        : s === S.REVEAL || s === S.CLICK
+          ? FIT
+          : s >= S.SEND && s < S.TABLE
         ? THINK
         : s >= S.TABLE && s < S.CLEAR
           ? READ
           : WIDE;
 
   /* ── Cursor, in the window's own space so it rides the camera ── */
-  const tip = {
-    x: geo.chip.x + geo.chip.w * 0.58,
-    y: geo.chip.y + geo.chip.h * 0.62,
-  };
-  const cursorFrom = { x: tip.x + 60, y: tip.y + 50 };
+  // Parked on the first word through the push-in, then read across to the
+  // last word, where it clicks.
+  const tip = { x: wordTo, y: lineY };
   const cursorAt = s >= S.CURSOR && s <= S.CLICK;
   const cursorOn = cursorAt;
   /**
@@ -361,7 +398,7 @@ export default function JeniChatVisual({
    * whatever width the close-up resolved to.
    */
   const CURSOR_PX = 20;
-  const cursorK = CURSOR_PX / (18 * closeS * scale);
+  const cursorK = CURSOR_PX / (18 * (s >= S.REVEAL && s <= S.SEND ? fitS : tightS) * scale);
 
   /* ── Layers ── */
   const openingOn = s <= S.CLICK || s === S.CLEAR;
@@ -435,8 +472,9 @@ export default function JeniChatVisual({
                         // ZOOM is the slow push onto the question; TABLE matches
                         // the window's 1s scroll so the pull-back and the move
                         // down to the table are a single camera move.
-                        duration: s === S.ZOOM ? 1.1 : s === S.TABLE ? 1.0 : 0.85,
-                        ease: EASE_IN_OUT,
+                        ...(s === S.CURSOR
+                          ? { duration: READ_S, delay: READ_DELAY, ease: READ_EASE }
+                          : { duration: s === S.ZOOM ? 1.1 : s === S.TABLE ? 1.0 : 0.85, ease: EASE_IN_OUT }),
                       }
                 }
               >
@@ -759,8 +797,10 @@ export default function JeniChatVisual({
                     style={{ left: 0, top: 0, transformOrigin: "1px 1px" }}
                     initial={false}
                     animate={{
-                      x: (cursorAt ? tip.x : cursorFrom.x) - 1,
-                      y: (cursorAt ? tip.y : cursorFrom.y) - 1,
+                      // Held at the last word through SEND, while it fades —
+                      // otherwise it snaps back across the line mid-fade.
+                      x: (s >= S.CURSOR && s <= S.SEND ? tip.x : wordFrom) - 1,
+                      y: lineY - 1,
                       opacity: cursorOn ? 1 : 0,
                       scale: s === S.CLICK ? [1, 0.82, 1] : 1,
                     }}
@@ -768,16 +808,23 @@ export default function JeniChatVisual({
                       snap
                         ? { duration: 0 }
                         : {
-                            x: { duration: 0.85, ease: EASE_IN_OUT },
-                            y: { duration: 0.85, ease: EASE_IN_OUT },
+                            // Matches the camera's pan exactly (see READ_FROM).
+                            x: s === S.CURSOR ? { duration: READ_S, delay: READ_DELAY, ease: READ_EASE } : { duration: 0 },
+                            y: { duration: 0 },
                             opacity: { duration: 0.25 },
                             scale: { duration: 0.3, ease: EASE_OUT },
                           }
                     }
                   >
-                    <div style={{ transform: `scale(${cursorK})`, transformOrigin: "1px 1px" }}>
+                    {/* Animated with the camera's pull-back so it holds its size. */}
+                    <motion.div
+                      style={{ transformOrigin: "1px 1px" }}
+                      initial={false}
+                      animate={{ scale: cursorK }}
+                      transition={snap || s !== S.REVEAL ? { duration: 0 } : { duration: 0.85, ease: EASE_IN_OUT }}
+                    >
                       <Cursor />
-                    </div>
+                    </motion.div>
                   </motion.div>
 
                   {/* The click, as a ring leaving the tip. */}
