@@ -36,4 +36,13 @@ export const chapters: Chapter[] = [
     visual: "reward-engine",
     slug: "simplifying-a-consumer-fintech-reward-engine",
   },
+  {
+    id: "payments",
+    name: "Designing Bravo’s consumer payments app",
+    meta: "Bravo Payments App · ONGOING",
+    blurb:
+      "Bringing restaurant discovery, payments, and rewards into one end-to-end mobile experience.",
+    visual: "",
+    slug: null,
+  },
 ];
