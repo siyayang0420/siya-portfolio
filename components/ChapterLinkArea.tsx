@@ -3,6 +3,7 @@
 import { useRef, useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { motion, useMotionValue, useSpring } from "framer-motion";
+import posthog from "posthog-js";
 
 /**
  * Makes a whole chapter block behave like one big link.
@@ -78,6 +79,14 @@ export default function ChapterLinkArea({
       onClick={(e) => {
         // Anything genuinely interactive inside handles its own click.
         if ((e.target as HTMLElement).closest("a,button")) return;
+        if (
+          process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN &&
+          process.env.NEXT_PUBLIC_POSTHOG_HOST
+        ) {
+          posthog.capture("case_study_opened", {
+            case_study_slug: href.slice(1),
+          });
+        }
         router.push(href);
       }}
     >

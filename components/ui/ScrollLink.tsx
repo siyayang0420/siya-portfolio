@@ -1,6 +1,7 @@
 'use client';
 
 import type { ReactNode } from 'react';
+import posthog from 'posthog-js';
 
 /**
  * In-page anchor that smooth-scrolls to a target id WITHOUT changing the URL.
@@ -24,6 +25,14 @@ export function ScrollLink({
     const el = document.getElementById(href.slice(1));
     if (!el) return;
     e.preventDefault();
+    if (
+      process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN &&
+      process.env.NEXT_PUBLIC_POSTHOG_HOST
+    ) {
+      posthog.capture('case_study_section_navigated', {
+        target_section: href.slice(1),
+      });
+    }
     const top = el.getBoundingClientRect().top + window.scrollY - offset;
     window.scrollTo({ top, behavior: 'smooth' });
   };

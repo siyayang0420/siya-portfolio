@@ -34,3 +34,4 @@ Thumbs.db
 
 # Deploy
 .vercel
+.env.local

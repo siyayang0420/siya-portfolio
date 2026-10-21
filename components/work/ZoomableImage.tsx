@@ -16,6 +16,7 @@ import {
 import { createPortal } from 'react-dom';
 import { cn } from '@/lib/cn';
 import { PILL } from '@/components/ui/pill';
+import posthog from 'posthog-js';
 
 /**
  * A case-study figure you can open full-screen and zoom.
@@ -50,7 +51,15 @@ export function ZoomableImage({ className, src, alt, ...img }: Props) {
     <>
       <button
         type="button"
-        onClick={() => setOpen(true)}
+        onClick={() => {
+          if (
+            process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN &&
+            process.env.NEXT_PUBLIC_POSTHOG_HOST
+          ) {
+            posthog.capture('case_study_image_opened');
+          }
+          setOpen(true);
+        }}
         aria-label={`View full size: ${alt}`}
         className="block h-full w-full cursor-zoom-in rounded-xl text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4f83f7]/40"
       >

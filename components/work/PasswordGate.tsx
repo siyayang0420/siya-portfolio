@@ -1,6 +1,7 @@
 'use client';
 
 import { useActionState } from 'react';
+import posthog from 'posthog-js';
 import { ArrowRight, Lock } from 'lucide-react';
 import { unlock } from '@/app/[slug]/actions';
 import { PILL } from '@/components/ui/pill';
@@ -28,6 +29,14 @@ export function PasswordGate({ slug, title }: { slug: string; title: string }) {
     subject: `Password request: ${title}`,
     body: `Hi Siya,\n\nI came across your portfolio and would love to read the ${title} case study. Could you share the password?\n\nThanks,\n`,
   }).toString().replace(/\+/g, '%20')}`;
+  const capture = (event: 'case_study_unlock_attempted' | 'case_study_access_requested') => {
+    if (
+      process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN &&
+      process.env.NEXT_PUBLIC_POSTHOG_HOST
+    ) {
+      posthog.capture(event, { case_study_slug: slug });
+    }
+  };
 
   return (
     <section className="relative mt-16" aria-labelledby="gate-title">
@@ -49,6 +58,7 @@ export function PasswordGate({ slug, title }: { slug: string; title: string }) {
       <div className="absolute inset-0 flex items-center justify-center">
         <form
           action={action}
+          onSubmit={() => capture('case_study_unlock_attempted')}
           className="flex w-full max-w-[400px] flex-col gap-5 rounded-[1.5rem] bg-white p-6 shadow-[0_1px_2px_rgba(0,0,0,0.06),0_24px_48px_-24px_rgba(0,0,0,0.25)] ring-1 ring-black/[0.06] md:p-8"
         >
           <div className="flex items-center gap-2 text-muted">
@@ -100,6 +110,7 @@ export function PasswordGate({ slug, title }: { slug: string; title: string }) {
             Need access?{' '}
             <a
               href={mailto}
+              onClick={() => capture('case_study_access_requested')}
               className="underline underline-offset-4 transition-colors hover:text-ink"
             >
               Email me

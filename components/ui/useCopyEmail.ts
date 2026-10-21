@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import posthog from "posthog-js";
 
 export const EMAIL = "siya.yang.design@gmail.com";
 
@@ -34,6 +35,13 @@ export function useCopyEmail(resetMs = 2000) {
       scratch.select();
       document.execCommand("copy");
       document.body.removeChild(scratch);
+    }
+
+    if (
+      process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN &&
+      process.env.NEXT_PUBLIC_POSTHOG_HOST
+    ) {
+      posthog.capture("email_copied");
     }
 
     setCopied(true);

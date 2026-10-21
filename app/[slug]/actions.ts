@@ -2,6 +2,11 @@
 
 import { cookies } from 'next/headers';
 import { gateCookie, passwordMatches, unlockToken } from '@/lib/gate';
+import {
+  flushPostHogLogs,
+  logCaseStudyUnlockRejected,
+  logCaseStudyUnlockSucceeded,
+} from '@/instrumentation';
 
 export type UnlockState = { error: boolean };
 
@@ -13,6 +18,8 @@ export async function unlock(
   form: FormData,
 ): Promise<UnlockState> {
   if (!passwordMatches(slug, String(form.get('password') ?? ''))) {
+    logCaseStudyUnlockRejected(slug);
+    await flushPostHogLogs();
     return { error: true };
   }
   // Setting a cookie in an action re-renders the route, so the page swaps the
@@ -24,5 +31,7 @@ export async function unlock(
     path: `/${slug}`,
     maxAge: 60 * 60 * 24 * 30,
   });
+  logCaseStudyUnlockSucceeded(slug);
+  await flushPostHogLogs();
   return { error: false };
 }
