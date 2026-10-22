@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import { cn } from '@/lib/cn';
-import { PILL } from '@/components/ui/pill';
+import { PILL, PILL_GROW } from '@/components/ui/pill';
 
 /**
  * Case-study top bar: Home on the left, Work and About me on the right.
@@ -10,11 +10,12 @@ import { PILL } from '@/components/ui/pill';
  * site nav, and a fixed bar would need a top offset on <main>'s first child,
  * which collapses out and exposes the dark body behind it.
  *
- * The pills are the shared PILL treatment, narrowed to a colour-only
- * transition: the bar sits over the cover image, and animating every property
- * makes the pills drift on the first paint after the cover settles.
+ * The pills are the shared PILL treatment, narrowed to a transform-only
+ * transition (for the hover grow): the bar sits over the cover image, and
+ * animating every property makes the pills drift on the first paint after the
+ * cover settles.
  */
-const NAV_PILL = cn(PILL, 'transition-colors duration-200');
+const NAV_PILL = cn(PILL, PILL_GROW, 'transition-transform duration-200');
 
 export function TopBar() {
   return (
