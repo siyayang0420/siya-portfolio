@@ -9,11 +9,16 @@
  *
  * The ring replaces what used to be a white border. A white hairline on a white
  * fill only reads against a coloured ground; the ring seats the pill on any
- * background, and it takes the accent on hover so the outline fills with the
- * button rather than staying behind as a halo.
+ * background.
+ *
+ * It stays white on hover and press: no accent fill. Where a pill should
+ * respond to hover, add PILL_GROW.
  *
  * Anything that varies per use — width behaviour, the transition property —
  * belongs at the call site, not here.
  */
 export const PILL =
-  "inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-white px-5 py-3 font-display text-sm font-medium text-black shadow-[0_1px_2px_rgba(0,0,0,0.06),0_8px_24px_-10px_rgba(0,0,0,0.25),inset_0_0_8px_-1px_#fff] ring-1 ring-black/[0.06] transition hover:bg-[#4f83f7] hover:text-white hover:ring-[#4f83f7] active:bg-[#4f83f7] active:text-white active:ring-[#4f83f7]";
+  "inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-white px-5 py-3 font-display text-sm font-medium text-black shadow-[0_1px_2px_rgba(0,0,0,0.06),0_8px_24px_-10px_rgba(0,0,0,0.25),inset_0_0_8px_-1px_#fff] ring-1 ring-black/[0.06] cursor-pointer transition";
+
+/** The hover response for nav-style pills: a gentle 1.05× grow, no colour change. */
+export const PILL_GROW = "hover:scale-105";

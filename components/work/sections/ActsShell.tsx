@@ -5,7 +5,7 @@ import type { ReactNode } from 'react';
 import { ChevronDown } from 'lucide-react';
 import ActPill from './ActPill';
 import { cn } from '@/lib/cn';
-import { PILL } from '@/components/ui/pill';
+import { PILL, PILL_GROW } from '@/components/ui/pill';
 
 /**
  * The act layout every case study on this site uses.
@@ -196,7 +196,7 @@ export function ActsShell({
           {/* Opens the pill out into the full list. Same PILL surface as the
               site's nav buttons, squared off to a circle at the progress
               pill's own 44px height so the two sit as a pair — and unlike the
-              progress pill it keeps PILL's accent hover, because it is a plain
+              progress pill it grows on hover (PILL_GROW), because it is a plain
               action rather than a status readout. */}
           <button
             type="button"
@@ -206,6 +206,7 @@ export function ActsShell({
             aria-controls="act-list"
             className={cn(
               PILL,
+              PILL_GROW,
               'size-11 self-start p-0 duration-200 active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4f83f7]/40',
             )}
           >
