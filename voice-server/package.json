@@ -1,0 +1,19 @@
+{
+  "name": "voice-server",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node check.js"
+  },
+  "dependencies": {
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "twilio": "^5.13.0",
+    "ws": "^8.19.0"
+  }
+}
