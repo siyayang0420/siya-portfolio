@@ -42,7 +42,7 @@ export const chapters: Chapter[] = [
     meta: "Bravo Payments App · ONGOING",
     blurb:
       "Bringing restaurant discovery, payments, and rewards into one end-to-end mobile experience.",
-    visual: "",
+    visual: "bravo-pay",
     slug: null,
   },
 ];
