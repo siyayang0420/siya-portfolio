@@ -1,0 +1,10 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="164" height="164" viewBox="0 0 164 164" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path id="Breath ring" opacity="0.55" d="M163.65 82C163.65 127.094 127.094 163.65 82 163.65C36.906 163.65 0.35 127.094 0.35 82C0.35 36.906 36.906 0.35 82 0.35C127.094 0.35 163.65 36.906 163.65 82Z" stroke-width="0.7" stroke="url(#paint0_linear_0_479)"/>
+<defs>
+<linearGradient id="paint0_linear_0_479" x1="0" y1="0" x2="164" y2="0" gradientUnits="userSpaceOnUse">
+<stop stop-color="#B6F0ED"/>
+<stop offset="0.52" stop-color="#F6B8D7"/>
+<stop offset="1" stop-color="#F9E8A3"/>
+</linearGradient>
+</defs>
+</svg>
