@@ -1,0 +1,689 @@
+/*
+ * The Bravo app inside an iPhone, ported from bravo-landing (InPhoneApp.css,
+ * PhoneAiScreen.css, PhoneMockup.css). Every selector is prefixed ph / ai /
+ * pbox / phone-mockup, and the brand tokens are scoped to `.bp` so they can't
+ * leak into the portfolio (whose own --font-display is Jakarta).
+ */
+.bp {
+  --ds-black: #202020;
+  --accent-inset: inset 0 1px 5px rgba(255, 255, 255, .6), inset 0 -4px 4px #000;
+  --heart-red: #C51F1F;
+  --heart-red-glow: rgba(197, 31, 31, .3);
+  --font-display: var(--font-boldonse), system-ui, sans-serif;
+  --font-ui: var(--font-inter), system-ui, sans-serif;
+  --font-ios: -apple-system, 'SF Pro Text', 'Helvetica Neue', system-ui, sans-serif;
+}
+
+/* Layered art box is 344 × 708.878 (Figma node 5794:2375). */
+.phone-mockup {
+  position: relative;
+  flex-shrink: 0;
+  aspect-ratio: 344 / 708.878;
+}
+.phone-mockup__layer {
+  position: absolute;
+  display: block;
+  max-width: none;
+  pointer-events: none;
+}
+
+/* The app screen sits in the phone glass; the bezel layers (Hero) cover its edge.
+   Everything below is authored at the Figma design size (402px wide) and scaled
+   to fit by JS, so all type stays real text and renders crisp at any size. */
+.ph {
+  position: absolute;
+  top: 1.05%;
+  left: 2.9%;
+  right: 2.6%;
+  bottom: 1.05%;
+  overflow: hidden;
+  background: #fff;
+  border-radius: 13% / 6.3%;
+  z-index: 0;
+}
+/* one per screen — carries the slide/fade of the screen transition */
+.ph__layer { position: absolute; inset: 0; will-change: transform, opacity; }
+
+/* ---------- prompt box: rotating 3-colour gradient border ----------
+   The Figma border runs cyan -> yellow -> red around the capsule. A conic
+   gradient painted on the outer element with a 1px inset white pill on top
+   gives a true gradient border; animating the angle rotates it. */
+@property --pbox-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+.pbox {
+  --pbox-angle: 0deg;
+  /* 1px in the design, but the frame is scaled to ~0.65 so a 1px ring lands on
+     ~0.65 device px and antialiasing washes the hues out. 1.6px keeps the
+     rendered ring at ~1px and the colours clean. */
+  padding: 1.6px;
+  border-radius: 999px;
+  /* oklab interpolation — sRGB blends cyan->yellow through a muddy grey-green */
+  background: conic-gradient(
+    from var(--pbox-angle) in oklab,
+    #4af3ff 0deg, #fee160 120deg, #f94f4f 240deg, #4af3ff 360deg
+  );
+  animation: pbox-spin 6s linear infinite;
+}
+/* engines without oklab conic interpolation fall back to plain sRGB stops */
+@supports not (background: conic-gradient(from 0deg in oklab, red, blue)) {
+  .pbox {
+    background: conic-gradient(
+      from var(--pbox-angle),
+      #4af3ff 0deg, #7ef2c0 60deg, #fee160 120deg, #fba55a 180deg,
+      #f94f4f 240deg, #9ba8f7 300deg, #4af3ff 360deg
+    );
+  }
+}
+@keyframes pbox-spin { to { --pbox-angle: 360deg; } }
+
+.pbox__inner {
+  display: flex; align-items: center; gap: 16px;
+  background: #fff;
+  border-radius: 999px;
+  padding: 8px 12px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pbox { animation: none; }
+}
+
+.ph__frame {
+  position: absolute;
+  top: 0; left: 0;
+  width: 402px; /* height is set from the glass box so the bottom isn't cropped */
+  transform-origin: 0 0;
+  font-family: var(--font-ui);
+  color: var(--ds-black);
+  font-size: 14px;
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+.ph__frame img { display: block; }
+
+/* Boldonse is the design-system display face for these product labels */
+.ph-bold { font-family: var(--font-display); font-size: 14px; line-height: 1.2; }
+
+/* ---------- scrolling feed ---------- */
+.ph__feed {
+  position: absolute;
+  top: 127px; left: 16px;
+  width: 370px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  will-change: transform;
+}
+.ph__group { display: flex; flex-direction: column; gap: 16px; }
+.ph__h3 { font-size: 20px; font-weight: 700; margin: 0; }
+
+/* challenge card */
+.ph-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  filter: drop-shadow(0 0 7.5px rgba(0, 0, 0, 0.1));
+}
+.ph-card__row { display: flex; align-items: center; gap: 12px; }
+.ph-stack { display: flex; flex-shrink: 0; }
+.ph-stack__item {
+  width: 48px; height: 64px;
+  border-radius: 100px;
+  border: 2px solid #fff;
+  overflow: hidden;
+  margin-right: -15px;
+  box-shadow: inset 0 1px 4px #fff, inset 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+.ph-stack__item:last-child { margin-right: 0; }
+.ph-stack__item img { width: 100%; height: 100%; object-fit: cover; }
+.ph-card__who { margin: 0; font-size: 14px; }
+.ph-card__title { display: flex; align-items: center; justify-content: space-between; }
+.ph-coin { display: flex; align-items: center; gap: 4px; }
+.ph-coin__art { position: relative; width: 24px; height: 24px; display: block; }
+.ph-coin__bg { position: absolute; inset: 0; width: 24px; height: 24px; transform: rotate(180deg); }
+.ph-coin__in { position: absolute; left: 4.45px; top: 3.71px; width: 15.09px; height: 16.39px; }
+
+.ph-prog { display: flex; flex-direction: column; gap: 6px; }
+.ph-prog__row { display: flex; justify-content: space-between; font-size: 14px; }
+.ph-prog__track { height: 9px; border-radius: 1000px; background: #d9d9d9; overflow: hidden; }
+.ph-prog__fill {
+  width: 50.87%; height: 100%;
+  border-radius: 1000px;
+  background: #343434;
+  box-shadow: var(--accent-inset);
+}
+
+/* post */
+.ph-post { display: flex; gap: 8px; align-items: flex-start; }
+.ph-post__av {
+  width: 30px; height: 40px;
+  border-radius: 100px;
+  overflow: hidden;
+  flex-shrink: 0;
+  box-shadow: inset 0 1px 4px #fff, inset 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+.ph-post__av img { width: 100%; height: 100%; object-fit: cover; }
+.ph-post__body { display: flex; flex-direction: column; gap: 12px; min-width: 0; flex: 1; }
+.ph-post__head { display: flex; flex-direction: column; gap: 4px; }
+.ph-post__name { display: flex; align-items: center; gap: 4px; }
+.ph-name { font-size: 14px; font-weight: 700; }
+.ph-dot, .ph-date { font-size: 12px; color: #a3a3a3; }
+
+.ph-chips { display: flex; gap: 4px; }
+.ph-chip {
+  display: inline-flex; align-items: center; gap: 2px;
+  padding: 2px 6px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.ph-chip--flame { background: rgba(254, 167, 36, 0.15); color: #c70; }
+.ph-chip--flame img { width: 8.382px; height: 11px; }
+.ph-chip--lv { background: #ffe5d9; color: #c56d40; }
+.ph-chip--lv img { width: 12px; height: 12px; }
+
+.ph-post__text { margin: 0; font-size: 14px; width: 332px; }
+
+.ph-venue {
+  width: 332px; height: 66px;
+  border: 1px solid #f2f2f2;
+  border-radius: 8px;
+  padding: 4px 12px 4px 4px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.ph-venue__left { display: flex; align-items: center; gap: 8px; }
+.ph-venue__thumb { position: relative; width: 79px; height: 58px; border-radius: 6px; overflow: hidden; display: block; }
+.ph-venue__thumb img { width: 100%; height: 100%; object-fit: cover; }
+.ph-venue__pct {
+  position: absolute; left: 4px; top: 4px;
+  background: var(--ds-black); color: #fff;
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 100px;
+}
+/* Design width is 147px, but Inter (standing in for DM Sans) runs wider and wraps
+   the subtitle. The card has slack, so let the block size to its content. */
+.ph-venue__meta { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.ph-venue__name { font-size: 14px; }
+.ph-venue__sub { font-size: 12px; color: #737373; white-space: nowrap; }
+.ph-venue__save {
+  width: 35px; height: 35px;
+  border-radius: 999px;
+  background: #fff;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+/* These glyphs carry preserveAspectRatio="none", so pinning both axes stretches
+   them. Pin the height and let the intrinsic ratio drive the width. */
+.ph-venue__save img { width: auto; height: 20px; }
+
+.ph-photos { display: flex; gap: 15px; }
+.ph-photos__item {
+  width: 280px; height: 302px;
+  border-radius: 16px;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: block;
+}
+.ph-photos__item img { width: 100%; height: 100%; object-fit: cover; }
+
+.ph-actions { display: flex; justify-content: flex-end; align-items: center; gap: 16px; }
+.ph-actions__icon { width: 20px; height: 20px; }
+
+/* heart */
+.ph-heart { position: relative; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; }
+.ph-heart.is-liked { color: var(--heart-red); }
+.ph-heart__icon { width: 18.1667px; height: 15.6799px; display: block; }
+.ph-heart.is-liked .ph-heart__icon { animation: ph-pop 0.42s cubic-bezier(0.22, 1.4, 0.36, 1); }
+@keyframes ph-pop {
+  0% { transform: scale(0.75); }
+  40% { transform: scale(1.28); }
+  70% { transform: scale(0.94); }
+  100% { transform: scale(1); }
+}
+.ph-heart__count {
+  position: absolute; left: 24px; top: 50%;
+  transform: translateY(-50%);
+  font-size: 12px; font-weight: 600;
+  color: var(--ds-black);
+  animation: ph-count 0.35s ease both;
+}
+@keyframes ph-count { from { opacity: 0; transform: translateY(-20%); } to { opacity: 1; transform: translateY(-50%); } }
+
+.ph-heart__burst { position: absolute; left: 50%; top: 50%; width: 0; height: 0; pointer-events: none; }
+.ph-fly {
+  position: absolute; left: 0; top: 0;
+  width: 18px; height: 16px;
+  margin: -8px 0 0 -9px;
+  opacity: 0;
+  color: var(--heart-red);
+}
+.ph-fly svg { width: 100%; height: 100%; display: block; filter: drop-shadow(0 2px 4px var(--heart-red-glow)); }
+
+/* ---------- fixed chrome ---------- */
+.ph__top {
+  position: absolute; top: 0; left: 0;
+  width: 402px; height: 127px;
+  padding: 0 16px;
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  background: linear-gradient(to bottom, #fff 75.492%, rgba(255, 255, 255, 0));
+  z-index: 2;
+  pointer-events: none;
+}
+.ph-status {
+  width: 361px; height: 59px;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 11px 16px;
+}
+.ph-status__time { flex: 1; text-align: center; font-size: 17px; font-weight: 600; line-height: 22px; }
+.ph-status__island { width: 125px; height: 37px; flex-shrink: 0; }
+.ph-status__levels { flex: 1; display: flex; align-items: center; justify-content: center; gap: 7px; }
+
+.ph-tabs { width: 370px; display: flex; align-items: center; justify-content: space-between; }
+.ph-tabs__left { display: flex; gap: 32px; align-items: center; height: 35px; }
+.ph-tab { display: flex; flex-direction: column; gap: 4px; width: 64px; }
+.ph-tab__label { font-family: var(--font-display); font-size: 14px; line-height: 1.2; }
+.ph-tab__label.is-dim { color: #737373; }
+.ph-tab i { display: block; height: 2px; background: var(--ds-black); opacity: 0; }
+.ph-tab i.is-on { opacity: 1; }
+.ph-tabs__right { display: flex; gap: 6px; align-items: center; }
+.ph-round {
+  width: 35px; height: 35px;
+  border-radius: 999px;
+  background: #fff;
+  display: flex; align-items: center; justify-content: center;
+  filter: drop-shadow(0 5px 4px rgba(0, 0, 0, 0.15));
+}
+.ph-round img { width: auto; height: 20px; }
+
+.ph__bottom {
+  position: absolute; bottom: 0; left: 0;
+  width: 402px;
+  padding: 0 16px 18px;
+  display: flex; flex-direction: column; gap: 12px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #fff 34.4%);
+  z-index: 2;
+  pointer-events: none;
+}
+.ph-prompt { display: flex; gap: 12px; align-items: flex-start; }
+.ph-prompt__box { flex: 1; min-width: 0; }
+.ph-prompt__plus {
+  width: 32px; height: 32px;
+  border-radius: 999px;
+  border: 0.5px solid #e5e5e5;
+  background: #fff;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.ph-prompt__plus img { width: 20px; height: 20px; }
+.ph-prompt__ph {
+  flex: 1; min-width: 0;
+  font-size: 14px; color: #a3a3a3;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.ph-prompt__mic { width: auto; height: 22px; flex-shrink: 0; }
+.ph-prompt__audio {
+  width: 32px; height: 32px;
+  border-radius: 999px;
+  background: var(--ds-black);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  box-shadow: var(--accent-inset);
+}
+.ph-prompt__audio img { width: 20px; height: 20px; }
+.ph-compose {
+  width: 48px; height: 48px;
+  border-radius: 24px;
+  background: #fee160;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 7.2px #fee160);
+}
+.ph-compose img { width: 24.96px; height: 24.96px; }
+
+.ph-nav { height: 27.6px; padding: 0 32px; display: flex; align-items: center; justify-content: space-between; }
+.ph-nav img { width: 22px; height: 22px; }
+.ph-nav__me { width: 27.6px; height: 27.6px; border-radius: 999px; overflow: hidden; display: block; }
+.ph-nav__me img { width: 100%; height: 100%; object-fit: cover; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ph-heart.is-liked .ph-heart__icon, .ph-heart__count { animation: none; }
+}
+/* bravo AI chat screen (Figma 5807:6376), authored at the 402px design width and
+   scaled by the parent, same as the feed screen. */
+.ai__frame {
+  position: absolute;
+  top: 0; left: 0;
+  width: 402px;
+  transform-origin: 0 0;
+  background: #fff;
+  overflow: hidden;
+  font-family: var(--font-ui);
+  color: var(--ds-black);
+  font-size: 14px;
+  line-height: 1.2;
+}
+.ai__frame img { display: block; }
+
+/* blurred brand gradient bleeding in from above the top edge */
+.ai__glow {
+  position: absolute;
+  top: -32px; left: 50%;
+  margin-left: calc(-395px / 2 - 4.5px);
+  width: 395px; height: 82px;
+  opacity: .8;
+  filter: blur(36.85px);
+  background: linear-gradient(93.65deg, #4af3ff 0.17%, #fee160 50%, #f94f4f 99.83%);
+}
+
+/* ---------- header ---------- */
+.ai__top { position: absolute; top: 0; left: 0; width: 402px; display: flex; flex-direction: column; gap: 16px; }
+.ai__bar { display: flex; align-items: center; justify-content: space-between; padding: 65px 16px 0; }
+.ai__iconbtn { width: 32px; height: 32px; border-radius: 999px; display: flex; align-items: center; justify-content: center; }
+/* Figma exports these glyphs with preserveAspectRatio="none", so pinning both
+   axes stretches them. Pin one axis and let the intrinsic ratio drive the other. */
+.ai__iconbtn img { width: auto; height: 20px; }
+.ai__logo { width: 89.663px; height: 15px; }
+.ai__note { margin: 0; font-size: 12px; line-height: 16px; color: #8e8e93; text-align: center; }
+
+/* ---------- thread + prompt ---------- */
+.ai__bottom { position: absolute; bottom: 0; left: -1px; width: 402px; display: flex; flex-direction: column; gap: 16px; align-items: center; }
+.ai__thread { width: 370px; display: flex; flex-direction: column; gap: 16px; align-items: flex-end; }
+.ai__bubble-row { width: 100%; display: flex; justify-content: flex-end; }
+.ai__bubble {
+  max-width: 300px;
+  padding: 10px 12px;
+  background: #f5f5f5;
+  border-radius: 12px 12px 2px 12px;
+  box-shadow: inset 0 1px 4px #fff, inset 0 -2px 5px rgba(0, 0, 0, .1);
+  font-size: 14px;
+  color: var(--ds-black);
+  will-change: transform, opacity;
+}
+
+/* reply row — orb + (status line | answer blocks) */
+.ai__reply {
+  width: 100%;
+  display: flex; align-items: flex-start; gap: 6px;
+  will-change: transform, opacity;
+}
+.ai__reply-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 16px; }
+.breeze { will-change: transform, opacity, filter; }
+
+/* the top margin centres the first line (14 × 1.35 ≈ 19px) on the 32px orb */
+.ai__answer { margin: 6.5px 0 0; font-size: 14px; line-height: 1.35; color: var(--ds-black); }
+
+/* friend's post */
+.ai__friend { display: flex; flex-direction: column; gap: 4px; }
+.ai__friend-head { display: flex; align-items: center; gap: 4px; font-size: 12px; color: #737373; white-space: nowrap; }
+.ai__friend-av { width: 17px; height: 23px; border-radius: 100px; overflow: hidden; flex-shrink: 0; }
+.ai__friend-av img { width: 100%; height: 100%; object-fit: cover; }
+.ai__friend-quote { display: flex; gap: 6px; align-items: flex-start; }
+.ai__quote-mark { width: 16px; height: 16px; flex-shrink: 0; transform: rotate(180deg) scaleY(-1); }
+.ai__friend-quote p { margin: 0; font-size: 14px; line-height: 1.3; }
+
+/* venue + photos */
+.ai__result { display: flex; flex-direction: column; gap: 5px; }
+.ai__venue {
+  width: 100%; height: 66px;
+  border: 1px solid #f2f2f2;
+  border-radius: 8px;
+  padding: 4px 12px 4px 4px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.ai__venue-left { display: flex; align-items: center; gap: 8px; }
+.ai__venue-thumb { position: relative; width: 79px; height: 58px; border-radius: 6px; overflow: hidden; display: block; flex-shrink: 0; }
+.ai__venue-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.ai__venue-pct {
+  position: absolute; left: 4px; top: 4px;
+  background: var(--ds-black); color: #fff;
+  font-size: 12px; padding: 2px 8px; border-radius: 100px;
+}
+.ai__venue-meta { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.ai__venue-name { font-size: 14px; }
+.ai__venue-sub { font-size: 12px; color: #737373; white-space: nowrap; }
+.ai__venue-save {
+  width: 35px; height: 35px; border-radius: 999px; background: #fff;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.ai__venue-save img { width: auto; height: 20px; }
+
+.ai__photos { display: flex; gap: 16px; }
+.ai__photo { width: 199px; height: 216px; border-radius: 16px; overflow: hidden; flex-shrink: 0; display: block; }
+.ai__photo img { width: 100%; height: 100%; object-fit: cover; }
+/* The shader's sphere fills ~75.6% of its canvas, so a 24px visible sphere needs
+   a ~32px canvas. The extra is transparent, hence the pull-in on the left and
+   the tighter gap — both keep the *visible* orb on the 24px grid. */
+.ai__orb { display: block; width: 32px; height: 32px; flex-shrink: 0; margin-left: -4px; }
+.ai__think-line {
+  font-size: 14px;
+  line-height: 32px; /* the orb's box height, so the line sits on its centre */
+  color: #737373;
+  animation: ai-line-in .45s ease both;
+}
+@keyframes ai-line-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+.ai__prompt { width: 100%; }
+.ai__prompt-plus {
+  width: 32px; height: 32px; border-radius: 999px;
+  border: .5px solid #e5e5e5; background: #fff;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.ai__prompt-plus img { width: 20px; height: 20px; }
+.ai__prompt-ph { flex: 1; min-width: 0; font-size: 14px; color: #a3a3a3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ai__prompt-mic { width: auto; height: 22px; flex-shrink: 0; }
+.ai__prompt-audio {
+  width: 32px; height: 32px; border-radius: 999px; background: var(--ds-black);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  box-shadow: var(--accent-inset);
+}
+.ai__prompt-audio img { width: 20px; height: 20px; }
+
+/* ---------- iOS keyboard ---------- */
+.ai__kb {
+  width: 100%; height: 342px;
+  padding: 12px 0 10px;
+  display: flex; flex-direction: column; align-items: center;
+  background: #d1d5db;
+  border-radius: 27px 27px 0 0;
+  font-family: var(--font-ios);
+  will-change: transform, opacity;
+}
+.ai__kb-suggest {
+  height: 25px; width: 100%;
+  padding: 0 22px;
+  display: flex; align-items: center; gap: 20px;
+  font-size: 17px; letter-spacing: -0.43px; color: #1a1a1a;
+}
+.ai__kb-suggest span { flex: 1; min-width: 0; text-align: center; }
+.ai__kb-suggest i { width: 1px; height: 25px; background: #ccc; opacity: .3; flex-shrink: 0; }
+
+.ai__kb-keys { width: 100%; padding: 12px 8.5px 0; display: flex; flex-direction: column; gap: 11px; }
+.ai__kb-row { display: flex; align-items: center; gap: 6px; width: 100%; }
+.ai__kb-row--2 { padding: 0 20px; }
+.ai__kb-row--3 { gap: 14.25px; }
+.ai__kb-mid { display: flex; gap: 6px; flex: 1; min-width: 0; }
+
+.ai__key {
+  flex: 1; min-width: 0;
+  height: 45px;
+  border-radius: 8.5px;
+  background: #fff;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, .3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 25px; line-height: 30px; color: #595959;
+}
+.ai__key--shift, .ai__key--del { flex: 0 0 auto; width: 44.667px; background: #adb3bd; }
+.ai__key--del { width: 45px; }
+.ai__key--shift svg { width: 22px; height: 22px; }
+.ai__key--del svg { width: 24px; height: 19px; }
+.ai__key--abc { flex: 0 0 auto; width: 91.667px; font-size: 18px; line-height: 21px; background: #adb3bd; }
+.ai__key--space { flex: 1; }
+.ai__key--return { flex: 0 0 auto; width: 92px; background: #08f; }
+.ai__key--return svg { width: 22px; height: 22px; }
+
+.ai__kb-foot {
+  height: 70px; width: 100%;
+  padding: 27px 39px 15px 36px;
+  display: flex; align-items: flex-start; justify-content: space-between;
+}
+
+/* Tailwind's preflight caps images at 100% and thins the body weight; the
+   app art was drawn without either. */
+.bp img { max-width: none; }
+.bp .ph, .bp .ai__frame { font-weight: 400; }
+
+/* Prompt end actions, and the Voice Input pill from bravov3-demo
+   (info-100 at 50% behind info-400 bars and label). */
+.ai__prompt-end { display: flex; align-items: center; gap: 16px; flex-shrink: 0; }
+.ai__voice {
+  display: flex; align-items: center; gap: 10px;
+  height: 32px; padding: 0 16px; margin-right: -8px; /* pill sits 8px from send, as in bravov3 */
+  border-radius: 999px;
+  background: color-mix(in srgb, #c9def6 50%, transparent);
+}
+.ai__voice-bars { display: flex; align-items: center; gap: 2px; height: 16px; }
+.ai__voice-bar { display: block; width: 2px; border-radius: 999px; background: #2e5f99; }
+.ai__voice-stop { font-size: 14px; line-height: 1.2; color: #2e5f99; }
+
+/* ---------- second reply ---------- */
+.ai__bottom { top: 140px; justify-content: flex-end; overflow: hidden;
+  /* the thread scrolls up under the header as replies land; fade it out there */
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 28px);
+  mask-image: linear-gradient(to bottom, transparent, #000 28px); }
+.ai__thread { flex-shrink: 0; }
+
+.ai__think-line--sm { font-size: 12px; } /* Figma 802:422: 12px #737373 beside the orb */
+
+/* ---------- pay sheet (Figma 800:1909 → 804:2205) ----------
+   DM Sans throughout, as in the design. The sheet's height is set from JS so
+   it can morph between panels; each panel sits on its bottom edge. */
+.ps {
+  position: absolute; left: 0; bottom: 0; width: 402px;
+  background: #fff; border-radius: 32px 32px 0 0; overflow: hidden;
+  filter: drop-shadow(0 0 12.5px rgba(0, 0, 0, .15));
+  font-family: var(--font-dm-sans), system-ui, sans-serif; color: #202020; line-height: 1;
+  will-change: transform, height;
+}
+.ps p { margin: 0; }
+.ps__wash { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(47, 186, 95, .2) 0%, rgba(47, 186, 95, 0) 100%); }
+.ps__panel {
+  position: absolute; left: 0; bottom: 0; width: 402px;
+  padding: 16px; display: flex; flex-direction: column; align-items: center; gap: 24px;
+}
+.ps__foot { margin-top: auto; } /* every panel's button sits on the sheet's bottom edge */
+.ps-icon32 { width: 32px; height: 32px; flex-shrink: 0; }
+.ps-title { font-size: 16px; font-weight: 600; white-space: nowrap; }
+.ps-head { width: 100%; display: flex; align-items: center; justify-content: space-between; }
+.ps-strike { font-weight: 400; color: #737373; text-decoration: line-through; }
+
+.ps-to { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 16px; border-radius: 12px; background: #f5f5f5; }
+.ps-to__left { display: flex; align-items: center; gap: 8px; }
+.ps-to__logo { width: 35px; height: 35px; border-radius: 6px; object-fit: cover; }
+.ps-to__text { display: flex; flex-direction: column; gap: 6px; font-size: 14px; }
+.ps-to__label { font-weight: 500; color: #737373; }
+.ps-to__name { font-weight: 600; white-space: nowrap; }
+.ps-to__dist { font-weight: 400; color: #a3a3a3; }
+
+/* amount */
+.ps-amount { display: flex; align-items: center; }
+.ps-amount__num { font-size: 32px; font-weight: 700; white-space: nowrap; }
+.ps-caret { width: 1px; height: 42px; background: #737373; animation: ps-blink 1s steps(1) infinite; }
+@keyframes ps-blink { 50% { opacity: 0; } }
+.ps-tips { width: 100%; display: flex; gap: 12px; align-items: stretch; }
+.ps-tip {
+  flex: 1 0 0; min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  padding: 6px 0; border-radius: 8px; background: #f5f5f5; white-space: nowrap;
+  transition: background-color .2s ease, color .2s ease;
+}
+.ps-tip__pct { font-size: 16px; color: #202020; }
+.ps-tip__amt { font-size: 14px; color: #a3a3a3; }
+.ps-tip.is-on { background: #202020; }
+.ps-tip.is-on .ps-tip__pct, .ps-tip.is-on .ps-tip__amt { color: #fff; }
+.ps-tip--custom { font-size: 16px; }
+.ps-keys { width: 392px; height: 300px; display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(4, 1fr); column-gap: 3px; row-gap: 2px; }
+.ps-key {
+  display: flex; align-items: center; justify-content: center; border-radius: 5px; background: #fff;
+  font-size: 28px; font-weight: 700; line-height: 36px; transition: background-color .14s ease;
+}
+.ps-key--dot { font-size: 24px; line-height: 31px; }
+.ps-key.is-down { background: #ededed; }
+.ps-btn {
+  width: 361px; height: 48px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+  border-radius: 10px; background: #f5f5f5; color: #a3a3a3; font-size: 14px; line-height: 19px;
+  transition: background-color .2s ease, color .2s ease;
+}
+.ps-btn.is-on { background: #202020; color: #fff; font-weight: 700; }
+.ps-btn--close { border-radius: 12px; }
+
+/* method */
+.ps-total { display: flex; flex-direction: column; align-items: center; white-space: nowrap; animation: ai-line-in .35s ease both; }
+.ps-total__row { display: flex; gap: 12px; font-size: 32px; }
+.ps-total__now { font-weight: 700; }
+.ps-total__tip { font-size: 14px; line-height: 19px; }
+.ps-cards { width: 100%; display: flex; flex-direction: column; gap: 16px; }
+.ps-card { width: 100%; padding: 16px; border: 1px solid #d1d1d6; border-radius: 15px; background: #fff; display: flex; flex-direction: column; gap: 10px; }
+.ps-card__row { display: flex; align-items: center; justify-content: space-between; }
+.ps-card__col { display: flex; flex-direction: column; white-space: nowrap; }
+.ps-card__label { font-size: 14px; line-height: 19px; color: #8e8e93; }
+.ps-card__amt { display: flex; gap: 6px; font-size: 20px; line-height: 26px; animation: ai-line-in .35s ease both; }
+.ps-card__bal { display: flex; align-items: center; gap: 4px; font-size: 20px; line-height: 26px; }
+.ps-badge { width: 36px; height: 21px; padding: 7px 6px; border-radius: 5px; background: #fee160; display: flex; }
+.ps-badge img { width: 23.012px; height: 6.586px; }
+.ps-toggle { position: relative; width: 46px; height: 24.353px; flex-shrink: 0; }
+.ps-toggle img { position: absolute; top: -8.62%; bottom: -8.62%; left: -4.56%; right: 0; width: auto; height: auto; }
+.ps-toggle.is-on img { left: 0; right: -5.54%; bottom: -8.61%; }
+.ps-bonus-btns { display: grid; grid-template-columns: 1fr 1fr; column-gap: 5.34%; }
+.ps-bonus-btn {
+  height: 42px; border-radius: 10px; background: #f5f5f5; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  font-size: 14px; line-height: 19px; font-weight: 500; color: #a3a3a3; white-space: nowrap;
+}
+.ps-bonus-btn--max { background: #202020; color: #fff; }
+.ps-bonus-btn--max em { font-style: normal; font-weight: 400; font-size: 10px; line-height: 13px; }
+.ps-swipe { position: relative; width: 361px; height: 48px; flex-shrink: 0; border-radius: 100px; background: #202020; overflow: hidden; }
+.ps-swipe__label { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); font-size: 14px; line-height: 19px; font-weight: 700; color: #fff; white-space: nowrap; }
+.ps-swipe__knob { position: absolute; left: 4px; top: 50%; width: 40px; height: 40px; border-radius: 100px; background: #fff; display: flex; align-items: center; justify-content: center; z-index: 1; }
+.ps-swipe__trail {
+  position: absolute; left: 4px; top: 4px; height: 40px; border-radius: 100px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, .06) 45%, rgba(255, 255, 255, .22) 100%);
+}
+.ps-spark { position: absolute; color: #fff; filter: drop-shadow(0 0 3px rgba(255, 255, 255, .9)) drop-shadow(0 0 6px rgba(254, 225, 96, .6)); }
+
+/* processing */
+.ps-proc { width: 330px; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; overflow: hidden; }
+.ps-orb { position: relative; width: 200px; height: 200px; overflow: hidden; flex-shrink: 0; }
+.ps-orb__layer { position: absolute; }
+.ps-orb__layer img { display: block; width: auto; height: auto; }
+.ps-proc__msg { width: 100%; display: flex; flex-direction: column; gap: 8px; text-align: center; }
+.ps-proc__title { font-size: 14px; line-height: 1.2; }
+.ps-proc__sub { font-size: 12px; line-height: 16px; color: #8e8e93; }
+
+/* success */
+.ps-green { color: #2f7657; }
+.ps-ok { width: 393px; display: flex; flex-direction: column; align-items: center; gap: 32px; }
+.ps-ok__top { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 24px; }
+.ps-ok__heads { display: flex; flex-direction: column; align-items: center; gap: 24px; white-space: nowrap; }
+.ps-ok__title { font-size: 16px; font-weight: 700; }
+.ps-ok__sum { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.ps-ok__was { font-size: 20px; line-height: 21px; font-weight: 500; }
+.ps-ok__now { font-size: 48px; font-weight: 700; }
+.ps-ok__from { font-size: 14px; line-height: 16px; color: #8e8e93; }
+.ps-ok__body { width: 100%; padding: 0 16px; display: flex; flex-direction: column; gap: 10px; }
+.ps-receipt { width: 100%; padding: 12px; border-radius: 16px; background: #fff; display: flex; flex-direction: column; gap: 10px; }
+.ps-receipt__row { display: flex; align-items: center; justify-content: space-between; font-size: 14px; line-height: 21px; font-weight: 500; white-space: nowrap; }
+.ps-receipt__row b { font-weight: 700; }
+.ps-receipt__dash { width: 100%; height: 1px; }
+.ps-receipt__paid { display: flex; flex-direction: column; line-height: normal; }
+.ps-receipt__paid small { font-size: 12px; font-weight: 400; color: #737373; }
+.ps-earned { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+.ps-earned__card { width: 100%; padding: 12px; border-radius: 12px; background: #fff; display: flex; align-items: center; justify-content: space-between; color: #2f7657; font-size: 14px; }
+.ps-earned__amt { font-size: 20px; }
+.ps-earned__now { display: flex; align-items: center; gap: 4px; font-size: 14px; line-height: 16px; color: #737373; white-space: nowrap; }
+.ps-coin { position: relative; width: 16px; height: 16px; }
+.ps-coin img { position: absolute; left: 0; top: 0; width: 16px; height: 16px; }
+.ps-coin .ps-coin__mark { left: 2.97px; top: 2.47px; width: 10.062px; height: 10.926px; }

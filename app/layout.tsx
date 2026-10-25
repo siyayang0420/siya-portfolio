@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Caveat, DM_Sans, Plus_Jakarta_Sans } from "next/font/google";
+import { Boldonse, Caveat, DM_Sans, Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 
 // The site family — body, display and the mono-styled labels.
@@ -26,6 +26,23 @@ const caveat = Caveat({
   display: "swap",
 });
 
+// The Bravo app's own faces, scoped to the phone in the payments chapter
+// (`.bp` in components/bravo-pay). Not preloaded: that visual is below the
+// first chapter, so it shouldn't compete with the hero for bandwidth.
+const boldonse = Boldonse({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-boldonse",
+  display: "swap",
+  preload: false,
+});
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+  preload: false,
+});
+
 export const metadata: Metadata = {
   title: "Siya Yang | Product Designer",
   description:
@@ -45,7 +62,7 @@ export default function RootLayout({
     // be re-enabled to switch between them again.
     <html
       lang="en"
-      className={`${jakarta.variable} ${dmSans.variable} ${caveat.variable}`}
+      className={`${jakarta.variable} ${dmSans.variable} ${caveat.variable} ${boldonse.variable} ${inter.variable}`}
       data-hero-style="engraved"
     >
       {/* The pre-paint script that restored a saved choice is gone with the

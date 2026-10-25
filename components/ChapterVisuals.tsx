@@ -3,6 +3,7 @@
 import CashbackFlowVisual from "./CashbackFlowVisual";
 import JeniSignalVisual from "./JeniSignalVisual";
 import JeniChatVisual from "./JeniChatVisual";
+import BravoPayVisual from "./bravo-pay/BravoPayVisual";
 
 import {
   ArrowUpRight,
@@ -388,6 +389,7 @@ const visuals: Record<string, (props: { bare?: boolean }) => React.ReactElement>
   "reward-engine": CashbackFlowVisual,
   signals: JeniSignalVisual,
   "jeni-chat": JeniChatVisual,
+  "bravo-pay": BravoPayVisual,
   briefing: BriefingVisual,
   "catch-up": CatchUpVisual,
   "action-plan": ActionPlanVisual,
