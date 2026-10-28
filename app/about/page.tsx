@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Footer from "@/components/Footer";
 import { TopBar } from "@/components/work/TopBar";
 import { Reveal } from "@/components/about/Reveal";
 import { Slot } from "@/components/about/Slot";
+import { ScrollStrip } from "@/components/about/ScrollStrip";
 
 export const metadata: Metadata = {
   title: "About — Siya Yang",
@@ -55,13 +57,13 @@ const OUT_OF_WORK = {
  * the caption.
  */
 const PHOTO_H = "clamp(240px, 26vw, 400px)";
-const PHOTOS = [
-  { ratio: 0.75, place: "Place" },
-  { ratio: 1.45, place: "Place" },
-  { ratio: 0.75, place: "Place" },
-  { ratio: 0.67, place: "Place" },
-  { ratio: 1.45, place: "Place" },
-  { ratio: 0.75, place: "Place" },
+const PHOTOS: { ratio: number; place: string; src?: string; alt?: string; zoom?: [scale: number, origin: string] }[] = [
+  { ratio: 0.75, place: "Joffre Lakes", src: "/about/lake.jpg", alt: "Siya standing on rocks at the edge of a turquoise alpine lake below a glacier" },
+  { ratio: 0.75, place: "Burnaby Mountain", src: "/about/zemo.jpg", alt: "Siya holding Zemo, a cream Goldendoodle, at sunset" },
+  { ratio: 0.75, place: "Sea to Sky", src: "/about/stump.jpg", alt: "Siya standing on a tree stump above a misty forested valley", zoom: [1.6, "58% 55%"] },
+  { ratio: 1.3, place: "Schwartz’s in Montréal", src: "/about/poutine.jpg", alt: "Smoked meat poutine piled high on a diner table" },
+  { ratio: 0.975, place: "FIFA Fan Festival in Vancouver", src: "/about/fanzone.jpg", alt: "Siya and Zemo beside a giant mirrored football at dusk", zoom: [1.3, "55% 100%"] },
+  { ratio: 0.75, place: "Coal Harbour", src: "/about/bench.webp", alt: "Siya on a bench with Zemo by a marina under a full moon" },
 ];
 
 /** A ruled row: mono label on the left half, a title and one line on the right. */
@@ -155,7 +157,23 @@ export default function AboutPage() {
               h-full fills it (a box with both sizes set ignores its ratio).
               Stacked, the height is auto again, so the 4:5 takes over. */}
           <Reveal delay={0.12} className="shrink-0" style={{ width: "clamp(240px, 30vw, 400px)" }}>
-            <Slot label="Portrait" ratio="4 / 5" className="h-full" />
+            <div
+              className="relative w-full overflow-hidden rounded-xl h-full"
+              style={{
+                aspectRatio: "4 / 5",
+                boxShadow: "inset 0 0 0 1px rgba(0,0,0,0.06), 0 10px 30px -18px rgba(0,0,0,0.25)",
+              }}
+            >
+              <Image
+                src="/about/portrait.jpg"
+                alt="Siya Yang in front of a lit ferris wheel at night"
+                fill
+                priority
+                sizes="(min-width: 768px) 30vw, 100vw"
+                className="object-cover"
+                style={{ transform: "scale(1.25)", transformOrigin: "40% 72%" }}
+              />
+            </div>
           </Reveal>
         </div>
       </section>
@@ -182,23 +200,32 @@ export default function AboutPage() {
           captioned underneath. Swap each Slot for an <Image> when the photos
           are chosen; the caption is the place it was taken. */}
       <section style={{ paddingBlock: "clamp(72px, 12vh, 128px)" }}>
-        <div
-          className="flex items-start gap-4 overflow-x-auto px-4 md:px-11"
-          style={{ scrollbarWidth: "none" }}
-        >
+        <ScrollStrip className="flex items-start gap-4 overflow-x-auto px-4 md:px-11">
           {PHOTOS.map((ph, i) => (
             <figure
               key={i}
               className="m-0 flex shrink-0 flex-col items-center gap-3"
               style={{ width: `calc(${PHOTO_H} * ${ph.ratio})` }}
             >
-              <Slot label="Photo" ratio={`${ph.ratio}`} />
+              {ph.src ? (
+                <div
+                  className="relative w-full overflow-hidden rounded-xl"
+                  style={{
+                    aspectRatio: `${ph.ratio}`,
+                    boxShadow: "inset 0 0 0 1px rgba(0,0,0,0.06), 0 10px 30px -18px rgba(0,0,0,0.25)",
+                  }}
+                >
+                  <Image src={ph.src} alt={ph.alt ?? ""} fill sizes="600px" className="object-cover" style={ph.zoom ? { transform: `scale(${ph.zoom[0]})`, transformOrigin: ph.zoom[1], objectPosition: ph.zoom[1] } : undefined} />
+                </div>
+              ) : (
+                <Slot label="Photo" ratio={`${ph.ratio}`} />
+              )}
               <figcaption className="text-muted" style={{ fontSize: 15 }}>
                 {ph.place}
               </figcaption>
             </figure>
           ))}
-        </div>
+        </ScrollStrip>
       </section>
 
       <div>
